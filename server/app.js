@@ -23,7 +23,7 @@ app.use(morgan('tiny'));
 app.use(authJwt());
 
 //IMPORT ROUTES
-const usersRoutes = require('./routers/users');
+const usersRoutes = require('./routes/users');
 
 //ROUTES
 app.use(`${API}/users`, usersRoutes);
