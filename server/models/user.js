@@ -36,7 +36,7 @@ const userSchema = mongoose.Schema({
 	invoices: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Invoices',
+			ref: 'Invoice',
 		},
 	],
 	passwordHash: {

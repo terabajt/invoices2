@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-	const user = await User.findById(req.parrams.id).select('-passwordHash');
+	const user = await User.findById(req.parrams.id).populate('invoices').select('-passwordHash');
 
 	if (!user) {
 		return res.status(500).json({ message: 'The user with that ID was not found! Try with correct ID.' });
