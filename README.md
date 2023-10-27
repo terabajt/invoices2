@@ -6,7 +6,7 @@ The application is used to issue invoices online.
 
 # Server run:
 
-Before run server please add your server/.env file like:
+Before run server please add your server/.env file like: <br />
 `API_URL = ''` <br />
 `CONNECTION_STRING = '' ` <br />
 `PORT = '' `<br />

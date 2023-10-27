@@ -22,8 +22,11 @@ app.use(express.json());
 app.use(morgan('tiny'));
 app.use(authJwt());
 
+//IMPORT ROUTES
+const usersRoutes = require('./routers/users');
+
 //ROUTES
-// app.use(`${API}/users`, usersRoutes);
+app.use(`${API}/users`, usersRoutes);
 
 //MONGOOSE CONNECT
 mongoose
