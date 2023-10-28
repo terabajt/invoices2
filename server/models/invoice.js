@@ -21,11 +21,20 @@ const invoiceSchema = mongoose.Schema({
 		{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'EntryItem',
+			required: true,
 		},
 	],
 	user: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User',
+	},
+	netAmountSum: {
+		type: Number,
+		required: true,
+	},
+	grossSum: {
+		type: Number,
+		required: true,
 	},
 });
 

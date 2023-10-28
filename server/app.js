@@ -24,9 +24,11 @@ app.use(authJwt());
 
 //IMPORT ROUTES
 const usersRoutes = require('./routes/users');
+const invoicesRoutes = require('./routes/invoices');
 
 //ROUTES
 app.use(`${API}/users`, usersRoutes);
+app.use(`${API}/invoices`, invoicesRoutes);
 
 //MONGOOSE CONNECT
 mongoose

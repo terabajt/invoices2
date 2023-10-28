@@ -7,7 +7,10 @@ const jwt = require('jsonwebtoken');
 //localhost:3000/api/v1/users
 
 router.get('/', async (req, res) => {
-	const userList = await User.find().select('-passwordHash');
+	const userList = await User.find()
+		.populate('invoices')
+		.populate({ path: 'invoices', populate: { path: 'entryItem' } })
+		.select('-passwordHash');
 	if (!userList) {
 		res.status(500).json({ success: false });
 	}
