@@ -74,6 +74,64 @@ router.post('/', async (req, res) => {
 	}
 });
 
+router.post('/entryitem', async (req, res) => {
+	let entryItem = new EntryItem({
+		name: req.body.name,
+		quantity: req.body.quantity,
+		tax: req.body.tax,
+		netAmount: req.body.netAmount,
+		gross: req.body.gross,
+	});
+
+	entryItem = await entryItem.save();
+
+	const newEntryItemId = entryItem._id;
+	const invoiceId = req.body.invoiceId;
+	const result = await Invoice.updateOne({ _id: invoiceId }, { $push: { entryItem: newEntryItemId } });
+
+	if (!result) return res.send(400).send('Cant find invoice with this number');
+	if (!entryItem) return res.status(400).send('Entry item cannot be created!');
+
+	res.send(entryItem);
+});
+
+router.delete('/entryitem/:id', async (req, res) => {
+	try {
+		const entryItemId = req.params.id;
+		const invoice = await Invoice.findOne({ entryItem: entryItemId });
+		if (!invoice) {
+			return res.status(404).json({ success: false, message: 'Invoice not found for the given entry item.' });
+		}
+		const updatedEntryItems = invoice.entryItem.filter(item => item.toString() !== entryItemId);
+		invoice.entryItem = updatedEntryItems;
+		await invoice.save();
+		await EntryItem.findByIdAndRemove(entryItemId);
+
+		return res.status(200).json({ success: true, message: 'The item is deleted.' });
+	} catch (err) {
+		return res.status(400).json({ success: false, error: err });
+	}
+});
+
+router.put('/entryitem/:id', async (req, res) => {
+	const entryItem = await EntryItem.findByIdAndUpdate(
+		req.params.id,
+		{
+			name: req.body.name,
+			quantity: req.body.quantity,
+			tax: req.body.tax,
+			netAmount: req.body.netAmount,
+			gross: req.body.gross,
+		},
+		{
+			new: true,
+		}
+	);
+	if (!entryItem) return res.status(400).send('Entry item cannot be updated.');
+
+	res.send(entryItem);
+});
+
 router.put('/:id', async (req, res) => {
 	const invoice = await Invoice.findByIdAndUpdate(
 		req.params.id,
