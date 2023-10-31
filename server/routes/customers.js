@@ -38,4 +38,39 @@ router.post('/', async (req, res) => {
 	res.send(customer);
 });
 
+router.put('/:id', async (req, res) => {
+	const customer = await Customer.findByIdAndUpdate(
+		req.params.id,
+		{
+			name: req.body.name,
+			taxNumber: req.body.taxNumber,
+			address1: req.body.address1,
+			address2: req.body.address2,
+			zip: req.body.zip,
+			email: req.body.email,
+			phone: req.body.phone,
+			city: req.body.city,
+		},
+		{
+			new: true,
+		}
+	);
+	if (!customer) return res.status(400).send('This customer cannot be updated.');
+
+	res.send(customer);
+});
+
+router.delete('/:id', (req, res) => {
+	Customer.findByIdAndRemove(req.params.id)
+		.then(customer => {
+			if (customer) {
+				return res.status(200).json({ succes: true, message: 'The customer is deleted!' });
+			} else {
+				return res.status(400).json({ success: false, message: 'Customer not found' });
+			}
+		})
+		.catch(err => {
+			return res.status(400).json({ status: false, error: err });
+		});
+});
 module.exports = router;
