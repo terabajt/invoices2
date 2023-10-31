@@ -25,7 +25,6 @@ router.get('/:id', async (req, res) => {
 	}
 	res.send(invoice);
 });
-
 router.post('/', async (req, res) => {
 	try {
 		// Creating new EntryItems i feedback it's ids
@@ -73,6 +72,41 @@ router.post('/', async (req, res) => {
 		console.error(error);
 		res.status(500).send('Internal server error');
 	}
+});
+
+router.put('/:id', async (req, res) => {
+	const invoice = await Invoice.findByIdAndUpdate(
+		req.params.id,
+		{
+			invoiceNumber: req.body.invoiceNumber,
+			invoiceDate: req.body.invoiceDate,
+			dueDate: req.body.dueDate,
+			customer: req.body.customer,
+			user: req.body.user,
+			netAmountSum: req.body.netAmountSum,
+			grossSum: req.body.grossSum,
+		},
+		{
+			new: true,
+		}
+	);
+	if (!invoice) return res.status(400).send('The invoice cannot be updated');
+
+	res.send(invoice);
+});
+
+router.delete('/:id', (req, res) => {
+	Invoice.findByIdAndRemove(req.params.id)
+		.then(user => {
+			if (user) {
+				return res.status(200).json({ success: true, message: 'The invoice is deleted.' });
+			} else {
+				return res.status(404).json({ success: false, message: 'Invoices not found.' });
+			}
+		})
+		.catch(err => {
+			return res.status(400).json({ success: false, error: err });
+		});
 });
 
 module.exports = router;
