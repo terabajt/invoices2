@@ -33,7 +33,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
 	let user = new User({
 		email: req.body.email,
-		name: req.body.name | 'Enter your company name',
+		name: req.body.name,
 		city: req.body.city,
 		address1: req.body.address1,
 		address2: req.body.address2,
@@ -47,37 +47,37 @@ router.post('/', async (req, res) => {
 	if (!user) return res.status(400).send('The user cannot be created.');
 	res.send(user);
 });
-router.put('/:id'),
-	async (req, res) => {
-		const userExist = await User.findById(req.params.id);
-		let newPassword;
+router.put('/:id', async (req, res) => {
+	const userExist = await User.findById(req.params.id);
+	let newPassword;
 
-		if (req.body.password) {
-			newPassword = bcrypt.hashSync(req.body.password, 10);
-		} else {
-			newPassword = userExist.passwordHash;
+	if (req.body.password) {
+		newPassword = bcrypt.hashSync(req.body.password, 10);
+	} else {
+		newPassword = userExist.passwordHash;
+	}
+	const user = await User.findByIdAndUpdate(
+		req.params.id,
+		{
+			email: req.body.email,
+			name: req.body.name,
+			city: req.body.city,
+			address1: req.body.address1,
+			address2: req.body.address2,
+			zip: req.body.zip,
+			phone: req.body.phone,
+			isAdmin: req.body.isAdmin,
+			passwordHash: newPassword,
+			taxNumber: req.body.taxNumber,
+		},
+		{
+			new: true,
 		}
-		const user = await User.findByIdAndUpdate(
-			req.params.id,
-			{
-				email: req.body.email,
-				name: req.body.name,
-				city: req.body.city,
-				address1: req.body.address1,
-				address2: req.body.address2,
-				zip: req.body.zip,
-				phone: req.body.phone,
-				isAdmin: req.body.isAdmin,
-				passwordHash: newPassword,
-			},
-			{
-				new: true,
-			}
-		);
-		if (!user) return res.status(400).send('The user cannot be updated!');
+	);
+	if (!user) return res.status(400).send('The user cannot be updated!');
 
-		res.send(user);
-	};
+	res.send(user);
+});
 router.post('/login', async (req, res) => {
 	const user = await User.findOne({ email: req.body.email });
 	const secret = process.env.SECRET;
@@ -102,11 +102,11 @@ router.post('/login', async (req, res) => {
 
 router.delete('/:id', (req, res) => {
 	User.findByIdAndRemove(req.params.id)
-		.then(suer => {
+		.then(user => {
 			if (user) {
 				return res.status(200).json({ success: true, message: 'The user is deleted.' });
 			} else {
-				return res.status(400).json({ success: false, message: 'USer not found!' });
+				return res.status(400).json({ success: false, message: 'User not found!' });
 			}
 		})
 		.catch(err => {
