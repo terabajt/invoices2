@@ -15,3 +15,7 @@ Before run server please add your server/.env file like: <br />
 
 ## Application architecture
 ![Database schema](https://github.com/terabajt/invoices2/blob/main/Efaktury24.database.png)
+
+
+## Project Repository
+![Repository schema](https://github.com/terabajt/invoices2/blob/main/ProjectRepository.png)
