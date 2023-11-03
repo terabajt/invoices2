@@ -1,22 +1,180 @@
-<mxfile host="app.diagrams.net" modified="2023-10-31T13:56:23.647Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36" etag="JkSBpQHBQopNks2XqFAQ" version="22.0.8" type="github">
-  <diagram name="Strona-1" id="HRsQ82nK7Ru9kn2MYrHY">
-    <mxGraphModel dx="625" dy="676" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
-      <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-        <mxCell id="nxGb1ZJd_Zyw05IVi2Qw-2" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="10" y="110" width="930" height="470" as="geometry" />
-        </mxCell>
-        <mxCell id="nxGb1ZJd_Zyw05IVi2Qw-1" value="&lt;u&gt;Project Repository&lt;/u&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="30" y="120" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="nxGb1ZJd_Zyw05IVi2Qw-5" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="30" y="170" width="200" height="170" as="geometry" />
-        </mxCell>
-        <mxCell id="nxGb1ZJd_Zyw05IVi2Qw-6" value="Invoice2 User App" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="75" y="180" width="110" height="40" as="geometry" />
-        </mxCell>
-      </root>
-    </mxGraphModel>
-  </diagram>
+<mxfile host="65bd71144e">
+    <diagram name="Strona-1" id="HRsQ82nK7Ru9kn2MYrHY">
+        <mxGraphModel dx="927" dy="626" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="nxGb1ZJd_Zyw05IVi2Qw-2" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="110" width="640" height="470" as="geometry"/>
+                </mxCell>
+                <mxCell id="nxGb1ZJd_Zyw05IVi2Qw-1" value="&lt;u&gt;Project Repository&lt;/u&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="30" y="120" width="170" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="nxGb1ZJd_Zyw05IVi2Qw-5" value="" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="30" y="170" width="310" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="nxGb1ZJd_Zyw05IVi2Qw-6" value="Invoice2 User App" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="105" y="170" width="110" height="40" as="geometry"/>
+                </mxCell>
+                <UserObject label="Sidebar Component" treeRoot="1" id="5">
+                    <mxCell style="whiteSpace=wrap;html=1;align=center;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=9;" vertex="1" collapsed="1" parent="1">
+                        <mxGeometry x="40" y="210" width="140" height="20" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Invoices List Component" treeRoot="1" id="6">
+                    <mxCell style="whiteSpace=wrap;html=1;align=center;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=9;" vertex="1" collapsed="1" parent="1">
+                        <mxGeometry x="190" y="210" width="140" height="20" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="7" value="" style="rounded=1;whiteSpace=wrap;html=1;arcSize=0;" vertex="1" parent="1">
+                    <mxGeometry x="30" y="380" width="160" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="UI Library" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="380" width="110" height="40" as="geometry"/>
+                </mxCell>
+                <UserObject label="Banner Component" treeRoot="1" id="9">
+                    <mxCell style="whiteSpace=wrap;html=1;align=center;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=9;" vertex="1" collapsed="1" parent="1">
+                        <mxGeometry x="55" y="420" width="110" height="20" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Footer Component" treeRoot="1" id="10">
+                    <mxCell style="whiteSpace=wrap;html=1;align=center;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=9;" vertex="1" collapsed="1" parent="1">
+                        <mxGeometry x="55" y="450" width="110" height="20" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Home (Dashboard) Component" treeRoot="1" id="11">
+                    <mxCell style="whiteSpace=wrap;html=1;align=center;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=9;" vertex="1" collapsed="1" parent="1">
+                        <mxGeometry x="40" y="240" width="140" height="20" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Invoice Component (add or edit)" treeRoot="1" id="12">
+                    <mxCell style="whiteSpace=wrap;html=1;align=center;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=9;" vertex="1" collapsed="1" parent="1">
+                        <mxGeometry x="190" y="240" width="140" height="20" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Customers List Component" treeRoot="1" id="13">
+                    <mxCell style="whiteSpace=wrap;html=1;align=center;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=9;" vertex="1" collapsed="1" parent="1">
+                        <mxGeometry x="40" y="270" width="140" height="20" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Customer Component (add or edit)" treeRoot="1" id="14">
+                    <mxCell style="whiteSpace=wrap;html=1;align=center;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=9;" vertex="1" collapsed="1" parent="1">
+                        <mxGeometry x="40" y="300" width="140" height="20" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="15" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="370" y="170" width="150" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="Admin Panel" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="385" y="170" width="110" height="40" as="geometry"/>
+                </mxCell>
+                <UserObject label="Sidebar (Admin Component)" treeRoot="1" id="17">
+                    <mxCell style="whiteSpace=wrap;html=1;align=center;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=9;" vertex="1" collapsed="1" parent="1">
+                        <mxGeometry x="385" y="210" width="125" height="20" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Users List Component" treeRoot="1" id="18">
+                    <mxCell style="whiteSpace=wrap;html=1;align=center;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=9;" vertex="1" collapsed="1" parent="1">
+                        <mxGeometry x="385" y="240" width="125" height="20" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="20" value="" style="rounded=1;whiteSpace=wrap;html=1;arcSize=0;" vertex="1" parent="1">
+                    <mxGeometry x="220" y="380" width="180" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="User and Auth Library" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="250" y="380" width="120" height="40" as="geometry"/>
+                </mxCell>
+                <UserObject label="User EDIT/ADD Component" treeRoot="1" id="23">
+                    <mxCell style="whiteSpace=wrap;html=1;align=center;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=9;" vertex="1" collapsed="1" parent="1">
+                        <mxGeometry x="240" y="430" width="140" height="20" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="User Services" treeRoot="1" id="24">
+                    <mxCell style="whiteSpace=wrap;html=1;align=center;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=9;" vertex="1" collapsed="1" parent="1">
+                        <mxGeometry x="240" y="455" width="140" height="20" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Auth Services" treeRoot="1" id="25">
+                    <mxCell style="whiteSpace=wrap;html=1;align=center;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=9;" vertex="1" collapsed="1" parent="1">
+                        <mxGeometry x="240" y="480" width="140" height="20" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="User State Store" treeRoot="1" id="26">
+                    <mxCell style="whiteSpace=wrap;html=1;align=center;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=9;" vertex="1" collapsed="1" parent="1">
+                        <mxGeometry x="240" y="510" width="140" height="20" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="27" value="" style="rounded=1;whiteSpace=wrap;html=1;arcSize=0;" vertex="1" parent="1">
+                    <mxGeometry x="430" y="380" width="180" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="Invoices &amp;amp; Customers Library" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="460" y="390" width="120" height="40" as="geometry"/>
+                </mxCell>
+                <UserObject label="Customer Services" treeRoot="1" id="29">
+                    <mxCell style="whiteSpace=wrap;html=1;align=center;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=9;" vertex="1" collapsed="1" parent="1">
+                        <mxGeometry x="450" y="435" width="140" height="20" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Invoice Services" treeRoot="1" id="30">
+                    <mxCell style="whiteSpace=wrap;html=1;align=center;treeFolding=1;treeMoving=1;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;startArrow&quot;:&quot;none&quot;,&quot;endArrow&quot;:&quot;none&quot;};fontSize=9;" vertex="1" collapsed="1" parent="1">
+                        <mxGeometry x="450" y="470" width="140" height="20" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="31" value="" style="endArrow=classic;html=1;fontSize=9;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.6;entryY=-0.025;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="nxGb1ZJd_Zyw05IVi2Qw-5" target="8">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="450" y="390" as="sourcePoint"/>
+                        <mxPoint x="500" y="340" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="120" y="350"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="33" value="" style="endArrow=classic;html=1;fontSize=9;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="nxGb1ZJd_Zyw05IVi2Qw-5" target="21">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="450" y="390" as="sourcePoint"/>
+                        <mxPoint x="500" y="340" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="290" y="360"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="35" value="" style="endArrow=classic;html=1;fontSize=9;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="nxGb1ZJd_Zyw05IVi2Qw-5" target="27">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="450" y="390" as="sourcePoint"/>
+                        <mxPoint x="500" y="340" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="340" y="360"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="36" value="" style="endArrow=classic;html=1;fontSize=9;exitX=0.053;exitY=0.988;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fillColor=#60a917;strokeColor=#2D7600;" edge="1" parent="1" source="15" target="8">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="450" y="390" as="sourcePoint"/>
+                        <mxPoint x="500" y="340" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="180" y="360"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="37" value="" style="endArrow=classic;html=1;fontSize=9;fillColor=#60a917;strokeColor=#2D7600;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="15" target="21">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="450" y="390" as="sourcePoint"/>
+                        <mxPoint x="500" y="340" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="360" y="350"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="38" value="" style="endArrow=classic;html=1;fontSize=9;exitX=0.627;exitY=1.006;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fillColor=#60a917;strokeColor=#2D7600;" edge="1" parent="1" source="15" target="27">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="450" y="390" as="sourcePoint"/>
+                        <mxPoint x="500" y="340" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="510" y="350"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
 </mxfile>
