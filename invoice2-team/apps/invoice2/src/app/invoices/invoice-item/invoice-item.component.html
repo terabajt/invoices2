@@ -1,1 +1,89 @@
-<p>invoice-item works!</p>
+<mat-card class="invoice-card">
+  <mat-card-header>
+    <mat-card-title>Podgląd faktury</mat-card-title>
+    <mat-card-subtitle>Faktura nr: {{invoiceNumber}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions align="end">
+    <button mat-raised-button color="primary">{{ editMode ? 'Zapisz' : 'Dodaj' }}</button>
+  </mat-card-actions>
+  <mat-card-content>
+    <div class="mat-elevation-z8">
+      <div class="loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+      </div>
+    </div>
+
+    <div class="form-container" *ngIf="form">
+      <form [formGroup]="form">
+        <div class="form-fields row">
+          <mat-form-field class="col-12 col-md-4 col-lg-3" [floatLabel]="getFloatLabelValue()">
+            <mat-label>Numer faktury</mat-label>
+            <input formControlName="invoiceNumber" matInput placeholder="Numer faktury">
+          </mat-form-field>
+          <mat-form-field class="col-12 col-md-4 col-lg-3" [floatLabel]="getFloatLabelValue()">
+            <mat-label>Data wystawienia</mat-label>
+            <input formControlName="invoiceDate" matInput [matDatepicker]="invoiceDate" placeholder="Data wystawienia">
+            <mat-datepicker-toggle matSuffix [for]="invoiceDate"></mat-datepicker-toggle>
+            <mat-datepicker #invoiceDate></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field class="col-12 col-md-4 col-lg-3" [floatLabel]="getFloatLabelValue()">
+            <mat-label>Data płatności</mat-label>
+            <input formControlName="dueDate" matInput [matDatepicker]="dueDatePicker" placeholder="Data płatności">
+            <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #dueDatePicker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field class="col-12 col-md-4 col-lg-3" [floatLabel]="getFloatLabelValue()">
+            <mat-label>Kontrahent</mat-label>
+            <input formControlName="customer" matInput placeholder="Kontrahent">
+          </mat-form-field>
+        </div>
+        <div class="form-fields row" formArrayName="entryItems">
+          <ng-container *ngFor="let item of getControls(); let i = index">
+            <div [formGroupName]="i">
+              <div class="row">
+                <mat-form-field class="col-3">
+                  <mat-label>Nazwa</mat-label>
+                  <input formControlName="nameEntry" matInput placeholder="Nazwa">
+                </mat-form-field>
+                <mat-form-field class="col-2">
+                  <mat-label>Ilość</mat-label>
+                  <input type="number" formControlName="quantityEntry" matInput placeholder="Ilość">
+                </mat-form-field>
+                <mat-form-field class="col-2">
+                  <mat-label>Kwota NETTO</mat-label>
+                  <input type="number" step="0.01" formControlName="netAmountEntry" matInput placeholder="Kwota NETTO">
+                </mat-form-field>
+                <mat-form-field class="col-2">
+                  <mat-label>Podatek</mat-label>
+                  <input type="number" step="0.01" formControlName="taxEntry" matInput placeholder="Podatek">
+                </mat-form-field>
+                <mat-form-field class="col-2">
+                  <mat-label>Kwota BRUTTO</mat-label>
+                  <input type="number" step="0.01" formControlName="grossEntry" matInput placeholder="Kwota BRUTTO">
+                </mat-form-field>
+                <button mat-icon-button color="warn" (click)="removeEntryItem(i)">
+                  <mat-icon svgIcon="delete"></mat-icon>
+
+                </button>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+        <button mat-raised-button color="primary" (click)="addEntryItem()">Dodaj pozycję</button>
+
+        <div class="form-fields row">
+          <mat-form-field class="col-12 col-md-4 col-lg-3" [floatLabel]="getFloatLabelValue()">
+            <mat-label>Kwota NETTO</mat-label>
+            <input formControlName="netAmountSum" matInput placeholder="Kwota NETTO" type="number">
+          </mat-form-field>
+          <mat-form-field class="col-12 col-md-4 col-lg-3" [floatLabel]="getFloatLabelValue()">
+            <mat-label>Kwota BRUTTO</mat-label>
+            <input formControlName="grossSum" matInput type="number" placeholder="Kwota BRUTTO">
+          </mat-form-field>
+        </div>
+      </form>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+  </mat-card-actions>
+</mat-card>

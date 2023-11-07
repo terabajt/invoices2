@@ -1,23 +1,23 @@
 const mongoose = require('mongoose');
 
 const entryItemSchema = mongoose.Schema({
-	name: {
+	nameEntry: {
 		type: String,
 		require: true,
 	},
-	quantity: {
+	quantityEntry: {
 		type: Number,
 		default: 1,
 	},
-	tax: {
+	taxEntry: {
 		type: Number,
 		default: 23,
 	},
-	netAmount: {
+	netAmountEntry: {
 		type: Number,
 		required: true,
 	},
-	gross: {
+	grossEntry: {
 		type: Number,
 		required: true,
 	},
