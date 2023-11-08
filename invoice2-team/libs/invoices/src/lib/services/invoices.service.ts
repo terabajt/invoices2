@@ -18,4 +18,7 @@ export class InvoicesService {
     getInvoice(invoiceId: string): Observable<Invoice> {
         return this.http.get<Invoice>(`${this.apiURLInvoices}/${invoiceId}`);
     }
+    updateInvoice(invoice: Invoice, invoiceId: string) {
+        return this.http.put<Invoice>(`${this.apiURLInvoices}/${invoiceId}`, invoice);
+    }
 }

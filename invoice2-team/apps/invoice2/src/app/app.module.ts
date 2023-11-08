@@ -35,14 +35,31 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { InvoicesModule } from '@invoice2-team/invoices';
 import { HttpClientModule } from '@angular/common/http';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarConfig, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogConfig, MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { DialogComponent } from './shared/dialog/dialog.component';
+
+const MAT_DIALOG_GLOBAL_CONFIG: MatDialogConfig = {
+    width: '700px',
+    disableClose: true,
+    hasBackdrop: true
+};
+
+const MAT_SNACK_BAR_GLOBAL_CONFIG: MatSnackBarConfig = {
+    duration: 2500,
+    verticalPosition: 'top',
+    horizontalPosition: 'center'
+};
 
 const MATERIAL_MODULE = [
     MatSlideToggleModule,
+    MatSnackBarModule,
     MatIconModule,
     MatMenuModule,
     MatListModule,
     MatCardModule,
     MatButtonModule,
+    MatDialogModule,
     MatTabsModule,
     MatDatepickerModule,
     MatProgressSpinnerModule,
@@ -61,7 +78,7 @@ const MATERIAL_MODULE = [
 registerLocaleData(localePl);
 
 @NgModule({
-    declarations: [AppComponent, DashboardComponent, ShellComponent, SidebarComponent, InvoicesListComponent, InvoiceItemComponent],
+    declarations: [AppComponent, DashboardComponent, ShellComponent, SidebarComponent, InvoicesListComponent, InvoiceItemComponent, DialogComponent],
     imports: [
         InvoicesModule,
         HttpClientModule,
@@ -75,7 +92,9 @@ registerLocaleData(localePl);
     ],
     providers: [
         { provide: LOCALE_ID, useValue: 'pl-PL' },
-        { provide: DEFAULT_CURRENCY_CODE, useValue: 'PLN' }
+        { provide: DEFAULT_CURRENCY_CODE, useValue: 'PLN' },
+        { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: MAT_DIALOG_GLOBAL_CONFIG },
+        { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: MAT_SNACK_BAR_GLOBAL_CONFIG }
     ],
     bootstrap: [AppComponent]
 })

@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
-import { ActivatedRoute } from '@angular/router';
-import { EntryItem, InvoicesService } from '@invoice2-team/invoices';
+import { ActivatedRoute, Router } from '@angular/router';
+import { EntryItem, Invoice, InvoicesService } from '@invoice2-team/invoices';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../../shared/dialog/dialog.component';
 
 @Component({
     selector: 'invoice2-team-invoice-item',
@@ -18,15 +21,28 @@ export class InvoiceItemComponent implements OnInit {
     floatLabelControl = new FormControl('auto' as FloatLabelType);
     hideRequiredControl = new FormControl(false);
     invoiceNumber!: string;
+    invoiceId!: string;
     netAmountSum = 0;
     grossSum = 0;
+
+    showDialog(): void {
+        const dialogRef = this._dialog.open(DialogComponent);
+        dialogRef.afterClosed().subscribe((res) => {
+            if (res) {
+                this.router.navigate(['/invoices']);
+            }
+        });
+    }
 
     constructor(
         private formBuilder: FormBuilder,
         private invoiceService: InvoicesService,
         private route: ActivatedRoute,
         private iconRegistry: MatIconRegistry,
-        private sanitizer: DomSanitizer
+        private sanitizer: DomSanitizer,
+        private _toast: MatSnackBar,
+        private _dialog: MatDialog,
+        private router: Router
     ) {
         this.iconRegistry.addSvgIcon('delete', this.sanitizer.bypassSecurityTrustResourceUrl('assets/delete.svg'));
     }
@@ -40,6 +56,9 @@ export class InvoiceItemComponent implements OnInit {
         this.route.params.pipe().subscribe((params) => {
             if (params['id']) {
                 this.invoiceService.getInvoice(params['id']).subscribe((invoice) => {
+                    if (invoice.invoiceNumber) this.invoiceNumber = invoice.invoiceNumber;
+                    this.invoiceId = params['id'];
+                    console.log(invoice.invoiceNumber);
                     if (invoice.entryItem) {
                         const entryItemsArray = this.formBuilder.array(
                             invoice.entryItem.map((item: EntryItem) => {
@@ -83,13 +102,12 @@ export class InvoiceItemComponent implements OnInit {
                                 this.updateGrossEntry(formItems);
                             });
                         });
-                        if (invoice.invoiceNumber) this.invoiceNumber = invoice.invoiceNumber;
 
                         this.form = this.formBuilder.group({
                             invoiceNumber: [invoice.invoiceNumber, Validators.required],
                             invoiceDate: [invoice.invoiceDate ? new Date(invoice.invoiceDate) : null, Validators.required],
                             dueDate: [invoice.dueDate ? new Date(invoice.dueDate) : null, Validators.required],
-                            customer: [invoice.customer?.name],
+                            customer: [invoice.customer],
                             entryItems: entryItemsArray,
                             netAmountSum: [this.netAmountSum, Validators.required],
                             grossSum: [this.grossSum, Validators.required]
@@ -166,5 +184,38 @@ export class InvoiceItemComponent implements OnInit {
             grossSum += control.get('grossEntry')?.value || 0;
         });
         this.form.patchValue({ netAmountSum: netAmountSum.toFixed(2), grossSum }, { emitEvent: false });
+    }
+    get invoiceForm() {
+        return this.form.controls;
+    }
+    onSaveForm() {
+        if (this.form.invalid) {
+            return console.log('invalid');
+        }
+
+        if (this.editMode) {
+            const formData = this.form.value;
+            const newInvoice: Invoice = {
+                invoiceNumber: formData.invoiceNumber,
+                invoiceDate: formData.invoiceDate,
+                dueDate: formData.dueDate,
+                customer: formData.customer,
+                entryItem: formData.entryItem,
+                user: formData.user,
+                netAmountSum: formData.netAmountSum,
+                grossSum: formData.grossSum
+            };
+            this._updateInvoice(newInvoice);
+        } else {
+            console.log('add new invoice');
+        }
+    }
+    private _updateInvoice(invoice: Invoice) {
+        this.invoiceService
+            .updateInvoice(invoice, this.invoiceId)
+            .pipe()
+            .subscribe((invoice: Invoice) => {
+                this._toast.open(`Pomyślnie zapisano fakturę ${invoice.invoiceNumber}`);
+            });
     }
 }

@@ -4,11 +4,11 @@
     <mat-card-subtitle>Faktura nr: {{invoiceNumber}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions align="end">
-    <button mat-raised-button color="primary">{{ editMode ? 'Zapisz' : 'Dodaj' }}</button>
-    <button mat-raised-button color="warn" routerLink="/">Anuluj</button>
+    <button mat-raised-button color="primary" (click)="onSaveForm()">{{ editMode ? 'Zapisz' : 'Dodaj' }}</button>
+    <button mat-raised-button color="warn" (click)="showDialog()">Anuluj</button>
   </mat-card-actions>
   <mat-card-content>
-    <div class="mat-elevation-z8">
+    <div class=" mat-elevation-z8">
       <div class="loading-shade" *ngIf="isLoadingResults">
         <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
       </div>

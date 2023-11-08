@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
 	const invoice = await Invoice.findById(req.params.id)
-		.populate('customer')
+
 		.populate('user', 'entryItem')
 		.populate({ path: 'entryItem' });
 	if (!invoice) {
