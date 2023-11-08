@@ -25,15 +25,6 @@ export class InvoiceItemComponent implements OnInit {
     netAmountSum = 0;
     grossSum = 0;
 
-    showDialog(): void {
-        const dialogRef = this._dialog.open(DialogComponent);
-        dialogRef.afterClosed().subscribe((res) => {
-            if (res) {
-                this.router.navigate(['/invoices']);
-            }
-        });
-    }
-
     constructor(
         private formBuilder: FormBuilder,
         private invoiceService: InvoicesService,
@@ -217,5 +208,17 @@ export class InvoiceItemComponent implements OnInit {
             .subscribe((invoice: Invoice) => {
                 this._toast.open(`Pomyślnie zapisano fakturę ${invoice.invoiceNumber}`);
             });
+    }
+    showDialog(): void {
+        const dialogRef = this._dialog.open(DialogComponent, {
+            data: {
+                message: 'Wszystkie niezapisane zmiany zostaną utracone. Czy na pewno chcesz anulować?'
+            }
+        });
+        dialogRef.afterClosed().subscribe((res) => {
+            if (res) {
+                this.router.navigate(['/invoices']);
+            }
+        });
     }
 }

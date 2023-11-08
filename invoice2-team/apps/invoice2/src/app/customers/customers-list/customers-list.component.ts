@@ -3,53 +3,50 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Invoice, InvoicesService } from '@invoice2-team/invoices';
+import { Customer, CustomerService } from '@invoice2-team/invoices';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
 
 @Component({
-    selector: 'invoice2-team-invoices-list',
-    templateUrl: './invoices-list.component.html',
+    selector: 'invoice2-team-customers-list',
+    templateUrl: './customers-list.component.html',
     styles: []
 })
-export class InvoicesListComponent implements OnInit, AfterViewInit {
+export class CustomersListComponent implements OnInit, AfterViewInit {
     @ViewChild(MatPaginator, { static: true })
     paginator!: MatPaginator;
     @ViewChild(MatSort)
     sort!: MatSort;
+    customers: Customer[] = [];
 
-    constructor(private invoiceService: InvoicesService, private _dialog: MatDialog) {}
+    constructor(private customerService: CustomerService, private _dialog: MatDialog) {}
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.paginator._intl.itemsPerPageLabel = 'Ilość faktur na stronie';
-        this._initInvoices();
+        this._initCustomers();
     }
-
     ngAfterViewInit() {
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
     }
-    isLoadingResults = false;
 
-    invoices: Invoice[] = [];
-
-    private _initInvoices() {
-        this.invoiceService.getInvoices().subscribe((invoices) => {
+    private _initCustomers() {
+        this.customerService.getCustomers().subscribe((invoices) => {
             this.dataSource = new MatTableDataSource(invoices);
         });
     }
 
-    displayedColumns: string[] = ['invoiceNumber', 'invoiceDate', 'dueDate', 'customer', 'netAmountSum', 'grossSum', 'more', 'delete'];
-    dataSource = new MatTableDataSource(this.invoices);
+    displayedColumns: string[] = ['name', 'taxNumber', 'email', 'phone', 'city', 'more', 'delete'];
+    dataSource = new MatTableDataSource(this.customers);
 
     onDeleteInvoice(element: any) {
         const dialogRef = this._dialog.open(DialogComponent, {
             data: {
-                message: 'Czy na pewno chcesz usunąć fakturę?'
+                message: 'Czy na pewno chcesz usunąć kontrahenta?'
             }
         });
         dialogRef.afterClosed().subscribe((res) => {
             if (res) {
-                console.log('Usunięto');
+                console.log('Usunięto', element);
             }
         });
     }

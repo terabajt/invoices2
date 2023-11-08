@@ -16,17 +16,17 @@
     <div class="form-container" *ngIf="form">
       <form [formGroup]="form">
         <div class="form-fields row">
-          <mat-form-field class="col-12 col-md-4 col-lg-3" [floatLabel]="getFloatLabelValue()">
+          <mat-form-field class="col-12 col-md-6" [floatLabel]="getFloatLabelValue()">
             <mat-label>Klient</mat-label>
             <input formControlName="customer" matInput placeholder="Klient">
           </mat-form-field>
-          <mat-form-field class="col-6 col-md-2 col-lg-2" [floatLabel]="getFloatLabelValue()">
+          <mat-form-field class="col-6 col-md-3" [floatLabel]="getFloatLabelValue()">
             <mat-label>Data wystawienia</mat-label>
             <input formControlName="invoiceDate" matInput [matDatepicker]="invoiceDate" placeholder="Data wystawienia">
             <mat-datepicker-toggle matSuffix [for]="invoiceDate"></mat-datepicker-toggle>
             <mat-datepicker #invoiceDate></mat-datepicker>
           </mat-form-field>
-          <mat-form-field class="col-6 col-md-2 col-lg-2" [floatLabel]="getFloatLabelValue()">
+          <mat-form-field class="col-6 col-md-3" [floatLabel]="getFloatLabelValue()">
             <mat-label>Data płatności</mat-label>
             <input formControlName="dueDate" matInput [matDatepicker]="dueDatePicker" placeholder="Data płatności">
             <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
@@ -51,7 +51,7 @@
                     <mat-label>Nazwa</mat-label>
                     <input formControlName="nameEntry" matInput placeholder="Nazwa">
                   </mat-form-field>
-                  <mat-form-field class="col-1">
+                  <mat-form-field class="col-2">
                     <mat-label>Ilość</mat-label>
                     <input type="number" formControlName="quantityEntry" matInput placeholder="Ilość">
                   </mat-form-field>
@@ -84,14 +84,17 @@
             </ng-container>
           </div>
         </mat-card>
-        <div class=" form-fields row">
-          <h3>Podsumowanie:</h3>
-          <mat-form-field class="col-12 col-md-4 col-lg-3" [floatLabel]="getFloatLabelValue()">
+        <div class=" form-fields row justify-content-end">
+          <div class="col-2">
+            <h3>Podsumowanie:</h3>
+          </div>
+
+          <mat-form-field class="col-12 col-md-4 float-end" [floatLabel]="getFloatLabelValue()">
             <mat-label>Kwota NETTO</mat-label>
             <input step="0.01" formControlName="netAmountSum" matInput placeholder="Kwota NETTO" type="number">
             <span matTextSuffix>zł&nbsp;</span>
           </mat-form-field>
-          <mat-form-field class="col-12 col-md-4 col-lg-3" [floatLabel]="getFloatLabelValue()">
+          <mat-form-field class="col-12 col-md-4  float-end" [floatLabel]="getFloatLabelValue()">
             <mat-label>Kwota BRUTTO</mat-label>
             <input step="0.01" formControlName="grossSum" matInput type="number" placeholder="Kwota BRUTTO">
             <span matTextSuffix>zł&nbsp;</span>
