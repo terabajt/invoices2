@@ -2,6 +2,7 @@ const express = require('express');
 const { Invoice } = require('../models/invoice');
 const { EntryItem } = require('../models/entry-item');
 const { User } = require('../models/user');
+const { Customer } = require('../models/customer');
 
 const router = express.Router();
 
@@ -11,6 +12,7 @@ router.get('/', async (req, res) => {
 	const invoiceList = await Invoice.find()
 		.populate('entryItem', 'user')
 		.populate({ path: 'entryItem' })
+		.populate('customer')
 		.sort({ invoiceDate: -1 });
 	if (!invoiceList) {
 		res.status(500).json({ success: false });
@@ -19,7 +21,10 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-	const invoice = await Invoice.findById(req.params.id).populate('user', 'entryItem').populate({ path: 'entryItem' });
+	const invoice = await Invoice.findById(req.params.id)
+		.populate('customer')
+		.populate('user', 'entryItem')
+		.populate({ path: 'entryItem' });
 	if (!invoice) {
 		res.status(500).json({ success: false });
 	}

@@ -1,6 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { RouterLink } from '@angular/router';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'invoice2-team-sidebar',
