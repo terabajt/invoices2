@@ -50,11 +50,12 @@ export class InvoiceItemComponent implements OnInit {
                 this.invoiceService.getInvoice(params['id']).subscribe((invoice) => {
                     if (invoice.invoiceNumber) this.invoiceNumber = invoice.invoiceNumber;
                     this.invoiceId = params['id'];
-                    console.log(invoice.invoiceNumber);
+
                     if (invoice.entryItem) {
                         const entryItemsArray = this.formBuilder.array(
                             invoice.entryItem.map((item: EntryItem) => {
                                 const formItems = this.formBuilder.group({
+                                    id_item: [item._id],
                                     nameEntry: [item.nameEntry, Validators.required],
                                     quantityEntry: [item.quantityEntry, Validators.required],
                                     taxEntry: [item.taxEntry?.toString(), Validators.required],
@@ -99,7 +100,7 @@ export class InvoiceItemComponent implements OnInit {
                             invoiceNumber: [invoice.invoiceNumber, Validators.required],
                             invoiceDate: [invoice.invoiceDate ? new Date(invoice.invoiceDate) : null, Validators.required],
                             dueDate: [invoice.dueDate ? new Date(invoice.dueDate) : null, Validators.required],
-                            customer: [invoice.customer],
+                            customer: [invoice.customer, Validators.required],
                             entryItems: entryItemsArray,
                             netAmountSum: [this.netAmountSum, Validators.required],
                             grossSum: [this.grossSum, Validators.required]
@@ -198,7 +199,23 @@ export class InvoiceItemComponent implements OnInit {
                 netAmountSum: formData.netAmountSum,
                 grossSum: formData.grossSum
             };
+            const newEntryItems: EntryItem[] = [];
+
+            this.entryItemsArray.controls.map((item) => {
+                const entryItem = {
+                    nameEntry: item.value.nameEntry,
+                    quantityEntry: item.value.quantityEntry,
+                    taxEntry: item.value.taxEntry,
+                    netAmountEntry: item.value.netAmountEntry,
+                    grossEntry: item.value.grossEntry,
+                    _id: item.value.id_item,
+                    invoiceId: this.invoiceId
+                };
+                newEntryItems.push(entryItem);
+            });
+
             this._updateInvoice(newInvoice);
+            this._updateItems(newEntryItems);
         } else {
             console.log('add new invoice');
         }
@@ -210,6 +227,9 @@ export class InvoiceItemComponent implements OnInit {
             .subscribe((invoice: Invoice) => {
                 this._toast.open(`Pomyślnie zapisano fakturę ${invoice.invoiceNumber}`);
             });
+    }
+    private _updateItems(newEntryItems: EntryItem[]) {
+        this.invoiceService.updateEntryItem(newEntryItems);
     }
     showDialog(): void {
         const dialogRef = this._dialog.open(DialogComponent, {

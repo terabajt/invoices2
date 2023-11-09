@@ -81,11 +81,11 @@ router.post('/', async (req, res) => {
 
 router.post('/entryitem', async (req, res) => {
 	let entryItem = new EntryItem({
-		name: req.body.name,
-		quantity: req.body.quantity,
-		tax: req.body.tax,
-		netAmount: req.body.netAmount,
-		gross: req.body.gross,
+		nameEntry: req.body.nameEntry,
+		quantityEntry: req.body.quantityEntry,
+		taxEntry: req.body.taxEntry,
+		netAmountEntry: req.body.netAmountEntry,
+		grossEntry: req.body.grossEntry,
 	});
 
 	entryItem = await entryItem.save();
@@ -122,11 +122,11 @@ router.put('/entryitem/:id', async (req, res) => {
 	const entryItem = await EntryItem.findByIdAndUpdate(
 		req.params.id,
 		{
-			name: req.body.name,
-			quantity: req.body.quantity,
-			tax: req.body.tax,
-			netAmount: req.body.netAmount,
-			gross: req.body.gross,
+			nameEntry: req.body.nameEntry,
+			quantityEntry: req.body.quantityEntry,
+			taxEntry: req.body.taxEntry,
+			netAmountEntry: req.body.netAmountEntry,
+			grossEntry: req.body.grossEntry,
 		},
 		{
 			new: true,
