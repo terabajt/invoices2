@@ -1,3 +1,5 @@
+<mat-spinner class="spinner" style="margin:0 auto;" *ngIf="isLoadingResults"></mat-spinner>
+
 <mat-card class="invoice-card">
   <mat-card-header>
     <mat-card-title>Podgląd faktury</mat-card-title>
@@ -8,11 +10,7 @@
     <button mat-raised-button color="warn" (click)="showDialog()">Anuluj</button>
   </mat-card-actions>
   <mat-card-content>
-    <div class=" mat-elevation-z8">
-      <div class="loading-shade" *ngIf="isLoadingResults">
-        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-      </div>
-    </div>
+
     <div class="form-container" *ngIf="form">
       <form [formGroup]="form">
         <div class="form-fields row">

@@ -41,6 +41,7 @@ export class InvoiceItemComponent implements OnInit {
         return this.floatLabelControl.value || 'auto';
     }
     ngOnInit(): void {
+        this.isLoadingResults = true;
         this._invoiceInit();
     }
     private _invoiceInit() {
@@ -103,6 +104,7 @@ export class InvoiceItemComponent implements OnInit {
                             netAmountSum: [this.netAmountSum, Validators.required],
                             grossSum: [this.grossSum, Validators.required]
                         });
+                        this.isLoadingResults = false;
 
                         this.updateGrossEntry(this.form);
                     } else {

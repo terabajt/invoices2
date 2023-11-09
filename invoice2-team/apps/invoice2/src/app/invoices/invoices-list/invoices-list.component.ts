@@ -16,6 +16,8 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
     paginator!: MatPaginator;
     @ViewChild(MatSort)
     sort!: MatSort;
+    isLoadingResults = true;
+    invoices: Invoice[] = [];
 
     constructor(private invoiceService: InvoicesService, private _dialog: MatDialog) {}
 
@@ -28,13 +30,11 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
     }
-    isLoadingResults = false;
-
-    invoices: Invoice[] = [];
 
     private _initInvoices() {
         this.invoiceService.getInvoices().subscribe((invoices) => {
             this.dataSource = new MatTableDataSource(invoices);
+            this.isLoadingResults = false;
         });
     }
 
