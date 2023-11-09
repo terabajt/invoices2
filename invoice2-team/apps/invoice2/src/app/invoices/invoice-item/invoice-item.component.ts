@@ -128,9 +128,20 @@ export class InvoiceItemComponent implements OnInit {
         return (this.form.get('entryItems') as FormArray).controls;
     }
     removeEntryItem(index: number) {
-        const entryItems = this.form.get('entryItems') as FormArray;
-        entryItems.removeAt(index);
-        this.updateSums();
+        const dialogRef = this._dialog.open(DialogComponent, {
+            data: {
+                message: 'Czy na pewno chcesz usunąć pozycje?'
+            }
+        });
+        dialogRef.afterClosed().subscribe((res) => {
+            if (res) {
+                const entryItems = this.form.get('entryItems') as FormArray;
+                const entryItemId = entryItems.controls[index].value.id_item;
+                if (entryItemId) this.invoiceService.deleteEntryItem(entryItemId).subscribe();
+                entryItems.removeAt(index);
+                this.updateSums();
+            }
+        });
     }
     addEntryItem() {
         const entryItems = this.form.get('entryItems') as FormArray;

@@ -32,4 +32,10 @@ export class InvoicesService {
             }
         });
     }
+    deleteEntryItem(itemId: string) {
+        return this.http.delete<EntryItem>(`${this.apiURLInvoices}/${this.apiURLItems}/${itemId}`);
+    }
+    deleteInvoice(invoiceId: string) {
+        return this.http.delete<EntryItem>(`${this.apiURLInvoices}/${invoiceId}`);
+    }
 }
