@@ -19,7 +19,11 @@ export const appRoutes: Route[] = [
                 component: InvoicesListComponent
             },
             {
-                path: 'invoices/:id',
+                path: 'invoices/form',
+                component: InvoiceItemComponent
+            },
+            {
+                path: 'invoices/form/:id',
                 component: InvoiceItemComponent
             },
             {

@@ -1,9 +1,11 @@
-<mat-spinner class="spinner" style="margin:0 auto;" *ngIf="isLoadingResults"></mat-spinner>
+<div *ngIf="isLoadingResults">
+  <mat-spinner class="spinner" style="margin:0 auto;"></mat-spinner>
+</div>
 
-<mat-card class="invoice-card">
+<mat-card class="invoice-card" *ngIf="form">
   <mat-card-header>
     <mat-card-title>Podgląd faktury</mat-card-title>
-    <mat-card-subtitle>Faktura nr: {{invoiceNumber}}</mat-card-subtitle>
+    <mat-card-subtitle *ngIf="editMode">Faktura nr: {{invoiceNumber}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions align="end">
     <button mat-raised-button color="primary" (click)="onSaveForm()" [disabled]="form.invalid">{{ editMode ? 'Zapisz' :
@@ -12,10 +14,20 @@
   </mat-card-actions>
   <mat-card-content>
 
-    <div class="form-container" *ngIf="form">
+    <div class="form-container">
       <form [formGroup]="form">
         <div class="form-fields row">
-          <mat-form-field class="col-12 col-md-6" [floatLabel]="getFloatLabelValue()">
+          <mat-form-field *ngIf="!editMode" class="col-12 col-md-2" [floatLabel]="getFloatLabelValue()">
+            <mat-label>Numer Faktury</mat-label>
+            <input formControlName="invoiceNumber" matInput placeholder="Numer faktury">
+            <mat-error>Proszę podać numer faktury.</mat-error>
+          </mat-form-field>
+          <mat-form-field *ngIf=" editMode" class="col-12 col-md-6" [floatLabel]="getFloatLabelValue()">
+            <mat-label>Klient</mat-label>
+            <input formControlName="customer" matInput placeholder="Klient">
+            <mat-error>Proszę wybrać klienta.</mat-error>
+          </mat-form-field>
+          <mat-form-field *ngIf="!editMode" class="col-12 col-md-4" [floatLabel]="getFloatLabelValue()">
             <mat-label>Klient</mat-label>
             <input formControlName="customer" matInput placeholder="Klient">
             <mat-error>Proszę wybrać klienta.</mat-error>

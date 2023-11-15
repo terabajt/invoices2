@@ -23,6 +23,9 @@ export class InvoicesService {
     updateInvoice(invoice: Invoice, invoiceId: string) {
         return this.http.put<Invoice>(`${this.apiURLInvoices}/${invoiceId}`, invoice);
     }
+    addInvoice(invoice: Invoice) {
+        return this.http.post<Invoice>(`${this.apiURLInvoices}`, invoice);
+    }
     updateEntryItem(items: EntryItem[]) {
         items.map((item) => {
             if (item._id) {
@@ -37,5 +40,9 @@ export class InvoicesService {
     }
     deleteInvoice(invoiceId: string) {
         return this.http.delete<EntryItem>(`${this.apiURLInvoices}/${invoiceId}`);
+    }
+
+    getNumberOfInvoices() {
+        return this.http.get<{ invoicesCount: number }>(`${this.apiURLInvoices}/get/invoicesNumber`);
     }
 }

@@ -32,15 +32,15 @@ router.get('/:id', async (req, res) => {
 });
 router.post('/', async (req, res) => {
 	try {
-		// Creating new EntryItems i feedback it's ids
+		// // Creating new EntryItems i feedback it's ids
 		const entryItemsIds = await Promise.all(
 			req.body.entryItem.map(async entryItem => {
 				let newEntryItem = new EntryItem({
-					name: entryItem.name,
-					quantity: entryItem.quantity,
-					tax: entryItem.tax,
-					netAmount: entryItem.netAmount,
-					gross: entryItem.gross,
+					nameEntry: entryItem.nameEntry,
+					quantityEntry: entryItem.quantityEntry,
+					taxEntry: entryItem.taxEntry,
+					netAmountEntry: entryItem.netAmountEntry,
+					grossEntry: entryItem.grossEntry,
 				});
 				newEntryItem = await newEntryItem.save();
 				return newEntryItem._id;
@@ -170,6 +170,17 @@ router.delete('/:id', (req, res) => {
 		.catch(err => {
 			return res.status(400).json({ success: false, error: err });
 		});
+});
+
+router.get('/get/invoicesNumber', async (req, res) => {
+	const invoicesCount = await Invoice.countDocuments();
+
+	if (!invoicesCount) {
+		res.status(500).json({ success: false });
+	}
+	res.send({
+		invoicesCount: invoicesCount,
+	});
 });
 
 module.exports = router;

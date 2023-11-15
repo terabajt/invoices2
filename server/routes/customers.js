@@ -31,6 +31,7 @@ router.post('/', async (req, res) => {
 		email: req.body.email,
 		phone: req.body.phone,
 		city: req.body.city,
+		user: req.body.user,
 	});
 	customer = await customer.save();
 

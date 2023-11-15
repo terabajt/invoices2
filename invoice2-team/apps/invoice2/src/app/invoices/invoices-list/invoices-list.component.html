@@ -4,6 +4,10 @@
     <mat-card-title>Faktury</mat-card-title>
     <mat-card-subtitle>Lista wszystkich faktur: <br /></mat-card-subtitle>
   </mat-card-header>
+  <mat-card-actions align="end">
+    <button class="invoices-card-addbutton" mat-raised-button color="primary" routerLink="/invoices/form/">Dodaj
+      Fakturę</button>
+  </mat-card-actions>
   <mat-card-content>
     <div class="mat-elevation-z8">
 
@@ -38,7 +42,7 @@
         <ng-container matColumnDef="more">
           <th mat-header-cell *matHeaderCellDef aria-label="row actions">Więcej</th>
           <td mat-cell *matCellDef="let invoice">
-            <button mat-icon-button [routerLink]="['/invoices/'+ invoice.id]">
+            <button mat-icon-button [routerLink]="['/invoices/form/'+ invoice.id]">
               <mat-icon color="primary">more</mat-icon>
             </button>
           </td>

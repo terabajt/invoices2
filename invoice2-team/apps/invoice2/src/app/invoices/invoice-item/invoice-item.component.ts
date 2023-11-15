@@ -8,6 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
     selector: 'invoice2-team-invoice-item',
@@ -24,6 +25,9 @@ export class InvoiceItemComponent implements OnInit {
     invoiceId!: string;
     netAmountSum = 0;
     grossSum = 0;
+    currYear = new Date().getFullYear();
+    invoicesCount = new BehaviorSubject<number>(0);
+    user = '653b983bd205a74cb5491fa5';
 
     constructor(
         private formBuilder: FormBuilder,
@@ -43,6 +47,10 @@ export class InvoiceItemComponent implements OnInit {
     ngOnInit(): void {
         this.isLoadingResults = true;
         this._invoiceInit();
+        this.invoiceService.getNumberOfInvoices().subscribe((response) => {
+            const invoicesCount = response.invoicesCount;
+            this.invoicesCount.next(invoicesCount);
+        });
     }
     private _invoiceInit() {
         this.route.params.pipe().subscribe((params) => {
@@ -50,7 +58,6 @@ export class InvoiceItemComponent implements OnInit {
                 this.invoiceService.getInvoice(params['id']).subscribe((invoice) => {
                     if (invoice.invoiceNumber) this.invoiceNumber = invoice.invoiceNumber;
                     this.invoiceId = params['id'];
-
                     if (invoice.entryItem) {
                         const entryItemsArray = this.formBuilder.array(
                             invoice.entryItem.map((item: EntryItem) => {
@@ -110,10 +117,27 @@ export class InvoiceItemComponent implements OnInit {
                         this.updateGrossEntry(this.form);
                     } else {
                         this.editMode = false;
+                        this.isLoadingResults = false;
                     }
                 });
             } else {
                 this.editMode = false;
+                this.isLoadingResults = false;
+
+                this.invoiceService.getNumberOfInvoices().subscribe((response) => {
+                    const invoicesCount = response.invoicesCount + 1 || 0; // Dodaj domyślną wartość, jeśli nie ma liczby faktur
+                    const invoiceNumber = `FV/${invoicesCount}/${this.currYear}`;
+
+                    this.form = this.formBuilder.group({
+                        invoiceNumber: [invoiceNumber, [Validators.required, Validators.pattern(/^FV/)]],
+                        invoiceDate: [new Date(), Validators.required],
+                        dueDate: [new Date(), Validators.required],
+                        customer: ['', Validators.required],
+                        entryItems: this.formBuilder.array([]),
+                        netAmountSum: [0, Validators.required],
+                        grossSum: [0, Validators.required]
+                    });
+                });
             }
         });
     }
@@ -195,9 +219,8 @@ export class InvoiceItemComponent implements OnInit {
     }
     onSaveForm() {
         if (this.form.invalid) {
-            return console.log('invalid');
+            return this._toast.open(`Faktura nie jest wypełniona prawidłowo`);
         }
-
         if (this.editMode) {
             const formData = this.form.value;
             const newInvoice: Invoice = {
@@ -211,7 +234,6 @@ export class InvoiceItemComponent implements OnInit {
                 grossSum: formData.grossSum
             };
             const newEntryItems: EntryItem[] = [];
-
             this.entryItemsArray.controls.map((item) => {
                 const entryItem = {
                     nameEntry: item.value.nameEntry,
@@ -224,11 +246,30 @@ export class InvoiceItemComponent implements OnInit {
                 };
                 newEntryItems.push(entryItem);
             });
-
             this._updateInvoice(newInvoice);
             this._updateItems(newEntryItems);
+            return;
         } else {
-            console.log('add new invoice');
+            const formData = this.form.getRawValue();
+            const newInvoice: Invoice = {
+                invoiceNumber: formData.invoiceNumber,
+                invoiceDate: formData.invoiceDate,
+                dueDate: formData.dueDate,
+                customer: formData.customer,
+                entryItem: formData.entryItems.map((item: EntryItem) => {
+                    return {
+                        nameEntry: item.nameEntry,
+                        quantityEntry: item.quantityEntry,
+                        taxEntry: item.taxEntry,
+                        netAmountEntry: item.netAmountEntry || 0,
+                        grossEntry: item.grossEntry || 0
+                    };
+                }),
+                user: formData.user,
+                netAmountSum: formData.netAmountSum,
+                grossSum: formData.grossSum
+            };
+            return this._addInvoice(newInvoice);
         }
     }
     private _updateInvoice(invoice: Invoice) {
@@ -240,6 +281,19 @@ export class InvoiceItemComponent implements OnInit {
             });
     }
     private _updateItems(newEntryItems: EntryItem[]) {
+        this.invoiceService.updateEntryItem(newEntryItems);
+    }
+    private _addInvoice(invoice: Invoice) {
+        this.invoiceService.addInvoice(invoice).subscribe(
+            (invoice: Invoice) => {
+                this._toast.open(`Pomyślnie zapisano fakturę ${invoice.invoiceNumber}`);
+            },
+            (error) => {
+                this._toast.open(`Błąd wewnętrzny ${error}`);
+            }
+        );
+    }
+    private _addItems(newEntryItems: EntryItem[]) {
         this.invoiceService.updateEntryItem(newEntryItems);
     }
     showDialog(): void {
