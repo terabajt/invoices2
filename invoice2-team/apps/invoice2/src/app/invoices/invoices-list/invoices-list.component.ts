@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Invoice, InvoicesService } from '@invoice2-team/invoices';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'invoice2-team-invoices-list',
@@ -19,7 +20,7 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
     isLoadingResults = true;
     invoices: Invoice[] = [];
 
-    constructor(private invoiceService: InvoicesService, private _dialog: MatDialog) {}
+    constructor(private invoiceService: InvoicesService, private _dialog: MatDialog, private _toast: MatSnackBar) {}
 
     ngOnInit() {
         this.paginator._intl.itemsPerPageLabel = 'Ilość faktur na stronie';
@@ -41,7 +42,7 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
     displayedColumns: string[] = ['invoiceNumber', 'invoiceDate', 'dueDate', 'customer', 'netAmountSum', 'grossSum', 'more', 'delete'];
     dataSource = new MatTableDataSource(this.invoices);
 
-    onDeleteInvoice(element: any) {
+    onDeleteInvoice(invoiceID: string) {
         const dialogRef = this._dialog.open(DialogComponent, {
             data: {
                 message: 'Czy na pewno chcesz usunąć fakturę?'
@@ -49,7 +50,15 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
         });
         dialogRef.afterClosed().subscribe((res) => {
             if (res) {
-                console.log('Usunięto');
+                this.invoiceService.deleteInvoice(invoiceID).subscribe(
+                    () => {
+                        this._toast.open(`Pomyślnie usnięto fakturę.`);
+                        this._initInvoices();
+                    },
+                    (err) => {
+                        this._toast.open(`Wystąpił błąd podczas usówania faktury: ${err}`);
+                    }
+                );
             }
         });
     }

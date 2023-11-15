@@ -39,9 +39,9 @@ export class InvoicesService {
         return this.http.delete<EntryItem>(`${this.apiURLInvoices}/${this.apiURLItems}/${itemId}`);
     }
     deleteInvoice(invoiceId: string) {
-        return this.http.delete<EntryItem>(`${this.apiURLInvoices}/${invoiceId}`);
+        console.log('Removed', invoiceId);
+        return this.http.delete<Invoice>(`${this.apiURLInvoices}/${invoiceId}`);
     }
-
     getNumberOfInvoices() {
         return this.http.get<{ invoicesCount: number }>(`${this.apiURLInvoices}/get/invoicesNumber`);
     }

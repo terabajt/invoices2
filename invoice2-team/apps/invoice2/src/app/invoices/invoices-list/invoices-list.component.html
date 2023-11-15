@@ -49,8 +49,8 @@
         </ng-container>
         <ng-container matColumnDef="delete">
           <th mat-header-cell *matHeaderCellDef aria-label="row actions">Usuń</th>
-          <td mat-cell *matCellDef="let element">
-            <button (click)="onDeleteInvoice(element)" mat-icon-button>
+          <td mat-cell *matCellDef="let invoice">
+            <button (click)="onDeleteInvoice(invoice._id)" mat-icon-button>
               <mat-icon color="warn">delete</mat-icon>
             </button>
           </td>
