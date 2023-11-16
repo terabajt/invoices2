@@ -24,7 +24,9 @@
           </mat-form-field>
           <mat-form-field *ngIf=" editMode" class="col-12 col-md-6" [floatLabel]="getFloatLabelValue()">
             <mat-label>Klient</mat-label>
-            <input formControlName="customer" matInput placeholder="Klient">
+            <mat-select formControlName="customer" name="customer">
+              <mat-option *ngFor="let customer of customersName" [value]="customer.id">{{ customer.name }}</mat-option>
+            </mat-select>
             <mat-error>Proszę wybrać klienta.</mat-error>
           </mat-form-field>
           <mat-form-field *ngIf="!editMode" class="col-12 col-md-4" [floatLabel]="getFloatLabelValue()">

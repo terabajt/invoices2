@@ -80,7 +80,17 @@ const MATERIAL_MODULE = [
 registerLocaleData(localePl);
 
 @NgModule({
-    declarations: [AppComponent, DashboardComponent, ShellComponent, SidebarComponent, InvoicesListComponent, InvoiceItemComponent, DialogComponent, CustomersListComponent, CustomerItemComponent],
+    declarations: [
+        AppComponent,
+        DashboardComponent,
+        ShellComponent,
+        SidebarComponent,
+        InvoicesListComponent,
+        InvoiceItemComponent,
+        DialogComponent,
+        CustomersListComponent,
+        CustomerItemComponent
+    ],
     imports: [
         InvoicesModule,
         HttpClientModule,

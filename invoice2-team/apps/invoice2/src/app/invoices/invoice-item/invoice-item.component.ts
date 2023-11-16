@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EntryItem, Invoice, InvoicesService } from '@invoice2-team/invoices';
+import { CustomerName, CustomerService, EntryItem, Invoice, InvoicesService } from '@invoice2-team/invoices';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -28,6 +28,7 @@ export class InvoiceItemComponent implements OnInit {
     currYear = new Date().getFullYear();
     invoicesCount = new BehaviorSubject<number>(0);
     currentUserId = '653b983bd205a74cb5491fa5';
+    customersName: CustomerName[] = [];
 
     constructor(
         private formBuilder: FormBuilder,
@@ -37,7 +38,8 @@ export class InvoiceItemComponent implements OnInit {
         private sanitizer: DomSanitizer,
         private _toast: MatSnackBar,
         private _dialog: MatDialog,
-        private router: Router
+        private router: Router,
+        private customerService: CustomerService
     ) {
         this.iconRegistry.addSvgIcon('delete', this.sanitizer.bypassSecurityTrustResourceUrl('assets/delete.svg'));
     }
@@ -46,6 +48,7 @@ export class InvoiceItemComponent implements OnInit {
     }
     ngOnInit(): void {
         this.isLoadingResults = true;
+        this._initCustomersName();
         this._invoiceInit();
         this.invoiceService.getNumberOfInvoices().subscribe((response) => {
             const invoicesCount = response.invoicesCount;
@@ -58,7 +61,6 @@ export class InvoiceItemComponent implements OnInit {
                 this.invoiceService.getInvoice(params['id']).subscribe((invoice) => {
                     if (invoice.invoiceNumber) this.invoiceNumber = invoice.invoiceNumber;
                     this.invoiceId = params['id'];
-
                     if (invoice.entryItem) {
                         const entryItemsArray = this.formBuilder.array(
                             invoice.entryItem.map((item: EntryItem) => {
@@ -133,13 +135,21 @@ export class InvoiceItemComponent implements OnInit {
                         invoiceNumber: [invoiceNumber, [Validators.required, Validators.pattern(/^FV/)]],
                         invoiceDate: [new Date(), Validators.required],
                         dueDate: [new Date(), Validators.required],
-                        customer: ['', Validators.required],
+                        customer: [this.customersName, Validators.required],
                         entryItems: this.formBuilder.array([]),
                         netAmountSum: [0, Validators.required],
                         grossSum: [0, Validators.required]
                     });
                 });
             }
+        });
+    }
+
+    private _initCustomersName() {
+        this.customerService.getCustomers(this.currentUserId).subscribe((customer) => {
+            customer.map((item) => {
+                this.customersName.push({ id: item._id, name: item.name });
+            });
         });
     }
     isEntryItemsFormArrayNotEmpty(): boolean {

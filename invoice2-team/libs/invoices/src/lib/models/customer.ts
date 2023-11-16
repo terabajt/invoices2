@@ -10,3 +10,7 @@ export class Customer {
     city?: string;
     userId?: string;
 }
+export class CustomerName {
+    id?: string;
+    name?: string;
+}
