@@ -19,6 +19,7 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
     sort!: MatSort;
     isLoadingResults = true;
     invoices: Invoice[] = [];
+    currentUserId = '653b983bd205a74cb5491fa5';
 
     constructor(private invoiceService: InvoicesService, private _dialog: MatDialog, private _toast: MatSnackBar) {}
 
@@ -33,7 +34,7 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
     }
 
     private _initInvoices() {
-        this.invoiceService.getInvoices().subscribe((invoices) => {
+        this.invoiceService.getInvoices(this.currentUserId).subscribe((invoices) => {
             this.dataSource = new MatTableDataSource(invoices);
             this.isLoadingResults = false;
         });

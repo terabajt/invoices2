@@ -27,7 +27,7 @@ export class InvoiceItemComponent implements OnInit {
     grossSum = 0;
     currYear = new Date().getFullYear();
     invoicesCount = new BehaviorSubject<number>(0);
-    user = '653b983bd205a74cb5491fa5';
+    currentUserId = '653b983bd205a74cb5491fa5';
 
     constructor(
         private formBuilder: FormBuilder,
@@ -58,6 +58,7 @@ export class InvoiceItemComponent implements OnInit {
                 this.invoiceService.getInvoice(params['id']).subscribe((invoice) => {
                     if (invoice.invoiceNumber) this.invoiceNumber = invoice.invoiceNumber;
                     this.invoiceId = params['id'];
+
                     if (invoice.entryItem) {
                         const entryItemsArray = this.formBuilder.array(
                             invoice.entryItem.map((item: EntryItem) => {
@@ -229,7 +230,7 @@ export class InvoiceItemComponent implements OnInit {
                 dueDate: formData.dueDate,
                 customer: formData.customer,
                 entryItem: formData.entryItem,
-                user: formData.user,
+                user: this.currentUserId,
                 netAmountSum: formData.netAmountSum,
                 grossSum: formData.grossSum
             };
@@ -265,7 +266,7 @@ export class InvoiceItemComponent implements OnInit {
                         grossEntry: item.grossEntry || 0
                     };
                 }),
-                user: formData.user,
+                user: this.currentUserId,
                 netAmountSum: formData.netAmountSum,
                 grossSum: formData.grossSum
             };
@@ -277,7 +278,8 @@ export class InvoiceItemComponent implements OnInit {
             .updateInvoice(invoice, this.invoiceId)
             .pipe()
             .subscribe((invoice: Invoice) => {
-                this._toast.open(`Pomyślnie zapisano fakturę ${invoice.invoiceNumber}`);
+                this._toast.open(`Pomyślnie zaktualizowano fakturę ${invoice.invoiceNumber}`);
+                this.router.navigate(['/invoices/']);
             });
     }
     private _updateItems(newEntryItems: EntryItem[]) {
@@ -287,6 +289,7 @@ export class InvoiceItemComponent implements OnInit {
         this.invoiceService.addInvoice(invoice).subscribe(
             (invoice: Invoice) => {
                 this._toast.open(`Pomyślnie zapisano fakturę ${invoice.invoiceNumber}`);
+                this.router.navigate(['/invoices/']);
             },
             (error) => {
                 this._toast.open(`Błąd wewnętrzny ${error}`);

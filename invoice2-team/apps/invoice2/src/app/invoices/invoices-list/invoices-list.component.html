@@ -11,6 +11,8 @@
   <mat-card-content>
     <div class="mat-elevation-z8">
 
+
+
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort matSortActive="invoiceNumber"
         matSortDisableClear matSortDirection="desc">
 
@@ -57,12 +59,16 @@
         </ng-container>
 
 
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
       <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Faktur na stronie">
       </mat-paginator>
-
+      <div *ngIf="invoices" class="p-4 ">Nie masz jeszcze faktur w systemie. Dodaj fakturę korzystając z
+        przycisku
+        "Dodaj Fakturę".
+      </div>
 
     </div>
 

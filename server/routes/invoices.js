@@ -8,8 +8,20 @@ const router = express.Router();
 
 //localhost:3000/api/v1/invoices
 
-router.get('/', async (req, res) => {
-	const invoiceList = await Invoice.find()
+// router.get('/', async (req, res) => {
+// 	const invoiceList = await Invoice.find()
+// 		.populate('entryItem', 'user')
+// 		.populate({ path: 'entryItem' })
+// 		.populate('customer')
+// 		.sort({ invoiceDate: -1 });
+// 	if (!invoiceList) {
+// 		res.status(500).json({ success: false });
+// 	}
+// 	res.send(invoiceList);
+// });
+
+router.get('/foruser/:userID', async (req, res) => {
+	const invoiceList = await Invoice.find({ user: req.params.userID })
 		.populate('entryItem', 'user')
 		.populate({ path: 'entryItem' })
 		.populate('customer')

@@ -13,8 +13,8 @@ export class InvoicesService {
     apiURLItems = 'entryitem';
 
     constructor(private http: HttpClient) {}
-    getInvoices(): Observable<Invoice[]> {
-        return this.http.get<Invoice[]>(`${this.apiURLInvoices}`);
+    getInvoices(userId: string): Observable<Invoice[]> {
+        return this.http.get<Invoice[]>(`${this.apiURLInvoices}/foruser/${userId}`);
     }
 
     getInvoice(invoiceId: string): Observable<Invoice> {

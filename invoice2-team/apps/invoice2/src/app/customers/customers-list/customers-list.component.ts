@@ -18,6 +18,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
     @ViewChild(MatSort)
     sort!: MatSort;
     customers: Customer[] = [];
+    currentUserId = '653b983bd205a74cb5491fa5';
 
     constructor(private customerService: CustomerService, private _dialog: MatDialog, private _toast: MatSnackBar) {}
 
@@ -31,7 +32,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
     }
 
     private _initCustomers() {
-        this.customerService.getCustomers().subscribe((invoices) => {
+        this.customerService.getCustomers(this.currentUserId).subscribe((invoices) => {
             this.dataSource = new MatTableDataSource(invoices);
         });
     }

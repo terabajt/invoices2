@@ -5,13 +5,13 @@ const router = express.Router();
 
 //localhost:3000/api/v1/customers
 
-router.get('/', async (req, res) => {
-	const customerList = await Customer.find().sort({ name: -1 });
-	if (!customerList) {
-		res.status(500).json({ success: false });
-	}
-	res.send(customerList);
-});
+// router.get('/', async (req, res) => {
+// 	const customerList = await Customer.find().sort({ name: -1 });
+// 	if (!customerList) {
+// 		res.status(500).json({ success: false });
+// 	}
+// 	res.send(customerList);
+// });
 
 router.get('/:id', async (req, res) => {
 	const customer = await Customer.findById(req.params.id);
@@ -19,6 +19,14 @@ router.get('/:id', async (req, res) => {
 		res.status(500).json({ success: false });
 	}
 	res.send(customer);
+});
+
+router.get('/foruser/:userId', async (req, res) => {
+	const customerList = await Customer.find({ user: req.params.userId }).sort({ name: -1 });
+	if (!customerList) {
+		res.status(500).json({ success: false });
+	}
+	res.send(customerList);
 });
 
 router.post('/', async (req, res) => {
@@ -31,7 +39,7 @@ router.post('/', async (req, res) => {
 		email: req.body.email,
 		phone: req.body.phone,
 		city: req.body.city,
-		user: req.body.user,
+		user: req.body.userId,
 	});
 	customer = await customer.save();
 

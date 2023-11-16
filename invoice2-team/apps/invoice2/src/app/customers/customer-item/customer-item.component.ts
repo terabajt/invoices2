@@ -111,10 +111,11 @@ export class CustomerItemComponent implements OnInit {
             };
             this.customerService.addCustomer(newCustomer).subscribe(
                 () => {
-                    this._toast.open(`Dane klienta zostały zaktualizowane.`);
+                    this._toast.open(`Nowy klient został dodany.`);
+                    this.router.navigate(['/customers']);
                 },
-                (err) => {
-                    this._toast.open('Wystąpił błąd podczas aktualizacji danych klienta: ', err);
+                () => {
+                    this._toast.open('Wystąpił błąd podczas dodawania klienta: ');
                 }
             );
         }
