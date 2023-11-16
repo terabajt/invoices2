@@ -39,6 +39,7 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarConfig, MatSnackBarModule } f
 import { MatDialogConfig, MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { DialogComponent } from './shared/dialog/dialog.component';
 import { CustomersListComponent } from './customers/customers-list/customers-list.component';
+import { CustomerItemComponent } from './customers/customer-item/customer-item.component';
 
 const MAT_DIALOG_GLOBAL_CONFIG: MatDialogConfig = {
     width: '700px',
@@ -79,7 +80,7 @@ const MATERIAL_MODULE = [
 registerLocaleData(localePl);
 
 @NgModule({
-    declarations: [AppComponent, DashboardComponent, ShellComponent, SidebarComponent, InvoicesListComponent, InvoiceItemComponent, DialogComponent, CustomersListComponent],
+    declarations: [AppComponent, DashboardComponent, ShellComponent, SidebarComponent, InvoicesListComponent, InvoiceItemComponent, DialogComponent, CustomersListComponent, CustomerItemComponent],
     imports: [
         InvoicesModule,
         HttpClientModule,

@@ -4,6 +4,7 @@ import { ShellComponent } from './shared/shell/shell.component';
 import { InvoicesListComponent } from './invoices/invoices-list/invoices-list.component';
 import { InvoiceItemComponent } from './invoices/invoice-item/invoice-item.component';
 import { CustomersListComponent } from './customers/customers-list/customers-list.component';
+import { CustomerItemComponent } from './customers/customer-item/customer-item.component';
 
 export const appRoutes: Route[] = [
     {
@@ -29,6 +30,14 @@ export const appRoutes: Route[] = [
             {
                 path: 'customers',
                 component: CustomersListComponent
+            },
+            {
+                path: 'customers/form/:id',
+                component: CustomerItemComponent
+            },
+            {
+                path: 'customers/form',
+                component: CustomerItemComponent
             }
         ]
     }

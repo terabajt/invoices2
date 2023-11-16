@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Customer, CustomerService } from '@invoice2-team/invoices';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'invoice2-team-customers-list',
@@ -18,7 +19,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
     sort!: MatSort;
     customers: Customer[] = [];
 
-    constructor(private customerService: CustomerService, private _dialog: MatDialog) {}
+    constructor(private customerService: CustomerService, private _dialog: MatDialog, private _toast: MatSnackBar) {}
 
     ngOnInit(): void {
         this.paginator._intl.itemsPerPageLabel = 'Ilość faktur na stronie';
@@ -38,7 +39,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
     displayedColumns: string[] = ['name', 'taxNumber', 'email', 'phone', 'city', 'more', 'delete'];
     dataSource = new MatTableDataSource(this.customers);
 
-    onDeleteInvoice(element: any) {
+    onDeleteCustomer(customerId: string) {
         const dialogRef = this._dialog.open(DialogComponent, {
             data: {
                 message: 'Czy na pewno chcesz usunąć kontrahenta?'
@@ -46,7 +47,15 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
         });
         dialogRef.afterClosed().subscribe((res) => {
             if (res) {
-                console.log('Usunięto', element);
+                this.customerService.deleteCustomer(customerId).subscribe(
+                    () => {
+                        this._toast.open(`Klient został usunięty.`);
+                        this._initCustomers();
+                    },
+                    (err) => {
+                        this._toast.open('Błąd podczas usuwania klienta: ', err);
+                    }
+                );
             }
         });
     }

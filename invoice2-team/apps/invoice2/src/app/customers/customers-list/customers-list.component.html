@@ -3,6 +3,10 @@
     <mat-card-title>Klienci</mat-card-title>
     <mat-card-subtitle>Lista wszystkich kontrahentów: <br /></mat-card-subtitle>
   </mat-card-header>
+  <mat-card-actions align="end">
+    <button class="invoices-card-addbutton" mat-raised-button color="primary" routerLink="/customers/form/">Dodaj
+      Klienta</button>
+  </mat-card-actions>
   <mat-card-content>
     <div class="mat-elevation-z8">
 
@@ -42,7 +46,7 @@
         <ng-container matColumnDef="delete">
           <th mat-header-cell *matHeaderCellDef aria-label="row actions">Usuń</th>
           <td mat-cell *matCellDef="let element">
-            <button (click)="onDeleteInvoice(element)" mat-icon-button>
+            <button (click)="onDeleteCustomer(element._id)" mat-icon-button>
               <mat-icon color="warn">delete</mat-icon>
             </button>
           </td>

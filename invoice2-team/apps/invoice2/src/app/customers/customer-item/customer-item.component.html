@@ -1,0 +1,67 @@
+<div *ngIf="isLoadingResults">
+  <mat-spinner class="spinner" style="margin:0 auto;"></mat-spinner>
+</div>
+
+<mat-card class="invoice-card" *ngIf="form">
+  <mat-card-header>
+    <mat-card-title>Klient</mat-card-title>
+    <mat-card-subtitle *ngIf="editMode">Edytujesz klienta: {{clientName}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions align="end">
+    <button mat-raised-button color="primary" (click)="onSaveForm()" [disabled]="form.invalid">{{ editMode ? 'Zapisz' :
+      'Dodaj' }}</button>
+    <button mat-raised-button color="warn" (click)="onCancel()">Anuluj</button>
+  </mat-card-actions>
+  <mat-card-content>
+
+    <div class="form-container">
+      <form [formGroup]="form">
+        <div class="form-fields row">
+          <mat-form-field class="col-12 col-md-6" [floatLabel]="getFloatLabelValue()">
+            <mat-label>Nazwa firmy</mat-label>
+            <input formControlName="name" matInput placeholder="Nazwa firmy">
+            <mat-error>Proszę podać nazwę firmy.</mat-error>
+          </mat-form-field>
+          <mat-form-field class="col-12 col-md-3" [floatLabel]="getFloatLabelValue()">
+            <mat-label>Numer NIP</mat-label>
+            <input formControlName="taxNumber" matInput placeholder="Numer NIP">
+            <mat-error>Proszę podać numer NIP</mat-error>
+          </mat-form-field>
+          <mat-form-field class="col-12 col-md-3" [floatLabel]="getFloatLabelValue()">
+            <mat-label>E-mail</mat-label>
+            <input formControlName="email" matInput placeholder="E-mail">
+            <mat-error>Podaj adres e-mail klienta.</mat-error>
+
+          </mat-form-field>
+          <mat-form-field class="col-12 col-md-4" [floatLabel]="getFloatLabelValue()">
+            <mat-label>Adres 1</mat-label>
+            <input formControlName="address1" matInput placeholder="Adres 1">
+            <mat-error>Podaj adres klienta.</mat-error>
+          </mat-form-field>
+          <mat-form-field class="col-12 col-md-4" [floatLabel]="getFloatLabelValue()">
+            <mat-label>Adres cd..</mat-label>
+            <input formControlName="address2" matInput placeholder="Adres 1">
+          </mat-form-field>
+          <mat-form-field class="col-12 col-md-4" [floatLabel]="getFloatLabelValue()">
+            <mat-label>Kod pocztowy</mat-label>
+            <input formControlName="zip" matInput placeholder="Kod pocztowy">
+            <mat-error>Podaj kod pocztowy kllienta.</mat-error>
+          </mat-form-field>
+          <mat-form-field class="col-12 col-md-4" [floatLabel]="getFloatLabelValue()">
+            <mat-label>Miejscowość</mat-label>
+            <input formControlName="city" matInput placeholder="Miejscowość">
+            <mat-error>Podaj nazwę miejscowości klienta.</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="col-12 col-md-4" [floatLabel]="getFloatLabelValue()">
+            <mat-label>Telefon</mat-label>
+            <input formControlName="phone" matInput placeholder="Telefon">
+            <mat-error>Podaj numer telefonu do klienta.</mat-error>
+          </mat-form-field>
+        </div>
+      </form>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+  </mat-card-actions>
+</mat-card>
