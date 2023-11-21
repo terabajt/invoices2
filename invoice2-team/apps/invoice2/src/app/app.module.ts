@@ -34,13 +34,13 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { InvoicesModule } from '@invoice2-team/invoices';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarConfig, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogConfig, MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { DialogComponent } from './shared/dialog/dialog.component';
 import { CustomersListComponent } from './customers/customers-list/customers-list.component';
 import { CustomerItemComponent } from './customers/customer-item/customer-item.component';
-import { UsersModule } from '@invoice2-team/users';
+import { JwtInterceptor, UsersModule } from '@invoice2-team/users';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
@@ -111,6 +111,7 @@ registerLocaleData(localePl);
     ],
     providers: [
         { provide: LOCALE_ID, useValue: 'pl-PL' },
+        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: DEFAULT_CURRENCY_CODE, useValue: 'PLN' },
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: MAT_DIALOG_GLOBAL_CONFIG },
         { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: MAT_SNACK_BAR_GLOBAL_CONFIG }
