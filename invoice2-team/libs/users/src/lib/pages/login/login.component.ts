@@ -6,6 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { LocalstorageService } from '../../services/localstorage.services';
 import { FloatLabelType } from '@angular/material/form-field';
+import { UsersService } from '../../services/users.service';
 
 @Component({
     selector: 'invoice2-team-login',
@@ -19,7 +20,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     authError = false;
     errorMessage = 'E-mail albo hasło jest nieprawidłowe';
 
-    constructor(private formBuilder: FormBuilder, private auth: AuthService, private localstorageService: LocalstorageService, private router: Router) {}
+    constructor(
+        private formBuilder: FormBuilder,
+        private auth: AuthService,
+        private localstorageService: LocalstorageService,
+        private router: Router,
+        private usersService: UsersService
+    ) {}
 
     ngOnInit(): void {
         this._initLoginForms();
@@ -61,5 +68,24 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     ngOnDestroy(): void {
         this.endsubs$.complete();
+    }
+    onRegister() {
+        const loginData = {
+            email: this.loginForm['email'].value,
+            password: this.loginForm['password'].value
+        };
+        this.usersService.createUser(loginData).subscribe(
+            (user) => {
+                this.authError = false;
+                if (user.token) this.localstorageService.setToken(user.token);
+                this.router.navigate(['/']);
+            },
+            (error: HttpErrorResponse) => {
+                this.authError = true;
+                if (error.status == 400) {
+                    this.errorMessage = `Wystąpił błąd: ${error.error}`;
+                }
+            }
+        );
     }
 }

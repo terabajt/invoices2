@@ -25,7 +25,7 @@ export class UsersService {
         return this.http.get<User>(`${this.apiURLUsers}/${userId}`);
     }
     createUser(user: User): Observable<User> {
-        return this.http.post<User>(`${this.apiURLUsers}`, user);
+        return this.http.post<User>(`${this.apiURLUsers}/register`, user);
     }
     deleteUser(userId: string) {
         return this.http.delete(`${this.apiURLUsers}/${userId}`);

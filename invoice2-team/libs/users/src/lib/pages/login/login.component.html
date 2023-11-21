@@ -18,9 +18,13 @@
           <mat-error>Proszę podać hasło.</mat-error>
         </mat-form-field>
       </div>
-      <div class="form-fields row">
+      <div class="form-fields row m-1">
         <button mat-raised-button color="primary" [disabled]="loginFormGroup.invalid"
           (click)="onSubmit()">Login</button>
+      </div>
+      <div class="form-fields row m-1 mt-3">
+        <button mat-raised-button color="warn" [disabled]="loginFormGroup.invalid" (click)="onRegister()">Zarejestruj
+          nowe konto</button>
       </div>
     </form>
   </mat-card-content>

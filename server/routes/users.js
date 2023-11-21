@@ -34,6 +34,32 @@ router.get('/:id', async (req, res) => {
 	res.status(200).send(user);
 });
 
+router.post('/register', async (req, res) => {
+	try {
+		const existingUser = await User.findOne({ email: req.body.email });
+		if (existingUser) {
+			return res.status(400).send('User already exists');
+		}
+
+		const user = new User({
+			email: req.body.email,
+			name: req.body.email,
+			passwordHash: bcrypt.hashSync(req.body.password, 10),
+		});
+
+		const savedUser = await user.save();
+
+		if (!savedUser) {
+			return res.status(400).send('The user cannot be created.');
+		}
+
+		res.send(savedUser);
+	} catch (error) {
+		console.error(error);
+		res.status(500).send('Internal Server Error');
+	}
+});
+
 router.post('/', async (req, res) => {
 	let user = new User({
 		email: req.body.email,
