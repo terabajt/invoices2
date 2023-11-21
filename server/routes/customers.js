@@ -16,15 +16,18 @@ const router = express.Router();
 router.get('/:id', async (req, res) => {
 	const customer = await Customer.findById(req.params.id);
 	if (!customer) {
-		res.status(500).json({ success: false });
+		res.status(400).json({ success: false });
 	}
 	res.send(customer);
 });
 
 router.get('/foruser/:userId', async (req, res) => {
+	if (!req.params.userId) {
+		return res.status(400).json({ success: false });
+	}
 	const customerList = await Customer.find({ user: req.params.userId }).sort({ name: -1 });
 	if (!customerList) {
-		res.status(500).json({ success: false });
+		res.status(400).json({ success: false });
 	}
 	res.send(customerList);
 });

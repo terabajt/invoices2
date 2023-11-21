@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild, signal } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -6,6 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Invoice, InvoicesService } from '@invoice2-team/invoices';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UsersService } from '@invoice2-team/users';
+
 
 @Component({
     selector: 'invoice2-team-invoices-list',
@@ -19,13 +21,19 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
     sort!: MatSort;
     isLoadingResults = true;
     invoices: Invoice[] = [];
-    currentUserId = '653b983bd205a74cb5491fa5';
+    currentUserId = '';
 
-    constructor(private invoiceService: InvoicesService, private _dialog: MatDialog, private _toast: MatSnackBar) {}
+    constructor(private invoiceService: InvoicesService, private usersService: UsersService, private _dialog: MatDialog, private _toast: MatSnackBar) {}
 
     ngOnInit() {
         this.paginator._intl.itemsPerPageLabel = 'Ilość faktur na stronie';
-        this._initInvoices();
+        this._initUser();
+    }
+    private _initUser() {
+        this.usersService.observeCurrentUser().subscribe((user) => {
+            if (user && user.id) this.currentUserId = user.id;
+            this._initInvoices();
+        });
     }
 
     ngAfterViewInit() {

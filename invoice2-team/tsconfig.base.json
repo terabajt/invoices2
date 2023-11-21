@@ -15,7 +15,8 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
-            "@invoice2-team/invoices": ["libs/invoices/src/index.ts"]
+            "@invoice2-team/invoices": ["libs/invoices/src/index.ts"],
+            "@invoice2-team/users": ["libs/users/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

@@ -3,29 +3,33 @@ const { User } = require('../models/user');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 
 //localhost:3000/api/v1/users
-
-router.get('/', async (req, res) => {
-	const userList = await User.find()
-		.populate('invoices')
-		.populate({ path: 'invoices', populate: { path: 'entryItem' } })
-		.select('-passwordHash');
-	if (!userList) {
-		res.status(500).json({ success: false });
-	}
-	res.send(userList);
-});
+// FOR TESTING ONLY!!!
+// router.get('/', async (req, res) => {
+// 	const userList = await User.find()
+// 		.populate('invoices')
+// 		.populate({ path: 'invoices', populate: { path: 'entryItem' } })
+// 		.select('-passwordHash');
+// 	if (!userList) {
+// 		res.status(400).json({ success: false });
+// 	}
+// 	res.send(userList);
+// });
 
 router.get('/:id', async (req, res) => {
-	const user = await User.findById(req.params.id)
+	const { id } = req.params;
+	if (!mongoose.Types.ObjectId.isValid(id)) {
+		return res.status(400).json({ message: 'Invalid ID format.' });
+	}
+	const user = await User.findById(id)
 		.populate('invoices')
 		.populate({ path: 'invoices', populate: { path: 'entryItem' } })
 		.populate({ path: 'invoices', populate: { path: 'customer' } })
 		.select('-passwordHash');
-
 	if (!user) {
-		return res.status(500).json({ message: 'The user with that ID was not found! Try with correct ID.' });
+		return res.status(404).json({ message: 'User not found.' });
 	}
 	res.status(200).send(user);
 });

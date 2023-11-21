@@ -6,6 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Customer, CustomerService } from '@invoice2-team/invoices';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UsersService } from '@invoice2-team/users';
+import { take } from 'rxjs';
 
 @Component({
     selector: 'invoice2-team-customers-list',
@@ -18,13 +20,22 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
     @ViewChild(MatSort)
     sort!: MatSort;
     customers: Customer[] = [];
-    currentUserId = '653b983bd205a74cb5491fa5';
+    currentUserId = '';
 
-    constructor(private customerService: CustomerService, private _dialog: MatDialog, private _toast: MatSnackBar) {}
+    constructor(private customerService: CustomerService, private _dialog: MatDialog, private _toast: MatSnackBar, private usersService: UsersService) {}
 
     ngOnInit(): void {
         this.paginator._intl.itemsPerPageLabel = 'Ilość faktur na stronie';
-        this._initCustomers();
+        this._initUser();
+    }
+
+    private _initUser() {
+        this.usersService.observeCurrentUser().subscribe((user) => {
+            if (user && user.id) {
+                this.currentUserId = user.id;
+                this._initCustomers();
+            }
+        });
     }
     ngAfterViewInit() {
         this.dataSource.sort = this.sort;

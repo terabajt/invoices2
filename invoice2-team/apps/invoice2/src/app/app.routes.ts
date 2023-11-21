@@ -5,11 +5,13 @@ import { InvoicesListComponent } from './invoices/invoices-list/invoices-list.co
 import { InvoiceItemComponent } from './invoices/invoice-item/invoice-item.component';
 import { CustomersListComponent } from './customers/customers-list/customers-list.component';
 import { CustomerItemComponent } from './customers/customer-item/customer-item.component';
+import { AuthGuard } from '@invoice2-team/users';
 
 export const appRoutes: Route[] = [
     {
         path: '',
         component: ShellComponent,
+        canActivate: [AuthGuard],
         children: [
             {
                 path: '',

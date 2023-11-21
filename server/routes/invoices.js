@@ -27,7 +27,7 @@ router.get('/foruser/:userID', async (req, res) => {
 		.populate('customer')
 		.sort({ invoiceDate: -1 });
 	if (!invoiceList) {
-		res.status(500).json({ success: false });
+		res.status(404).json({ success: false });
 	}
 	res.send(invoiceList);
 });

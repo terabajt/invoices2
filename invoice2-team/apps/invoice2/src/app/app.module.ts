@@ -40,6 +40,9 @@ import { MatDialogConfig, MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@a
 import { DialogComponent } from './shared/dialog/dialog.component';
 import { CustomersListComponent } from './customers/customers-list/customers-list.component';
 import { CustomerItemComponent } from './customers/customer-item/customer-item.component';
+import { UsersModule } from '@invoice2-team/users';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 const MAT_DIALOG_GLOBAL_CONFIG: MatDialogConfig = {
     width: '700px',
@@ -88,11 +91,15 @@ registerLocaleData(localePl);
         InvoicesListComponent,
         InvoiceItemComponent,
         DialogComponent,
+
         CustomersListComponent,
         CustomerItemComponent
     ],
     imports: [
         InvoicesModule,
+        StoreModule.forRoot({}),
+        EffectsModule.forRoot([]),
+        UsersModule,
         HttpClientModule,
         BrowserModule,
         ReactiveFormsModule,

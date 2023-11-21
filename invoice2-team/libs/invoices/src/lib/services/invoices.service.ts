@@ -16,7 +16,6 @@ export class InvoicesService {
     getInvoices(userId: string): Observable<Invoice[]> {
         return this.http.get<Invoice[]>(`${this.apiURLInvoices}/foruser/${userId}`);
     }
-
     getInvoice(invoiceId: string): Observable<Invoice> {
         return this.http.get<Invoice>(`${this.apiURLInvoices}/${invoiceId}`);
     }
@@ -39,7 +38,6 @@ export class InvoicesService {
         return this.http.delete<EntryItem>(`${this.apiURLInvoices}/${this.apiURLItems}/${itemId}`);
     }
     deleteInvoice(invoiceId: string) {
-        console.log('Removed', invoiceId);
         return this.http.delete<Invoice>(`${this.apiURLInvoices}/${invoiceId}`);
     }
     getNumberOfInvoices() {
