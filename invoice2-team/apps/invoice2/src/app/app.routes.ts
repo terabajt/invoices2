@@ -6,6 +6,7 @@ import { InvoiceItemComponent } from './invoices/invoice-item/invoice-item.compo
 import { CustomersListComponent } from './customers/customers-list/customers-list.component';
 import { CustomerItemComponent } from './customers/customer-item/customer-item.component';
 import { AuthGuard } from '@invoice2-team/users';
+import { UserItemComponent } from './user/user-item/user-item.component';
 
 export const appRoutes: Route[] = [
     {
@@ -40,6 +41,10 @@ export const appRoutes: Route[] = [
             {
                 path: 'customers/form',
                 component: CustomerItemComponent
+            },
+            {
+                path: 'user/form',
+                component: UserItemComponent
             }
         ]
     }

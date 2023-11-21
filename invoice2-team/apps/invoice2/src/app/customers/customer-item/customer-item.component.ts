@@ -3,9 +3,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Customer, CustomerService } from '@invoice2-team/invoices';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
+import { UsersService } from '@invoice2-team/users';
 
 @Component({
     selector: 'invoice2-team-customer-item',
@@ -18,7 +19,7 @@ export class CustomerItemComponent implements OnInit {
     form!: FormGroup;
     clientName = '';
     floatLabelControl = new FormControl('auto' as FloatLabelType);
-    currentUserId = '653b983bd205a74cb5491fa5';
+    currentUserId = '';
     customerId = '';
 
     constructor(
@@ -27,11 +28,19 @@ export class CustomerItemComponent implements OnInit {
         private customerService: CustomerService,
         private _toast: MatSnackBar,
         private _dialog: MatDialog,
-        private router: Router
+        private router: Router,
+        private usersService: UsersService
     ) {}
 
     ngOnInit(): void {
-        this._initCustomerForm();
+        this._initUser();
+    }
+
+    private _initUser() {
+        this.usersService.observeCurrentUser().subscribe((user) => {
+            if (user && user.id) this.currentUserId = user.id;
+            this._initCustomerForm();
+        });
     }
 
     private _initCustomerForm() {

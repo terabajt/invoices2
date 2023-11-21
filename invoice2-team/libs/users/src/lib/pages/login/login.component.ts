@@ -53,8 +53,8 @@ export class LoginComponent implements OnInit, OnDestroy {
                 },
                 (error: HttpErrorResponse) => {
                     this.authError = true;
-                    if (error.status !== 400) {
-                        this.errorMessage = 'Wystąpił błąd servera - spróbuj ponownie później.';
+                    if (error.status == 404) {
+                        this.errorMessage = `Wystąpił błąd: ${error.error}`;
                     }
                 }
             );

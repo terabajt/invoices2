@@ -51,6 +51,10 @@ const userSchema = mongoose.Schema({
 		type: String,
 		default: '',
 	},
+	country: {
+		type: String,
+		default: '',
+	},
 });
 
 userSchema.virtual('id').get(function () {

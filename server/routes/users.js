@@ -73,6 +73,8 @@ router.put('/:id', async (req, res) => {
 			isAdmin: req.body.isAdmin,
 			passwordHash: newPassword,
 			taxNumber: req.body.taxNumber,
+			accountNumber: req.body.accountNumber,
+			country: req.body.country,
 		},
 		{
 			new: true,
@@ -85,9 +87,8 @@ router.put('/:id', async (req, res) => {
 router.post('/login', async (req, res) => {
 	const user = await User.findOne({ email: req.body.email });
 	const secret = process.env.SECRET;
-
 	if (!user) {
-		return res.status(400).send('The user not found! Please check user credentials');
+		return res.status(404).send('The user not found! Please check user credentials');
 	}
 	if (user && bcrypt.compareSync(req.body.password, user.passwordHash)) {
 		const token = jwt.sign(
@@ -100,7 +101,7 @@ router.post('/login', async (req, res) => {
 		);
 		res.status(200).send({ user: user.email, token: token });
 	} else {
-		return res.status(500).send('Password is wrong');
+		return res.status(404).send('Password is wrong');
 	}
 });
 
