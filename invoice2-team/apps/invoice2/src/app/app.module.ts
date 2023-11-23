@@ -44,6 +44,7 @@ import { JwtInterceptor, UsersModule } from '@invoice2-team/users';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { UserItemComponent } from './user/user-item/user-item.component';
+import { PrintComponent } from './print/print/print.component';
 
 const MAT_DIALOG_GLOBAL_CONFIG: MatDialogConfig = {
     width: '700px',
@@ -95,7 +96,8 @@ registerLocaleData(localePl);
 
         CustomersListComponent,
         CustomerItemComponent,
-        UserItemComponent
+        UserItemComponent,
+        PrintComponent
     ],
     imports: [
         InvoicesModule,

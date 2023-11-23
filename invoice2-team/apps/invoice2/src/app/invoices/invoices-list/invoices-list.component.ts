@@ -8,7 +8,6 @@ import { DialogComponent } from '../../shared/dialog/dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UsersService } from '@invoice2-team/users';
 
-
 @Component({
     selector: 'invoice2-team-invoices-list',
     templateUrl: './invoices-list.component.html',
@@ -43,7 +42,7 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
 
     private _initInvoices() {
         this.invoiceService.getInvoices(this.currentUserId).subscribe((invoices) => {
-            this.dataSource = new MatTableDataSource(invoices);
+            this.dataSource.data = invoices;
             this.isLoadingResults = false;
         });
     }

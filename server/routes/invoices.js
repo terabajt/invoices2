@@ -21,22 +21,29 @@ const router = express.Router();
 // });
 
 router.get('/foruser/:userID', async (req, res) => {
-	const invoiceList = await Invoice.find({ user: req.params.userID })
-		.populate('entryItem', 'user')
-		.populate({ path: 'entryItem' })
-		.populate('customer')
-		.sort({ invoiceDate: -1 });
-	if (!invoiceList) {
-		res.status(404).json({ success: false });
+	try {
+		const user = await User.findOne({ _id: req.params.userID });
+		if (!user) {
+			return res.status(404).json({ success: false, message: 'User not found' });
+		}
+		const invoiceList = await Invoice.find({ user: req.params.userID })
+			.populate('entryItem', 'user')
+			.populate({ path: 'entryItem' })
+			.populate('customer')
+			.sort({ invoiceDate: -1 });
+
+		if (!invoiceList || invoiceList.length === 0) {
+			return res.status(404).json({ success: false, message: 'No invoices found for the user' });
+		}
+		res.send(invoiceList);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ success: false, message: 'Internal Server Error' });
 	}
-	res.send(invoiceList);
 });
 
 router.get('/:id', async (req, res) => {
-	const invoice = await Invoice.findById(req.params.id)
-
-		.populate('user', 'entryItem')
-		.populate({ path: 'entryItem' });
+	const invoice = await Invoice.findById(req.params.id).populate('user', 'entryItem').populate({ path: 'entryItem' });
 	if (!invoice) {
 		res.status(500).json({ success: false });
 	}

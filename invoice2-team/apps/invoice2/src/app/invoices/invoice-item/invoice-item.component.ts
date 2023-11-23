@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
 import { BehaviorSubject } from 'rxjs';
+import { UsersService } from '@invoice2-team/users';
 
 @Component({
     selector: 'invoice2-team-invoice-item',
@@ -27,7 +28,7 @@ export class InvoiceItemComponent implements OnInit {
     grossSum = 0;
     currYear = new Date().getFullYear();
     invoicesCount = new BehaviorSubject<number>(0);
-    currentUserId = '653b983bd205a74cb5491fa5';
+    currentUserId = '';
     customersName: CustomerName[] = [];
 
     constructor(
@@ -39,20 +40,29 @@ export class InvoiceItemComponent implements OnInit {
         private _toast: MatSnackBar,
         private _dialog: MatDialog,
         private router: Router,
-        private customerService: CustomerService
-    ) {
-        this.iconRegistry.addSvgIcon('delete', this.sanitizer.bypassSecurityTrustResourceUrl('assets/delete.svg'));
-    }
+        private customerService: CustomerService,
+        private usersService: UsersService
+    ) {}
     getFloatLabelValue(): FloatLabelType {
         return this.floatLabelControl.value || 'auto';
     }
     ngOnInit(): void {
         this.isLoadingResults = true;
-        this._initCustomersName();
-        this._invoiceInit();
+        this._initUser();
         this.invoiceService.getNumberOfInvoices().subscribe((response) => {
             const invoicesCount = response.invoicesCount;
             this.invoicesCount.next(invoicesCount);
+        });
+    }
+    onPrint() {
+        this.router.navigate([`print/${this.invoiceId}`]);
+    }
+
+    private _initUser() {
+        this.usersService.observeCurrentUser().subscribe((user) => {
+            if (user && user.id) this.currentUserId = user.id;
+            this._initCustomersName();
+            this._invoiceInit();
         });
     }
     private _invoiceInit() {
