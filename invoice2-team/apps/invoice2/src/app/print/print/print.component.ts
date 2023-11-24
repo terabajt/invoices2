@@ -56,28 +56,26 @@ import { take } from 'rxjs';
 
             <div *ngIf="invoice">
                 <div>
-                    <br />
-                    <h3>Pozycje:</h3>
-                    <li class="list-group-item">
-                        <div class="d-flex flex-row justify-content-between mb-0">
-                            <div>Nazwa</div>
-                            <div>Sztuk</div>
-                            <div>Kwota NETTO</div>
-                            <div>Podatek</div>
-                            <div>Wartość BRUTTO</div>
-                        </div>
-                        <hr />
-                    </li>
-
-                    <li *ngFor="let item of invoice.entryItem" class="list-group-item">
-                        <div class="d-flex flex-row justify-content-between">
-                            <div>{{ item?.nameEntry }}</div>
-                            <div>{{ item?.quantityEntry }}</div>
-                            <div>{{ item?.netAmountEntry | currency }}</div>
-                            <div>{{ item.taxEntry }}</div>
-                            <div>{{ item.grossEntry | currency }}</div>
-                        </div>
-                    </li>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nazwa</th>
+                                <th>Sztuk</th>
+                                <th>Kwota NETTO</th>
+                                <th>Podatek</th>
+                                <th>Wartość BRUTTO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of invoice.entryItem">
+                                <td>{{ item?.nameEntry }}</td>
+                                <td>{{ item?.quantityEntry }}</td>
+                                <td>{{ item?.netAmountEntry | currency }}</td>
+                                <td>{{ item.taxEntry }}</td>
+                                <td>{{ item.grossEntry | currency }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="d-flex flex-row justify-content-end mt-5">
                     <div class="text-right">
