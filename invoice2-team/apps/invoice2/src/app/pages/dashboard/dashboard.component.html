@@ -6,7 +6,7 @@
 <mat-tab-group class="dashboard-info">
   <mat-tab>
     <ng-template mat-tab-label>Aktualności</ng-template>
-    <div *ngFor="let item of items">
+    <div *ngFor="let item of newsMessages">
       <mat-card>
         <mat-card-header>
           <mat-card-title>{{ item.title }}</mat-card-title>
@@ -15,7 +15,7 @@
         <mat-card-content [innerHtml]="item.content">
         </mat-card-content>
         <mat-card-actions align="end">
-          <button mat-raised-button color="primary">OK</button>
+          <button mat-raised-button color="primary" (click)="onMoveToArch()">OK</button>
         </mat-card-actions>
       </mat-card>
       <br>
@@ -26,7 +26,7 @@
   <mat-tab>
     <ng-template mat-tab-label>Archiwum</ng-template>
 
-    <div *ngFor="let item of items">
+    <div *ngFor="let item of archMessages">
       <mat-card>
         <mat-card-header>
           <mat-card-title>{{ item.title }}</mat-card-title>

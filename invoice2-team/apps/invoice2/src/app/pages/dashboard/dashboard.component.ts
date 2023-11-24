@@ -8,7 +8,15 @@ import { UsersService } from '@invoice2-team/users';
 })
 export class DashboardComponent implements OnInit {
     constructor(private usersService: UsersService) {}
-    items = [
+    archMessages = [
+        {
+            title: 'Aplikacja do wystawiania faktur',
+            data: 'Data: 03.11.2023',
+            content: ' Nowy regulamin dostępny jest na stronie: <a href="#">REGULAMIN</a>'
+        },
+        { title: 'Nowa wersja', data: 'Data: 04.11.2023', content: ' Zaktualizowaliśmy aplikację. Zobacz listę zmian: <a href="#">Zmiany v2</a>' }
+    ];
+    newsMessages = [
         { title: 'Aplikacja do wystawiania faktur', data: 'Data: 03.11.2023', content: ' Nowy regulamin dostępny jest na stronie: <a href="#">REGULAMIN</a>' },
         { title: 'Nowa wersja', data: 'Data: 04.11.2023', content: ' Zaktualizowaliśmy aplikację. Zobacz listę zmian: <a href="#">Zmiany v2</a>' }
     ];
@@ -16,4 +24,5 @@ export class DashboardComponent implements OnInit {
     ngOnInit(): void {
         this.usersService.observeCurrentUser();
     }
+    onMoveToArch() {}
 }
