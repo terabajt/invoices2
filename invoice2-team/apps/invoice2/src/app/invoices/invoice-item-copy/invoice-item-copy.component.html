@@ -5,33 +5,23 @@
 <mat-card class="invoice-card" *ngIf="form">
   <mat-card-header>
     <mat-card-title>Podgląd faktury</mat-card-title>
-    <mat-card-subtitle *ngIf="editMode">Faktura nr: {{invoiceNumber}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions align="end">
-    <button mat-raised-button color="primary" (click)="onSaveForm()" [disabled]="form.invalid">{{ editMode ? 'Zapisz' :
-      'Dodaj' }}</button>
+    <button mat-raised-button color="primary" (click)="onSaveForm()" [disabled]="form.invalid">
+      Dodaj</button>
     <button mat-raised-button color="warn" (click)="showDialog()">Anuluj</button>
-    <button mat-raised-button color="accent" (click)="onPrint()">Drukuj</button>
-
   </mat-card-actions>
   <mat-card-content>
 
     <div class="form-container">
       <form [formGroup]="form">
         <div class="form-fields row">
-          <mat-form-field *ngIf="!editMode" class="col-12 col-md-2" [floatLabel]="getFloatLabelValue()">
+          <mat-form-field class="col-12 col-md-3" [floatLabel]="getFloatLabelValue()">
             <mat-label>Numer Faktury</mat-label>
             <input formControlName="invoiceNumber" matInput placeholder="Numer faktury">
             <mat-error>Proszę podać numer faktury.</mat-error>
           </mat-form-field>
-          <mat-form-field *ngIf=" editMode" class="col-12 col-md-6" [floatLabel]="getFloatLabelValue()">
-            <mat-label>Klient</mat-label>
-            <mat-select formControlName="customer" name="customer">
-              <mat-option *ngFor="let customer of customersName" [value]="customer.id">{{ customer.name }}</mat-option>
-            </mat-select>
-            <mat-error>Proszę wybrać klienta.</mat-error>
-          </mat-form-field>
-          <mat-form-field *ngIf="!editMode" class="col-12 col-md-4" [floatLabel]="getFloatLabelValue()">
+          <mat-form-field class="col-12 col-md-3" [floatLabel]="getFloatLabelValue()">
             <mat-label>Klient</mat-label>
             <mat-select formControlName="customer" name="customer">
               <mat-option *ngFor="let customer of customersName" [value]="customer.id">{{ customer.name }}</mat-option>

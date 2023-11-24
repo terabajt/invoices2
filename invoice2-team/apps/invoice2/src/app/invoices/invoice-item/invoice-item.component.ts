@@ -127,7 +127,6 @@ export class InvoiceItemComponent implements OnInit {
             } else {
                 this.editMode = false;
                 const newNumberOfInvoice = this.lastNumberOfInvoice + 1 || 0;
-                console.log(newNumberOfInvoice);
                 const invoiceNumber = `FV/${newNumberOfInvoice}/${this.currYear}`;
                 this.form = this.formBuilder.group({
                     invoiceNumber: [invoiceNumber, [Validators.required, Validators.pattern(/^FV/)]],

@@ -8,7 +8,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
-import { BehaviorSubject } from 'rxjs';
 import { UsersService } from '@invoice2-team/users';
 
 @Component({
@@ -18,19 +17,17 @@ import { UsersService } from '@invoice2-team/users';
 })
 export class InvoiceItemCopyComponent implements OnInit {
     isLoadingResults = false;
-    editMode = true;
     form!: FormGroup;
     dueDatePicker: Date | null = null;
     floatLabelControl = new FormControl('auto' as FloatLabelType);
     hideRequiredControl = new FormControl(false);
-    invoiceNumber!: string;
     invoiceId!: string;
     netAmountSum = 0;
     grossSum = 0;
     currYear = new Date().getFullYear();
-    invoicesCount = new BehaviorSubject<number>(0);
     currentUserId = '';
     customersName: CustomerName[] = [];
+    lastNumberOfInvoice = 0;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -50,10 +47,6 @@ export class InvoiceItemCopyComponent implements OnInit {
     ngOnInit(): void {
         this.isLoadingResults = true;
         this._initUser();
-        this.invoiceService.getNumberOfInvoices().subscribe((response) => {
-            const invoicesCount = response.invoicesCount;
-            this.invoicesCount.next(invoicesCount);
-        });
     }
     onPrint() {
         this.router.navigate([`print/${this.invoiceId}`]);
@@ -62,6 +55,7 @@ export class InvoiceItemCopyComponent implements OnInit {
     private _initUser() {
         this.usersService.observeCurrentUser().subscribe((user) => {
             if (user && user.id) this.currentUserId = user.id;
+            this.lastNumberOfInvoice = user?.lastNumberOfInvoice || 0;
             this._initCustomersName();
             this._invoiceInit();
         });
@@ -70,7 +64,8 @@ export class InvoiceItemCopyComponent implements OnInit {
         this.route.params.pipe().subscribe((params) => {
             if (params['id']) {
                 this.invoiceService.getInvoice(params['id']).subscribe((invoice) => {
-                    if (invoice.invoiceNumber) this.invoiceNumber = invoice.invoiceNumber;
+                    const newNumberOfInvoice = this.lastNumberOfInvoice + 1 || 0;
+                    const invoiceNumber = `FV/${newNumberOfInvoice}/${this.currYear}`;
                     this.invoiceId = params['id'];
                     if (invoice.entryItem) {
                         const entryItemsArray = this.formBuilder.array(
@@ -118,9 +113,9 @@ export class InvoiceItemCopyComponent implements OnInit {
                         });
 
                         this.form = this.formBuilder.group({
-                            invoiceNumber: [invoice.invoiceNumber, Validators.required],
-                            invoiceDate: [invoice.invoiceDate ? new Date(invoice.invoiceDate) : null, Validators.required],
-                            dueDate: [invoice.dueDate ? new Date(invoice.dueDate) : null, Validators.required],
+                            invoiceNumber: [invoiceNumber, Validators.required],
+                            invoiceDate: [new Date(), Validators.required],
+                            dueDate: [new Date(), Validators.required],
                             customer: [invoice.customer, Validators.required],
                             entryItems: entryItemsArray,
                             netAmountSum: [this.netAmountSum, Validators.required],
@@ -130,27 +125,8 @@ export class InvoiceItemCopyComponent implements OnInit {
 
                         this.updateGrossEntry(this.form);
                     } else {
-                        this.editMode = false;
                         this.isLoadingResults = false;
                     }
-                });
-            } else {
-                this.editMode = false;
-                this.isLoadingResults = false;
-
-                this.invoiceService.getNumberOfInvoices().subscribe((response) => {
-                    const invoicesCount = response.invoicesCount + 1 || 0; // Dodaj domyślną wartość, jeśli nie ma liczby faktur
-                    const invoiceNumber = `FV/${invoicesCount}/${this.currYear}`;
-
-                    this.form = this.formBuilder.group({
-                        invoiceNumber: [invoiceNumber, [Validators.required, Validators.pattern(/^FV/)]],
-                        invoiceDate: [new Date(), Validators.required],
-                        dueDate: [new Date(), Validators.required],
-                        customer: [this.customersName, Validators.required],
-                        entryItems: this.formBuilder.array([]),
-                        netAmountSum: [0, Validators.required],
-                        grossSum: [0, Validators.required]
-                    });
                 });
             }
         });
@@ -243,66 +219,28 @@ export class InvoiceItemCopyComponent implements OnInit {
         if (this.form.invalid) {
             return this._toast.open(`Faktura nie jest wypełniona prawidłowo`);
         }
-        if (this.editMode) {
-            const formData = this.form.value;
-            const newInvoice: Invoice = {
-                invoiceNumber: formData.invoiceNumber,
-                invoiceDate: formData.invoiceDate,
-                dueDate: formData.dueDate,
-                customer: formData.customer,
-                entryItem: formData.entryItem,
-                user: this.currentUserId,
-                netAmountSum: formData.netAmountSum,
-                grossSum: formData.grossSum
-            };
-            const newEntryItems: EntryItem[] = [];
-            this.entryItemsArray.controls.map((item) => {
-                const entryItem = {
-                    nameEntry: item.value.nameEntry,
-                    quantityEntry: item.value.quantityEntry,
-                    taxEntry: item.value.taxEntry,
-                    netAmountEntry: item.value.netAmountEntry,
-                    grossEntry: item.value.grossEntry,
-                    _id: item.value.id_item,
-                    invoiceId: this.invoiceId
+        const formData = this.form.getRawValue();
+        const newInvoice: Invoice = {
+            invoiceNumber: formData.invoiceNumber,
+            invoiceDate: formData.invoiceDate,
+            dueDate: formData.dueDate,
+            customer: formData.customer,
+            entryItem: formData.entryItems.map((item: EntryItem) => {
+                return {
+                    nameEntry: item.nameEntry,
+                    quantityEntry: item.quantityEntry,
+                    taxEntry: item.taxEntry,
+                    netAmountEntry: item.netAmountEntry || 0,
+                    grossEntry: item.grossEntry || 0
                 };
-                newEntryItems.push(entryItem);
-            });
-            this._updateInvoice(newInvoice);
-            this._updateItems(newEntryItems);
-            return;
-        } else {
-            const formData = this.form.getRawValue();
-            const newInvoice: Invoice = {
-                invoiceNumber: formData.invoiceNumber,
-                invoiceDate: formData.invoiceDate,
-                dueDate: formData.dueDate,
-                customer: formData.customer,
-                entryItem: formData.entryItems.map((item: EntryItem) => {
-                    return {
-                        nameEntry: item.nameEntry,
-                        quantityEntry: item.quantityEntry,
-                        taxEntry: item.taxEntry,
-                        netAmountEntry: item.netAmountEntry || 0,
-                        grossEntry: item.grossEntry || 0
-                    };
-                }),
-                user: this.currentUserId,
-                netAmountSum: formData.netAmountSum,
-                grossSum: formData.grossSum
-            };
-            return this._addInvoice(newInvoice);
-        }
+            }),
+            user: this.currentUserId,
+            netAmountSum: formData.netAmountSum,
+            grossSum: formData.grossSum
+        };
+        return this._addInvoice(newInvoice);
     }
-    private _updateInvoice(invoice: Invoice) {
-        this.invoiceService
-            .updateInvoice(invoice, this.invoiceId)
-            .pipe()
-            .subscribe((invoice: Invoice) => {
-                this._toast.open(`Pomyślnie zaktualizowano fakturę ${invoice.invoiceNumber}`);
-                this.router.navigate(['/invoices/']);
-            });
-    }
+
     private _updateItems(newEntryItems: EntryItem[]) {
         this.invoiceService.updateEntryItem(newEntryItems);
     }
