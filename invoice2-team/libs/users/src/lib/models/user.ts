@@ -13,4 +13,5 @@ export class User {
     country?: string;
     taxNumber?: string;
     accountNumber?: string;
+    lastNumberOfInvoice?: number;
 }

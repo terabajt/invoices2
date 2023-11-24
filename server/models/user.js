@@ -55,6 +55,11 @@ const userSchema = mongoose.Schema({
 		type: String,
 		default: '',
 	},
+	lastNumberOfInvoice: {
+		type: Number,
+		required: true,
+		default: 0,
+	},
 });
 
 userSchema.virtual('id').get(function () {

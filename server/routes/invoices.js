@@ -49,9 +49,10 @@ router.get('/:id', async (req, res) => {
 	}
 	res.send(invoice);
 });
+
 router.post('/', async (req, res) => {
 	try {
-		// // Creating new EntryItems i feedback it's ids
+		// Creating new EntryItems i feedback it's ids
 		const entryItemsIds = await Promise.all(
 			req.body.entryItem.map(async entryItem => {
 				let newEntryItem = new EntryItem({
@@ -65,7 +66,6 @@ router.post('/', async (req, res) => {
 				return newEntryItem._id;
 			})
 		);
-
 		// Creating a new invoice
 		let invoice = new Invoice({
 			invoiceNumber: req.body.invoiceNumber,
@@ -77,24 +77,24 @@ router.post('/', async (req, res) => {
 			netAmountSum: req.body.netAmountSum,
 			grossSum: req.body.grossSum,
 		});
-
 		invoice = await invoice.save();
-
 		if (!invoice) return res.status(400).send('The invoice cannot be created');
-
 		// add new incovice to  'invoices' of User
 		const newInvoiceId = invoice._id;
 		const userId = req.body.user;
-		const user = await User.findById(userId);
-		if (user) {
-			user.invoices.push(newInvoiceId);
-			await user.save();
-		}
 
-		res.send(invoice);
+		const updatedUser = await User.findOneAndUpdate(
+			{ _id: userId },
+			{ $inc: { lastNumberOfInvoice: 1 }, $push: { invoices: newInvoiceId } },
+			{ new: true }
+		);
+		if (!updatedUser) {
+			return res.status(404).json({ error: 'User not found' });
+		}
+		return res.status(200).json(invoice);
 	} catch (error) {
 		console.error(error);
-		res.status(500).send('Internal server error');
+		return res.status(500).json({ error: 'Internal server error' });
 	}
 });
 

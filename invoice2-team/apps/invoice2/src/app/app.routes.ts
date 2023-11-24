@@ -8,6 +8,7 @@ import { CustomerItemComponent } from './customers/customer-item/customer-item.c
 import { AuthGuard } from '@invoice2-team/users';
 import { UserItemComponent } from './user/user-item/user-item.component';
 import { PrintComponent } from './print/print/print.component';
+import { InvoiceItemCopyComponent } from './invoices/invoice-item-copy/invoice-item-copy.component';
 
 export const appRoutes: Route[] = [
     {
@@ -30,6 +31,10 @@ export const appRoutes: Route[] = [
             {
                 path: 'invoices/form/:id',
                 component: InvoiceItemComponent
+            },
+            {
+                path: 'invoices/form/copy/:id',
+                component: InvoiceItemCopyComponent
             },
             {
                 path: 'customers',

@@ -25,6 +25,7 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
     constructor(private invoiceService: InvoicesService, private usersService: UsersService, private _dialog: MatDialog, private _toast: MatSnackBar) {}
 
     ngOnInit() {
+        this.usersService.initAppSession();
         this.paginator._intl.itemsPerPageLabel = 'Ilość faktur na stronie';
         this._initUser();
     }

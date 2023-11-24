@@ -45,6 +45,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { UserItemComponent } from './user/user-item/user-item.component';
 import { PrintComponent } from './print/print/print.component';
+import { InvoiceItemCopyComponent } from './invoices/invoice-item-copy/invoice-item-copy.component';
 
 const MAT_DIALOG_GLOBAL_CONFIG: MatDialogConfig = {
     width: '700px',
@@ -97,7 +98,8 @@ registerLocaleData(localePl);
         CustomersListComponent,
         CustomerItemComponent,
         UserItemComponent,
-        PrintComponent
+        PrintComponent,
+        InvoiceItemCopyComponent
     ],
     imports: [
         InvoicesModule,

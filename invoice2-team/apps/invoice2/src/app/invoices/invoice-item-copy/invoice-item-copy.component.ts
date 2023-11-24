@@ -3,16 +3,20 @@ import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@ang
 import { FloatLabelType } from '@angular/material/form-field';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerName, CustomerService, EntryItem, Invoice, InvoicesService } from '@invoice2-team/invoices';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
+import { BehaviorSubject } from 'rxjs';
 import { UsersService } from '@invoice2-team/users';
 
 @Component({
-    selector: 'invoice2-team-invoice-item',
-    templateUrl: './invoice-item.component.html'
+    selector: 'invoice2-team-invoice-item-copy',
+    templateUrl: './invoice-item-copy.component.html',
+    styles: []
 })
-export class InvoiceItemComponent implements OnInit {
+export class InvoiceItemCopyComponent implements OnInit {
     isLoadingResults = false;
     editMode = true;
     form!: FormGroup;
@@ -24,13 +28,16 @@ export class InvoiceItemComponent implements OnInit {
     netAmountSum = 0;
     grossSum = 0;
     currYear = new Date().getFullYear();
+    invoicesCount = new BehaviorSubject<number>(0);
     currentUserId = '';
     customersName: CustomerName[] = [];
-    lastNumberOfInvoice = 0;
+
     constructor(
         private formBuilder: FormBuilder,
         private invoiceService: InvoicesService,
         private route: ActivatedRoute,
+        private iconRegistry: MatIconRegistry,
+        private sanitizer: DomSanitizer,
         private _toast: MatSnackBar,
         private _dialog: MatDialog,
         private router: Router,
@@ -43,6 +50,10 @@ export class InvoiceItemComponent implements OnInit {
     ngOnInit(): void {
         this.isLoadingResults = true;
         this._initUser();
+        this.invoiceService.getNumberOfInvoices().subscribe((response) => {
+            const invoicesCount = response.invoicesCount;
+            this.invoicesCount.next(invoicesCount);
+        });
     }
     onPrint() {
         this.router.navigate([`print/${this.invoiceId}`]);
@@ -51,7 +62,6 @@ export class InvoiceItemComponent implements OnInit {
     private _initUser() {
         this.usersService.observeCurrentUser().subscribe((user) => {
             if (user && user.id) this.currentUserId = user.id;
-            this.lastNumberOfInvoice = user?.lastNumberOfInvoice || 0;
             this._initCustomersName();
             this._invoiceInit();
         });
@@ -126,20 +136,23 @@ export class InvoiceItemComponent implements OnInit {
                 });
             } else {
                 this.editMode = false;
-                const newNumberOfInvoice = this.lastNumberOfInvoice + 1 || 0;
-                console.log(newNumberOfInvoice);
-                const invoiceNumber = `FV/${newNumberOfInvoice}/${this.currYear}`;
-                this.form = this.formBuilder.group({
-                    invoiceNumber: [invoiceNumber, [Validators.required, Validators.pattern(/^FV/)]],
-                    invoiceDate: [new Date(), Validators.required],
-                    dueDate: [new Date(), Validators.required],
-                    customer: [this.customersName, Validators.required],
-                    entryItems: this.formBuilder.array([]),
-                    netAmountSum: [0, Validators.required],
-                    grossSum: [0, Validators.required]
+                this.isLoadingResults = false;
+
+                this.invoiceService.getNumberOfInvoices().subscribe((response) => {
+                    const invoicesCount = response.invoicesCount + 1 || 0; // Dodaj domyślną wartość, jeśli nie ma liczby faktur
+                    const invoiceNumber = `FV/${invoicesCount}/${this.currYear}`;
+
+                    this.form = this.formBuilder.group({
+                        invoiceNumber: [invoiceNumber, [Validators.required, Validators.pattern(/^FV/)]],
+                        invoiceDate: [new Date(), Validators.required],
+                        dueDate: [new Date(), Validators.required],
+                        customer: [this.customersName, Validators.required],
+                        entryItems: this.formBuilder.array([]),
+                        netAmountSum: [0, Validators.required],
+                        grossSum: [0, Validators.required]
+                    });
                 });
             }
-            this.isLoadingResults = false;
         });
     }
 
