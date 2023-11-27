@@ -10,3 +10,8 @@ export class Invoice {
     netAmountSum?: number;
     grossSum?: number;
 }
+
+export class MonthToSorted {
+    month?: string;
+    monthNumber?: string;
+}

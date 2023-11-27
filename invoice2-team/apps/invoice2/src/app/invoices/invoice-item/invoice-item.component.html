@@ -11,7 +11,7 @@
     <button mat-raised-button color="primary" (click)="onSaveForm()" [disabled]="form.invalid">{{ editMode ? 'Zapisz' :
       'Dodaj' }}</button>
     <button mat-raised-button color="warn" (click)="showDialog()">Anuluj</button>
-    <button mat-raised-button color="accent" (click)="onPrint()">Drukuj</button>
+    <button mat-raised-button color="accent" *ngIf="editMode" (click)="onPrint()">Drukuj</button>
 
   </mat-card-actions>
   <mat-card-content>

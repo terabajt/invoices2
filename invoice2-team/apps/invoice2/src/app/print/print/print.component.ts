@@ -81,6 +81,7 @@ import { take } from 'rxjs';
                     <div class="text-right">
                         <hr />
                         <h4>Razem netto: {{ invoice.netAmountSum | currency }}</h4>
+                        <h4>Vat: {{ (invoice.grossSum || 0) - (invoice.netAmountSum || 0) | currency }}</h4>
                         <h4 class="fw-bold">Do zapłaty brutto: {{ invoice.grossSum | currency }}</h4>
                     </div>
                 </div>

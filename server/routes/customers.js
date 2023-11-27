@@ -1,5 +1,6 @@
 const express = require('express');
 const { Customer } = require('../models/customer');
+const mongoose = require('mongoose');
 
 const router = express.Router();
 
@@ -14,6 +15,10 @@ const router = express.Router();
 // });
 
 router.get('/:id', async (req, res) => {
+	const { id } = req.params;
+	if (!mongoose.Types.ObjectId.isValid(id)) {
+		return res.status(400).json({ message: 'Invalid ID format.' });
+	}
 	const customer = await Customer.findById(req.params.id);
 	if (!customer) {
 		res.status(400).json({ success: false });
@@ -22,6 +27,11 @@ router.get('/:id', async (req, res) => {
 });
 
 router.get('/foruser/:userId', async (req, res) => {
+	const { userId } = req.params;
+	console.log(userId);
+	if (!mongoose.Types.ObjectId.isValid(userId)) {
+		return res.status(400).json({ message: 'Invalid ID format.' });
+	}
 	if (!req.params.userId) {
 		return res.status(400).json({ success: false });
 	}
