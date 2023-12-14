@@ -1,30 +1,46 @@
 <div class="invoice2-sidebar">
-  <div class="logo">
-    <img src="/assets/images/logo.png" alt="Logo aplikacji Invoices2 do wystawiania faktur online.">
-    <br />
-    <span>Twoje faktury online</span>
-  </div>
-  <mat-nav-list>
-    <a mat-list-item class="list-item" [routerLink]="['/']">
-      <mat-icon class="icon">home</mat-icon>
-      <span class="text">HOME</span>
-    </a>
-    <a mat-list-item class="list-item" routerLink="/invoices/">
-      <mat-icon class="icon">paid</mat-icon>
-      <span class="text">Faktury</span>
-    </a>
-    <a mat-list-item class="list-item" routerLink="/customers/">
-      <mat-icon class="icon">face</mat-icon>
-      <span class="text">Klienci</span>
-    </a>
-    <a mat-list-item class="list-item" routerLink="/user/form/">
-      <mat-icon class="icon">settings</mat-icon>
-      <span class="text">Ustawienia</span>
-    </a>
-    <a mat-list-item class="list-item" (click)="onLogout()">
-      <mat-icon class="icon">logout</mat-icon>
-      <span class="text">Wyloguj</span>
-    </a>
-  </mat-nav-list>
+  <mat-drawer-container class="sidenav-container" autosize>
+    <mat-drawer #drawer class="main-sidenav" mode="side">
+      <div class="logo">
+        <img src="/assets/images/logo.png" alt="Logo aplikacji Invoices2 do wystawiania faktur online.">
+        <br />
+        <span>Twoje faktury online</span>
+      </div>
+      <mat-nav-list>
+        <a mat-list-item class="list-item" [routerLink]="['/']">
+          <mat-icon class="icon">home</mat-icon>
+          <span class="text">HOME</span>
+        </a>
+        <a mat-list-item class="list-item" routerLink="/invoices/">
+          <mat-icon class="icon">paid</mat-icon>
+          <span class="text">Faktury</span>
+        </a>
+        <a mat-list-item class="list-item" routerLink="/customers/">
+          <mat-icon class="icon">face</mat-icon>
+          <span class="text">Klienci</span>
+        </a>
+        <a mat-list-item class="list-item" routerLink="/user/form/">
+          <mat-icon class="icon">settings</mat-icon>
+          <span class="text">Ustawienia</span>
+        </a>
+        <a mat-list-item class="list-item" (click)="onLogout()">
+          <mat-icon class="icon">logout</mat-icon>
+          <span class="text">Wyloguj</span>
+        </a>
+        <button type="button" mat-button (click)="drawer.toggle()">
+          <mat-icon>chevron_left</mat-icon> <span class="text">Schowaj Menu</span>
+        </button>
+      </mat-nav-list>
+    </mat-drawer>
+
+    <div class="main-sidenav-content">
+      <div class="invoice2-main">
+        <invoice2-team-sidebar-top (toggleSidenavEvent)="toggleSidenav()"></invoice2-team-sidebar-top>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+
+  </mat-drawer-container>
+
 
 </div>

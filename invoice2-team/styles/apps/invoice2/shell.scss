@@ -5,15 +5,10 @@
     margin: 0;
   }
   &-main{
-    width: calc(100% - 250px);
-    margin-left: 175px;
+    position: relative;
+    width: 100%;
+    margin-left: 0;
+    align-self: start;
     padding: 30px;
-  }
-  &-sidebar {
-background-color: var(    --mat-toolbar-container-background-color);
-    position: fixed;
-    width: 175px;
-    height: 100%;
-    top: 0;
   }
 }

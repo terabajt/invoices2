@@ -33,6 +33,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatSidenavModule } from '@angular/material/sidenav';
+
 import { InvoicesModule } from '@invoice2-team/invoices';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarConfig, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -47,6 +49,8 @@ import { UserItemComponent } from './user/user-item/user-item.component';
 import { PrintComponent } from './print/print/print.component';
 import { InvoiceItemCopyComponent } from './invoices/invoice-item-copy/invoice-item-copy.component';
 import { ButtonAddNewClientComponent } from './invoices/invoice-item/button-add-new-client/button-add-new-client.component';
+import { SidebarTopComponent } from './shared/sidebar/sidebar-top/sidebar-top.component';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 const MAT_DIALOG_GLOBAL_CONFIG: MatDialogConfig = {
     width: '700px',
@@ -81,7 +85,8 @@ const MATERIAL_MODULE = [
     MatRadioModule,
     MatInputModule,
     MatCheckboxModule,
-    MatGridListModule
+    MatGridListModule,
+    MatSidenavModule
 ];
 
 registerLocaleData(localePl);
@@ -101,7 +106,8 @@ registerLocaleData(localePl);
         UserItemComponent,
         PrintComponent,
         InvoiceItemCopyComponent,
-        ButtonAddNewClientComponent
+        ButtonAddNewClientComponent,
+        SidebarTopComponent
     ],
     imports: [
         InvoicesModule,
@@ -122,7 +128,8 @@ registerLocaleData(localePl);
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: DEFAULT_CURRENCY_CODE, useValue: 'PLN' },
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: MAT_DIALOG_GLOBAL_CONFIG },
-        { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: MAT_SNACK_BAR_GLOBAL_CONFIG }
+        { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: MAT_SNACK_BAR_GLOBAL_CONFIG },
+        BreakpointObserver
     ],
     bootstrap: [AppComponent]
 })

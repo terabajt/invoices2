@@ -5,6 +5,9 @@
 @import './base/mixins.scss';
 @import './base/print.scss';
 
+//Burger Menu
+@import './apps/invoice2/burger-menu.scss';
+
 //Libraries
 @import './base/configurations.scss';
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
