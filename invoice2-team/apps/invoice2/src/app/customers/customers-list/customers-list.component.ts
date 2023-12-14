@@ -50,7 +50,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
             .subscribe();
     }
 
-    displayedColumns: string[] = ['name', 'taxNumber', 'email', 'phone', 'city', 'more', 'delete'];
+    displayedColumns: string[] = ['name', 'taxNumber', 'email', 'phone', 'city', 'options'];
 
     private _initCustomers(): Observable<any> {
         return this.customerService.getCustomers(this.currentUserId).pipe(

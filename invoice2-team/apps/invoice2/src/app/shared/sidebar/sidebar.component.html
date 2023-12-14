@@ -7,19 +7,20 @@
         <span>Twoje faktury online</span>
       </div>
       <mat-nav-list>
-        <a mat-list-item class="list-item" [routerLink]="['/']">
+
+        <a mat-list-item class="list-item" (click)="onClickHideSidebar()" [routerLink]="['/']">
           <mat-icon class="icon">home</mat-icon>
           <span class="text">HOME</span>
         </a>
-        <a mat-list-item class="list-item" routerLink="/invoices/">
+        <a mat-list-item class="list-item" (click)="onClickHideSidebar()" routerLink="/invoices/">
           <mat-icon class="icon">paid</mat-icon>
           <span class="text">Faktury</span>
         </a>
-        <a mat-list-item class="list-item" routerLink="/customers/">
+        <a mat-list-item class="list-item" (click)="onClickHideSidebar()" routerLink="/customers/">
           <mat-icon class="icon">face</mat-icon>
           <span class="text">Klienci</span>
         </a>
-        <a mat-list-item class="list-item" routerLink="/user/form/">
+        <a mat-list-item class="list-item" (click)="onClickHideSidebar()" routerLink="/user/form/">
           <mat-icon class="icon">settings</mat-icon>
           <span class="text">Ustawienia</span>
         </a>

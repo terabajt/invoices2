@@ -64,7 +64,7 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
         });
     }
 
-    displayedColumns: string[] = ['invoiceNumber', 'invoiceDate', 'dueDate', 'customer', 'netAmountSum', 'grossSum', 'options'];
+    displayedColumns: string[] = ['invoiceNumber', 'invoiceDate', 'customer', 'grossSum', 'options'];
     dataSource = new MatTableDataSource(this.invoices);
 
     onDeleteInvoice(invoiceID: string) {

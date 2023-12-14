@@ -21,6 +21,11 @@ export class SidebarComponent implements AfterViewInit {
     onLogout() {
         this.authService.logout();
     }
+    onClickHideSidebar() {
+        if (window.matchMedia('(max-width: 980px)').matches) {
+            this.toggleSidenav();
+        }
+    }
 
     toggleSidenav() {
         if (this.drawer) {
