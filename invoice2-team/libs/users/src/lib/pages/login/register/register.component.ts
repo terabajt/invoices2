@@ -3,17 +3,16 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
-import { AuthService } from '../../services/auth.service';
-import { LocalstorageService } from '../../services/localstorage.services';
+import { AuthService } from '../../../services/auth.service';
+import { LocalstorageService } from '../../../services/localstorage.services';
 import { FloatLabelType } from '@angular/material/form-field';
-import { UsersService } from '../../services/users.service';
+import { UsersService } from '../../../services/users.service';
 
 @Component({
-    selector: 'invoice2-team-login',
-    templateUrl: './login.component.html',
-    styles: []
+    selector: 'invoice2-team-register',
+    templateUrl: './register.component.html'
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class RegisterComponent {
     floatLabelControl = new FormControl('auto' as FloatLabelType);
     loginFormGroup: FormGroup = new FormGroup({});
     endsubs$: Subject<any> = new Subject();
@@ -31,6 +30,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this._initLoginForms();
     }
+
     private _initLoginForms() {
         this.loginFormGroup = this.formBuilder.group({
             email: ['', [Validators.required, Validators.email]],
@@ -42,28 +42,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     getFloatLabelValue(): FloatLabelType {
         return this.floatLabelControl.value || 'auto';
-    }
-    onSubmit() {
-        const loginData = {
-            email: this.loginForm['email'].value,
-            password: this.loginForm['password'].value
-        };
-        this.auth
-            .login(loginData.email, loginData.password)
-            .pipe(takeUntil(this.endsubs$))
-            .subscribe(
-                (user) => {
-                    this.authError = false;
-                    if (user.token) this.localstorageService.setToken(user.token);
-                    this.router.navigate(['/']);
-                },
-                (error: HttpErrorResponse) => {
-                    this.authError = true;
-                    if (error.status == 404) {
-                        this.errorMessage = `Wystąpił błąd: ${error.error}`;
-                    }
-                }
-            );
     }
     ngOnDestroy(): void {
         this.endsubs$.complete();

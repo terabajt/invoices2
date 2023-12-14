@@ -1,8 +1,8 @@
 <mat-card class="login-box">
   <mat-card-content>
     <form [formGroup]="loginFormGroup">
-      <h2 class="text-center">Witamy w aplikacji do wystawiania faktur Invoices2</h2>
-      <h3>Zaloguj się:</h3>
+      <h2 class="text-center">Rejestracja</h2>
+      <p>Zarejestruj się w aplikacji Invoices2 i zacznij korzystać z aplikacji do wystawiania faktur online.</p>
       <mat-error *ngIf="authError">{{errorMessage}}</mat-error>
       <div class="form-fields row">
         <mat-form-field class="col-12" [floatLabel]="getFloatLabelValue()">
@@ -19,11 +19,11 @@
         </mat-form-field>
       </div>
       <div class="form-fields row m-1">
-        <button mat-raised-button color="primary" [disabled]="loginFormGroup.invalid"
-          (click)="onSubmit()">Login</button>
+        <button mat-raised-button color="primary" routerLink="/login">Mam już konto
+          - chcę przejść do logowania</button>
       </div>
       <div class="form-fields row m-1 mt-3">
-        <button mat-raised-button color="warn" routerLink="/register">Zarejestruj
+        <button mat-raised-button color="warn" [disabled]="loginFormGroup.invalid" (click)="onRegister()">Zarejestruj
           nowe konto</button>
       </div>
     </form>
