@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     endsubs$: Subject<any> = new Subject();
     authError = false;
     errorMessage = 'E-mail albo hasło jest nieprawidłowe';
+    footerYear!: number;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -30,6 +31,11 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this._initLoginForms();
+        this._getCurrentYear();
+    }
+
+    private _getCurrentYear() {
+        this.footerYear = new Date().getFullYear();
     }
     private _initLoginForms() {
         this.loginFormGroup = this.formBuilder.group({

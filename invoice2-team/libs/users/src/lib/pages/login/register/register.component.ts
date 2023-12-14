@@ -18,6 +18,7 @@ export class RegisterComponent {
     endsubs$: Subject<any> = new Subject();
     authError = false;
     errorMessage = 'E-mail albo hasło jest nieprawidłowe';
+    footerYear: any;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -29,8 +30,11 @@ export class RegisterComponent {
 
     ngOnInit(): void {
         this._initLoginForms();
+        this._getCurrentYear();
     }
-
+    private _getCurrentYear() {
+        this.footerYear = new Date().getFullYear();
+    }
     private _initLoginForms() {
         this.loginFormGroup = this.formBuilder.group({
             email: ['', [Validators.required, Validators.email]],
