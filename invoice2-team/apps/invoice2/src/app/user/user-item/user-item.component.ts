@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -18,6 +18,7 @@ export class UserItemComponent implements OnInit {
     form!: FormGroup;
     floatLabelControl = new FormControl('auto' as FloatLabelType);
     currentUserId = '';
+    countries!: { id: string; name: string }[];
 
     constructor(
         private usersService: UsersService,
@@ -27,7 +28,43 @@ export class UserItemComponent implements OnInit {
         private router: Router
     ) {}
 
+    private _getCountries() {
+        this.countries = this.usersService.getCountries();
+    }
+
+    //CHECK MY NIP
+    validateNIP(control: AbstractControl) {
+        const inputValue = control.value;
+
+        if (inputValue === null || inputValue === undefined) {
+            return null;
+        }
+
+        const nip = inputValue.replace(/[- ]/g, ''); // Usuwanie myślników i spacji
+
+        if (nip.length !== 10) {
+            return { invalidNIP: true, message: 'NIP musi mieć 10 cyfr.' };
+        }
+
+        const weights = [6, 5, 7, 2, 3, 4, 5, 6, 7];
+        let sum = 0;
+
+        for (let i = 0; i < 9; i++) {
+            sum += parseInt(nip.charAt(i), 10) * weights[i];
+        }
+
+        const checksum = sum % 11;
+        const controlDigit = parseInt(nip.charAt(9), 10);
+
+        if (checksum !== controlDigit) {
+            return { invalidNIP: true, message: 'Nieprawidłowa suma kontrolna.' };
+        }
+
+        return null; // NIP jest poprawny
+    }
+
     ngOnInit(): void {
+        this._getCountries();
         this._initUserForm();
     }
     private _initUserForm() {
@@ -37,17 +74,17 @@ export class UserItemComponent implements OnInit {
             .subscribe((user) => {
                 if (user && user.id) this.currentUserId = user?.id;
                 this.form = this.formBuilder.group({
-                    name: [user?.name, Validators.required],
+                    name: [user?.name, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
                     password: [user?.password],
                     email: [user?.email, [Validators.required, Validators.email]],
-                    phone: [user?.phone, Validators.required],
-                    address1: [user?.address1, Validators.required],
+                    phone: [user?.phone, [Validators.required, Validators.pattern(/^\d{9}$/)]],
+                    address1: [user?.address1, [Validators.required, Validators.pattern(/^[a-zA-Z\s-]+$/), Validators.minLength(3), Validators.maxLength(100)]],
                     address2: [user?.address2],
-                    zip: [user?.zip, Validators.required],
-                    city: [user?.city, Validators.required],
+                    zip: [user?.zip, [Validators.required, Validators.pattern(/^\d{2}-\d{3}$/)]],
+                    city: [user?.city, [Validators.required, Validators.pattern(/^[a-zA-Z\s-]+$/), Validators.minLength(3), Validators.maxLength(100)]],
                     country: [user?.country, Validators.required],
-                    taxNumber: [user?.taxNumber, Validators.required],
-                    accountNumber: [user?.accountNumber, Validators.required]
+                    taxNumber: [user?.taxNumber, [Validators.required, this.validateNIP.bind(this)]],
+                    accountNumber: [user?.accountNumber, [Validators.required, Validators.pattern(/\d{2} \d{4} \d{4} \d{4} \d{4} \d{4} \d{4}/)]]
                 });
             });
         this.usersService.initAppSession();

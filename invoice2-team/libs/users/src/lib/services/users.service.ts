@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { Observable, map } from 'rxjs';
-// import * as countriesLib from 'i18n-iso-countries';
-// declare const require: (arg0: string) => countriesLib.LocaleData;
 import { environment } from '../../../../../environments/environment.development';
 import { UsersFacade } from '../state/users.facade';
+import * as countriesLib from 'i18n-iso-countries';
+declare const require: (arg0: string) => countriesLib.LocaleData;
 // import { UsersFacade } from '../state/users.facade';
 
 @Injectable({
@@ -16,7 +16,22 @@ export class UsersService {
         this.usersFacade.buildUserSession();
     }
     apiURLUsers = environment.apiURL + 'users';
-    constructor(private usersFacade: UsersFacade, private http: HttpClient) {}
+    constructor(private usersFacade: UsersFacade, private http: HttpClient) {
+        countriesLib.registerLocale(require('i18n-iso-countries/langs/en.json'));
+    }
+
+    getCountries(): { id: string; name: string }[] {
+        return Object.entries(countriesLib.getNames('en', { select: 'official' })).map((entry) => {
+            return {
+                id: entry[0],
+                name: entry[1]
+            };
+        });
+    }
+
+    getCountry(code: string) {
+        return countriesLib.getName(code, 'en', { select: 'official' });
+    }
 
     getUsers(): Observable<User[]> {
         return this.http.get<User[]>(`${this.apiURLUsers}`);

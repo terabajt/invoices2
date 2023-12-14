@@ -46,6 +46,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { UserItemComponent } from './user/user-item/user-item.component';
 import { PrintComponent } from './print/print/print.component';
 import { InvoiceItemCopyComponent } from './invoices/invoice-item-copy/invoice-item-copy.component';
+import { ButtonAddNewClientComponent } from './invoices/invoice-item/button-add-new-client/button-add-new-client.component';
 
 const MAT_DIALOG_GLOBAL_CONFIG: MatDialogConfig = {
     width: '700px',
@@ -99,7 +100,8 @@ registerLocaleData(localePl);
         CustomerItemComponent,
         UserItemComponent,
         PrintComponent,
-        InvoiceItemCopyComponent
+        InvoiceItemCopyComponent,
+        ButtonAddNewClientComponent
     ],
     imports: [
         InvoicesModule,

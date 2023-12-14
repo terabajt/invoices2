@@ -27,13 +27,16 @@
           <mat-form-field *ngIf=" editMode" class="col-12 col-md-6" [floatLabel]="getFloatLabelValue()">
             <mat-label>Klient</mat-label>
             <mat-select formControlName="customer" name="customer">
-              <mat-option *ngFor="let customer of customersName" [value]="customer.id">{{ customer.name }}</mat-option>
+              <invoice2-team-button-add-new-client></invoice2-team-button-add-new-client>
+              <mat-option *ngFor="let customer of customersName" [value]="customer.id">{{ customer.name }}
+              </mat-option>
             </mat-select>
             <mat-error>Proszę wybrać klienta.</mat-error>
           </mat-form-field>
           <mat-form-field *ngIf="!editMode" class="col-12 col-md-4" [floatLabel]="getFloatLabelValue()">
             <mat-label>Klient</mat-label>
             <mat-select formControlName="customer" name="customer">
+              <invoice2-team-button-add-new-client></invoice2-team-button-add-new-client>
               <mat-option *ngFor="let customer of customersName" [value]="customer.id">{{ customer.name }}</mat-option>
             </mat-select>
             <mat-error>Proszę wybrać klienta.</mat-error>

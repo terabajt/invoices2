@@ -7,7 +7,8 @@ import { Customer, CustomerService } from '@invoice2-team/invoices';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UsersService } from '@invoice2-team/users';
-import { take } from 'rxjs';
+import { merge, Observable, of as observableOf } from 'rxjs';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
 @Component({
     selector: 'invoice2-team-customers-list',
@@ -19,13 +20,13 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
     paginator!: MatPaginator;
     @ViewChild(MatSort)
     sort!: MatSort;
-    customers: Customer[] = [];
     currentUserId = '';
+    dataSource: MatTableDataSource<Customer> = new MatTableDataSource<Customer>([]);
 
     constructor(private customerService: CustomerService, private _dialog: MatDialog, private _toast: MatSnackBar, private usersService: UsersService) {}
 
     ngOnInit(): void {
-        this.paginator._intl.itemsPerPageLabel = 'Ilość faktur na stronie';
+        this.paginator._intl.itemsPerPageLabel = 'Ilość klientów na stronie';
         this._initUser();
     }
 
@@ -37,19 +38,32 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
             }
         });
     }
-    ngAfterViewInit() {
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-    }
 
-    private _initCustomers() {
-        this.customerService.getCustomers(this.currentUserId).subscribe((invoices) => {
-            this.dataSource = new MatTableDataSource(invoices);
-        });
+    ngAfterViewInit() {
+        merge(this.paginator.page)
+            .pipe(
+                startWith({}),
+                switchMap(() => {
+                    return this._initCustomers();
+                })
+            )
+            .subscribe();
     }
 
     displayedColumns: string[] = ['name', 'taxNumber', 'email', 'phone', 'city', 'more', 'delete'];
-    dataSource = new MatTableDataSource(this.customers);
+
+    private _initCustomers(): Observable<any> {
+        return this.customerService.getCustomers(this.currentUserId).pipe(
+            map((data) => {
+                this.dataSource = new MatTableDataSource<Customer>(data);
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
+            }),
+            catchError(() => {
+                return observableOf([]);
+            })
+        );
+    }
 
     onDeleteCustomer(customerId: string) {
         const dialogRef = this._dialog.open(DialogComponent, {

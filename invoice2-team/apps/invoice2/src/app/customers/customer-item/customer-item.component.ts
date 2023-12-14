@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -36,6 +36,37 @@ export class CustomerItemComponent implements OnInit {
         this._initUser();
     }
 
+    //CHECK MY NIP
+    validateNIP(control: AbstractControl) {
+        const inputValue = control.value;
+
+        if (inputValue === null || inputValue === undefined) {
+            return null;
+        }
+
+        const nip = inputValue.replace(/[- ]/g, ''); // Usuwanie myślników i spacji
+
+        if (nip.length !== 10) {
+            return { invalidNIP: true, message: 'NIP musi mieć 10 cyfr.' };
+        }
+
+        const weights = [6, 5, 7, 2, 3, 4, 5, 6, 7];
+        let sum = 0;
+
+        for (let i = 0; i < 9; i++) {
+            sum += parseInt(nip.charAt(i), 10) * weights[i];
+        }
+
+        const checksum = sum % 11;
+        const controlDigit = parseInt(nip.charAt(9), 10);
+
+        if (checksum !== controlDigit) {
+            return { invalidNIP: true, message: 'Nieprawidłowa suma kontrolna.' };
+        }
+
+        return null; // NIP jest poprawny
+    }
+
     private _initUser() {
         this.usersService.observeCurrentUser().subscribe((user) => {
             if (user && user.id) this.currentUserId = user.id;
@@ -51,27 +82,30 @@ export class CustomerItemComponent implements OnInit {
                     this.customerId = customer._id || '';
                     this.clientName = customer.name || '';
                     this.form = this.formBuilder.group({
-                        name: [customer.name, Validators.required],
-                        taxNumber: [customer.taxNumber, Validators.required],
-                        address1: [customer.address1, Validators.required],
+                        name: [customer.name, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+                        taxNumber: [customer.taxNumber, [Validators.required, this.validateNIP.bind(this)]],
+                        address1: [
+                            customer.address1,
+                            [Validators.required, Validators.pattern(/^[a-zA-Z\s-]+$/), Validators.minLength(3), Validators.maxLength(100)]
+                        ],
                         address2: [customer.address2],
-                        zip: [customer.zip, Validators.required],
+                        zip: [customer.zip, [Validators.required, Validators.pattern(/^\d{2}-\d{3}$/)]],
                         email: [customer.email, [Validators.required, Validators.email]],
-                        phone: [customer.phone, Validators.required],
-                        city: [customer.city, Validators.required]
+                        phone: [customer.phone, [Validators.required, Validators.pattern(/^\d{9}$/)]],
+                        city: [customer.city, [Validators.required, Validators.pattern(/^[a-zA-Z\s-]+$/), Validators.minLength(3), Validators.maxLength(100)]]
                     });
                 });
             } else {
                 this.editMode = false;
                 this.form = this.formBuilder.group({
-                    name: ['', Validators.required],
-                    taxNumber: ['', Validators.required],
-                    address1: ['', Validators.required],
+                    name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+                    taxNumber: ['', [Validators.required, this.validateNIP.bind(this)]],
+                    address1: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s-]+$/), Validators.minLength(3), Validators.maxLength(100)]],
                     address2: [''],
-                    zip: ['', Validators.required],
+                    zip: ['', [Validators.required, Validators.pattern(/^\d{2}-\d{3}$/)]],
                     email: ['', [Validators.required, Validators.email]],
-                    phone: ['', Validators.required],
-                    city: ['', Validators.required]
+                    phone: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
+                    city: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s-]+$/), Validators.minLength(3), Validators.maxLength(100)]]
                 });
             }
         });
@@ -99,6 +133,7 @@ export class CustomerItemComponent implements OnInit {
             this.customerService.updateCustomer(newCustomer).subscribe(
                 () => {
                     this._toast.open(`Dane klienta zostały zaktualizowane.`);
+                    this.router.navigate(['/customers']);
                 },
                 (err) => {
                     this._toast.open('Wystąpił błąd podczas aktualizacji danych klienta: ', err);
