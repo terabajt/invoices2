@@ -1,10 +1,10 @@
+<invoice2-team-sidebar-top (toggleSidenavEvent)="toggleSidenav()"></invoice2-team-sidebar-top>
+
 <div class="invoice2-sidebar">
   <mat-drawer-container class="sidenav-container" autosize>
     <mat-drawer #drawer class="main-sidenav" mode="side">
       <div class="logo">
         <img src="/assets/images/logo.png" alt="Logo aplikacji Invoices2 do wystawiania faktur online.">
-        <br />
-        <span>Twoje faktury online</span>
       </div>
       <mat-nav-list>
 
@@ -36,7 +36,7 @@
 
     <div class="main-sidenav-content">
       <div class="invoice2-main">
-        <invoice2-team-sidebar-top (toggleSidenavEvent)="toggleSidenav()"></invoice2-team-sidebar-top>
+
         <router-outlet></router-outlet>
       </div>
     </div>

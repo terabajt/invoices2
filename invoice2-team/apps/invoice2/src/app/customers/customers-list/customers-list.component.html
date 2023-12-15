@@ -29,10 +29,7 @@
             <th mat-header-cell *matHeaderCellDef> Telefon </th>
             <td mat-cell *matCellDef="let customer"> {{customer.phone}} </td>
           </ng-container>
-          <ng-container matColumnDef="city">
-            <th mat-header-cell *matHeaderCellDef> Miasto</th>
-            <td mat-cell *matCellDef="let customer"> {{customer.city}} </td>
-          </ng-container>
+
           <ng-container matColumnDef="options">
             <th mat-header-cell *matHeaderCellDef aria-label="row actions">Opcje</th>
             <td mat-cell *matCellDef="let customer">

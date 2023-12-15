@@ -1,3 +1,8 @@
-<button type="button" class="btn burger-menu" (click)="toggleSidenav()">
-  <mat-icon burger-menu__icon>menu</mat-icon>
-</button>
+<div class="app-header">
+  <p *ngIf="user" class="app-header__info">Twoje faktury online. Jesteś zalogowany jako: <span>{{ user.email }} Firma:
+      {{
+      user.name }}</span></p>
+  <button type="button" class="btn burger-menu" (click)="toggleSidenav()">
+    <mat-icon burger-menu__icon>menu</mat-icon>
+  </button>
+</div>

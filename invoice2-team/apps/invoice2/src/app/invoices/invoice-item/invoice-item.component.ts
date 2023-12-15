@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CustomerName, CustomerService, EntryItem, Invoice, InvoicesService } from '@invoice2-team/invoices';
+import { Customer, CustomerName, CustomerService, EntryItem, Invoice, InvoicesService } from '@invoice2-team/invoices';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
@@ -23,10 +23,15 @@ export class InvoiceItemComponent implements OnInit {
     invoiceId!: string;
     netAmountSum = 0;
     grossSum = 0;
+
+    displayNetSum = 0;
+    displayGrossSum = 0;
+
     currYear = new Date().getFullYear();
     currentUserId = '';
     customersName: CustomerName[] = [];
     lastNumberOfInvoice = 0;
+    currentCustomer!: Customer;
     constructor(
         private formBuilder: FormBuilder,
         private invoiceService: InvoicesService,
@@ -67,14 +72,17 @@ export class InvoiceItemComponent implements OnInit {
                             invoice.entryItem.map((item: EntryItem) => {
                                 const formItems = this.formBuilder.group({
                                     id_item: [item._id],
-                                    nameEntry: [item.nameEntry, Validators.required],
-                                    quantityEntry: [item.quantityEntry, Validators.required],
+                                    nameEntry: [item.nameEntry, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+                                    quantityEntry: [item.quantityEntry || 1, [Validators.required, Validators.maxLength(50), Validators.min(1)]],
                                     taxEntry: [item.taxEntry?.toString(), Validators.required],
-                                    netAmountEntry: [item.netAmountEntry, Validators.required],
-                                    grossEntry: [(item.quantityEntry || 0) * (item.taxEntry || 0) * (item.netAmountEntry || 0), Validators.required]
+                                    netAmountEntry: [item.netAmountEntry || 1, [Validators.required, Validators.maxLength(50), Validators.min(1)]],
+                                    grossEntry: [
+                                        (item.quantityEntry || 0) * (item.taxEntry || 0) * (item.netAmountEntry || 0) || 1,
+                                        [Validators.required, Validators.maxLength(100), Validators.min(1)]
+                                    ]
                                 });
 
-                                // Sbuscribe changes in form constrols for recalculate gross entry
+                                // Subscribe changes in form controls for recalculate gross entry
                                 formItems.get('quantityEntry')?.valueChanges.subscribe(() => {
                                     this.updateGrossEntry(formItems);
                                 });
@@ -93,7 +101,7 @@ export class InvoiceItemComponent implements OnInit {
                         entryItemsArray.controls.forEach((control) => {
                             const formItems = control as FormGroup;
 
-                            // Subuscribe changes in form constrols for recalculate gross entry for new added items
+                            // Subscribe changes in form controls for recalculate gross entry for new added items
                             formItems.get('quantityEntry')?.valueChanges.subscribe(() => {
                                 this.updateGrossEntry(formItems);
                             });
@@ -129,7 +137,7 @@ export class InvoiceItemComponent implements OnInit {
                 const newNumberOfInvoice = this.lastNumberOfInvoice + 1 || 0;
                 const invoiceNumber = `FV/${newNumberOfInvoice}/${this.currYear}`;
                 this.form = this.formBuilder.group({
-                    invoiceNumber: [invoiceNumber, [Validators.required, Validators.pattern(/^FV/)]],
+                    invoiceNumber: [invoiceNumber, [Validators.required, Validators.pattern(/^FV\/\d{2}\/\d{4}$/)]],
                     invoiceDate: [new Date(), Validators.required],
                     dueDate: [new Date(), Validators.required],
                     customer: [this.customersName, Validators.required],
@@ -153,6 +161,10 @@ export class InvoiceItemComponent implements OnInit {
         const entryItems = this.form.get('entryItems') as FormArray;
         return entryItems && entryItems.length > 0;
     }
+    getCurrentClient(id: string) {
+        this.customerService.getCustomer(id).subscribe((customer) => (this.currentCustomer = customer));
+    }
+
     get entryItemsArray() {
         return this.form.get('entryItems') as FormArray;
     }
@@ -221,6 +233,8 @@ export class InvoiceItemComponent implements OnInit {
             grossSum += control.get('grossEntry')?.value || 0;
         });
         this.form.patchValue({ netAmountSum: netAmountSum.toFixed(2), grossSum }, { emitEvent: false });
+        this.displayNetSum = netAmountSum;
+        this.displayGrossSum = grossSum;
     }
     get invoiceForm() {
         return this.form.controls;
