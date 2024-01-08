@@ -19,6 +19,8 @@ export class RegisterComponent {
     authError = false;
     errorMessage = 'E-mail albo hasło jest nieprawidłowe';
     footerYear: any;
+    infoMessage!: string;
+    ifInfo!: boolean;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -59,7 +61,11 @@ export class RegisterComponent {
             (user) => {
                 this.authError = false;
                 if (user.token) this.localstorageService.setToken(user.token);
-                this.router.navigate(['/']);
+                this.ifInfo = true;
+                this.infoMessage = 'Na twój mail wysłaliśmy link aktywacyjny. Sprawdź swoją skrzynkę i aktywuj swoje konto.';
+                setTimeout(() => {
+                    this.router.navigate(['/']);
+                }, 3000);
             },
             (error: HttpErrorResponse) => {
                 this.authError = true;

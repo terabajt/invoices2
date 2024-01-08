@@ -1,11 +1,12 @@
-import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { AuthService } from '@invoice2-team/users';
 
 @Component({
     selector: 'invoice2-team-sidebar',
     templateUrl: './sidebar.component.html',
-    styles: []
+    styles: [],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidebarComponent implements AfterViewInit {
     @ViewChild('drawer') drawer!: MatDrawer;

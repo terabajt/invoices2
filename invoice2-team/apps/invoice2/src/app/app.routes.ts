@@ -1,4 +1,4 @@
-import { Route } from '@angular/router';
+import { Route, RouterModule } from '@angular/router';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ShellComponent } from './shared/shell/shell.component';
 import { InvoicesListComponent } from './invoices/invoices-list/invoices-list.component';
@@ -9,6 +9,8 @@ import { AuthGuard } from '@invoice2-team/users';
 import { UserItemComponent } from './user/user-item/user-item.component';
 import { PrintComponent } from './print/print/print.component';
 import { InvoiceItemCopyComponent } from './invoices/invoice-item-copy/invoice-item-copy.component';
+import { LoginComponent } from '@invoice2-team/users';
+import { NgModule } from '@angular/core';
 
 export const appRoutes: Route[] = [
     {
@@ -55,7 +57,13 @@ export const appRoutes: Route[] = [
             {
                 path: 'print/:id',
                 component: PrintComponent
-            }
+            },
+            { path: '**', pathMatch: 'full', component: LoginComponent }
         ]
     }
 ];
+@NgModule({
+    imports: [RouterModule.forRoot(appRoutes, { useHash: false })],
+    exports: [RouterModule]
+})
+export class AppRoutingModule {}

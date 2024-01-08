@@ -6,12 +6,14 @@ function authJwt() {
 
 	return expressJwt({
 		secret,
-		algoritms: ['HS256'],
+		algorithms: ['HS256'],
 		// isRevoked: isRevoked,
 	}).unless({
 		path: [
 			`${api}/users/login`,
 			`${api}/users/register`,
+			/\/activation\/*/,
+
 			// { url: /(.*)/ },
 		],
 	});

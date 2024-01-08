@@ -60,6 +60,14 @@ const userSchema = mongoose.Schema({
 		required: true,
 		default: 0,
 	},
+	isActive: {
+		type: Boolean,
+		default: 0,
+	},
+	activationToken: {
+		type: String,
+		default: 0,
+	},
 });
 
 userSchema.virtual('id').get(function () {

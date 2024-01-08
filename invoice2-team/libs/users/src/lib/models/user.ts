@@ -14,4 +14,5 @@ export class User {
     taxNumber?: string;
     accountNumber?: string;
     lastNumberOfInvoice?: number;
+    isActive?: boolean;
 }

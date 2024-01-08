@@ -13,3 +13,5 @@ export * from './lib/models/user';
 export * from './lib/services/auth.service';
 export * from './lib/services/auth-guard.service';
 export * from './lib/services/jwt.interceptor';
+export * from './lib/shared/logged-user-info/logged-user-info.component';
+export * from './lib/pages/login/login.component';

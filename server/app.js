@@ -26,11 +26,13 @@ app.use(authJwt());
 const usersRoutes = require('./routes/users');
 const invoicesRoutes = require('./routes/invoices');
 const customersRoutes = require('./routes/customers');
+const activationRoutes = require('./routes/activation');
 
 //ROUTES
 app.use(`${API}/users`, usersRoutes);
 app.use(`${API}/invoices`, invoicesRoutes);
 app.use(`${API}/customers`, customersRoutes);
+app.use(`${API}/activation`, activationRoutes);
 
 //MONGOOSE CONNECT
 mongoose

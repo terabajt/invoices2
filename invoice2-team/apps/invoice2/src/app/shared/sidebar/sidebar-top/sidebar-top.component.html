@@ -1,8 +1,9 @@
 <div class="app-header">
-  <p *ngIf="user" class="app-header__info">Twoje faktury online. Jesteś zalogowany jako: <span>{{ user.email }} Firma:
-      {{
-      user.name }}</span></p>
-  <button type="button" class="btn burger-menu" (click)="toggleSidenav()">
-    <mat-icon burger-menu__icon>menu</mat-icon>
-  </button>
+  <div class="wrapper">
+    <invoice2-team-logged-user-info></invoice2-team-logged-user-info>
+    <button type="button" class="btn burger-menu" (click)="toggleSidenav()">
+      <mat-icon burger-menu__icon>menu</mat-icon>
+    </button>
+  </div>
+
 </div>

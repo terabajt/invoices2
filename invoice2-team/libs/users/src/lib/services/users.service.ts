@@ -16,6 +16,8 @@ export class UsersService {
         this.usersFacade.buildUserSession();
     }
     apiURLUsers = environment.apiURL + 'users';
+    apiURLActivation = environment.apiURL + 'activation';
+
     constructor(private usersFacade: UsersFacade, private http: HttpClient) {
         countriesLib.registerLocale(require('i18n-iso-countries/langs/en.json'));
     }
@@ -58,5 +60,8 @@ export class UsersService {
 
     isCurrentUserAuth() {
         return this.usersFacade.isAuthenticated$;
+    }
+    activateUser(token: string) {
+        return this.http.get(`${this.apiURLActivation}?token=${token}`);
     }
 }

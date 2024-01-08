@@ -4,6 +4,8 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+const sendActivationEmail = require('../helpers/mailer');
+const uuid = require('uuid');
 
 //localhost:3000/api/v1/users
 // FOR TESTING ONLY!!!
@@ -34,25 +36,29 @@ router.get('/:id', async (req, res) => {
 	res.status(200).send(user);
 });
 
+//Register
 router.post('/register', async (req, res) => {
 	try {
 		const existingUser = await User.findOne({ email: req.body.email });
 		if (existingUser) {
 			return res.status(400).send('User already exists');
 		}
-
+		const activationToken = uuid.v4();
 		const user = new User({
 			email: req.body.email,
 			name: req.body.email,
 			passwordHash: bcrypt.hashSync(req.body.password, 10),
+			isActive: false,
+			activationToken,
 		});
 
 		const savedUser = await user.save();
+		//Send activation mail
+		sendActivationEmail(req.body.email, activationToken);
 
 		if (!savedUser) {
 			return res.status(400).send('The user cannot be created.');
 		}
-
 		res.send(savedUser);
 	} catch (error) {
 		console.error(error);
@@ -125,7 +131,11 @@ router.post('/login', async (req, res) => {
 			secret,
 			{ expiresIn: '1d' }
 		);
-		res.status(200).send({ user: user.email, token: token });
+		if (user.isActive) {
+			res.status(200).send({ user: user.email, token: token });
+		} else {
+			res.status(404).send('User not activated');
+		}
 	} else {
 		return res.status(404).send('Password is wrong');
 	}

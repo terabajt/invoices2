@@ -15,6 +15,7 @@ import * as fromUsers from './state/users.reducer';
 import { UsersEffects } from './state/users.effects';
 import { UsersFacade } from './state/users.facade';
 import { RegisterComponent } from './pages/login/register/register.component';
+import { ActivationComponent } from './pages/activation/activation.component';
 
 const MATERIAL_MODULE = [MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule];
 
@@ -28,7 +29,7 @@ const MATERIAL_MODULE = [MatCardModule, MatFormFieldModule, MatInputModule, MatB
         StoreModule.forFeature(fromUsers.USERS_FEATURE_KEY, fromUsers.reducer),
         EffectsModule.forFeature([UsersEffects])
     ],
-    declarations: [LoginComponent, RegisterComponent],
+    declarations: [LoginComponent, RegisterComponent, ActivationComponent],
     providers: [UsersFacade]
 })
 export class UsersModule {}

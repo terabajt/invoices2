@@ -5,7 +5,7 @@ import { registerLocaleData } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-import { appRoutes } from './app.routes';
+import { AppRoutingModule, appRoutes } from './app.routes';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ShellComponent } from './shared/shell/shell.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
@@ -42,7 +42,7 @@ import { MatDialogConfig, MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@a
 import { DialogComponent } from './shared/dialog/dialog.component';
 import { CustomersListComponent } from './customers/customers-list/customers-list.component';
 import { CustomerItemComponent } from './customers/customer-item/customer-item.component';
-import { JwtInterceptor, UsersModule } from '@invoice2-team/users';
+import { JwtInterceptor, UsersModule, UsersService } from '@invoice2-team/users';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { UserItemComponent } from './user/user-item/user-item.component';
@@ -51,6 +51,8 @@ import { InvoiceItemCopyComponent } from './invoices/invoice-item-copy/invoice-i
 import { ButtonAddNewClientComponent } from './invoices/invoice-item/button-add-new-client/button-add-new-client.component';
 import { SidebarTopComponent } from './shared/sidebar/sidebar-top/sidebar-top.component';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { LoggedUserInfoComponent } from '@invoice2-team/users';
+import { LoginComponent } from '@invoice2-team/users';
 
 const MAT_DIALOG_GLOBAL_CONFIG: MatDialogConfig = {
     width: '700px',
@@ -107,7 +109,8 @@ registerLocaleData(localePl);
         PrintComponent,
         InvoiceItemCopyComponent,
         ButtonAddNewClientComponent,
-        SidebarTopComponent
+        SidebarTopComponent,
+        LoggedUserInfoComponent
     ],
     imports: [
         InvoicesModule,
@@ -121,7 +124,8 @@ registerLocaleData(localePl);
         RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
         BrowserAnimationsModule,
         ...MATERIAL_MODULE,
-        RouterModule
+        RouterModule,
+        AppRoutingModule
     ],
     providers: [
         { provide: LOCALE_ID, useValue: 'pl-PL' },
@@ -129,7 +133,8 @@ registerLocaleData(localePl);
         { provide: DEFAULT_CURRENCY_CODE, useValue: 'PLN' },
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: MAT_DIALOG_GLOBAL_CONFIG },
         { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: MAT_SNACK_BAR_GLOBAL_CONFIG },
-        BreakpointObserver
+        BreakpointObserver,
+        UsersService
     ],
     bootstrap: [AppComponent]
 })

@@ -1,6 +1,6 @@
 .login-box{
     top: 100px;
-    width: 400px;
+    max-width: 400px;
     height: 450px;
     background-color: var(--surface-a);
     position: absolute;
@@ -93,12 +93,13 @@
   }
 }
 .login-footer{
+  position: absolute;
   padding: 15px;
   color: white;
   background-color: #3f51b5;
-  position: absolute;
   width: 100%;
   bottom: 0;
+  z-index: -1;
 
   p{
     a{
@@ -114,13 +115,18 @@
     top: 50px;
     width: 400px;
     height: 430px;
+    width: 100%;
+    height: auto;
+
 
 }
   .login-footer{
-   font-size: 1.4rem;
-
+   font-size: 1.2rem;
+   padding-left: 10px;
+   padding-right: 10px;
+   bottom: 0;
     p{
-      font-size: 1rem;
+      font-size: 0.6rem;
       a{
         cursor: pointer;
         text-decoration: none;
