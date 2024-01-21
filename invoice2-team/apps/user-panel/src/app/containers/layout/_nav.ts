@@ -41,13 +41,20 @@ export const navItems: INavData[] = [
         ]
     },
     {
-        title: true,
-        name: 'Faktury',
-        url: '/dashboard'
-    },
-    {
         name: 'Ustawienia',
-        url: '/dashboard',
-        iconComponent: { name: 'cil-drop' }
+        url: '/user/form',
+        iconComponent: { name: 'cil-settings' },
+        children: [
+            {
+                name: 'Ustawienia użytkownika',
+                url: '/user/form'
+            }
+        ]
+    },
+
+    {
+        name: 'Wyloguj',
+        url: '/logout',
+        iconComponent: { name: 'cil-account-logout' }
     }
 ];

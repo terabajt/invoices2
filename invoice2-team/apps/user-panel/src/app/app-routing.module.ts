@@ -8,6 +8,8 @@ import { InvoiceItemComponent } from './invoices/invoice-item/invoice-item.compo
 import { InvoiceItemCopyComponent } from './invoices/invoice-item-copy/invoice-item-copy.component';
 import { CustomersListComponent } from './customers/customers-list/customers-list.component';
 import { CustomerItemComponent } from './customers/customer-item/customer-item.component';
+import { PrintComponent } from './print/print.component';
+import { UserItemComponent } from './user/user-item/user-item.component';
 
 const routes: Routes = [
     {
@@ -47,6 +49,14 @@ const routes: Routes = [
             {
                 path: 'customers/form',
                 component: CustomerItemComponent
+            },
+            {
+                path: 'print/:id',
+                component: PrintComponent
+            },
+            {
+                path: 'user/form',
+                component: UserItemComponent
             },
             {
                 path: '',
