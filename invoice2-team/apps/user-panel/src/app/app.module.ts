@@ -115,11 +115,16 @@ import { DialogComponent } from './shared/dialog/dialog.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterModule } from '@angular/router';
+import { InvoiceItemComponent } from './invoices/invoice-item/invoice-item.component';
+import { ButtonAddNewClientComponent } from './invoices/invoice-item/button-add-new-client/button-add-new-client.component';
+import { InvoiceItemCopyComponent } from './invoices/invoice-item-copy/invoice-item-copy.component';
+import { CustomersListComponent } from './customers/customers-list/customers-list.component';
+import { CustomerItemComponent } from './customers/customer-item/customer-item.component';
 
 const APP_CONTAINERS = [MainFooterComponent, MainHeaderComponent, MainLayoutComponent, InvoicesListComponent];
 
 @NgModule({
-    declarations: [AppComponent, ...APP_CONTAINERS, DialogComponent],
+    declarations: [AppComponent, ...APP_CONTAINERS, DialogComponent, InvoiceItemComponent, ButtonAddNewClientComponent, InvoiceItemCopyComponent, CustomersListComponent, CustomerItemComponent],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,

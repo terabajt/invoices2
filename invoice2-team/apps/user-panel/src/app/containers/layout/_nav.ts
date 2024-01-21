@@ -12,7 +12,7 @@ export const navItems: INavData[] = [
     },
     {
         name: 'Faktury',
-        url: '/base',
+        url: '/invoices',
         iconComponent: { name: 'cil-notes' },
         children: [
             {
@@ -21,7 +21,22 @@ export const navItems: INavData[] = [
             },
             {
                 name: 'Dodaj fakturę',
-                url: '/base/breadcrumbs'
+                url: '/invoices/form'
+            }
+        ]
+    },
+    {
+        name: 'Klienci',
+        url: '/customers',
+        iconComponent: { name: 'cil-user' },
+        children: [
+            {
+                name: 'Lista klientów',
+                url: '/customers'
+            },
+            {
+                name: 'Dodaj klienta',
+                url: '/customers/form'
             }
         ]
     },

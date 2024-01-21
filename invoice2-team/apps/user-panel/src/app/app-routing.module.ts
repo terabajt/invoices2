@@ -4,6 +4,10 @@ import { MainLayoutComponent } from './containers/layout/layout.component';
 import { InvoicesListComponent } from './invoices/invoices-list/invoices-list.component';
 import { AuthGuard, LoginComponent } from '@invoice2-team/users';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
+import { InvoiceItemComponent } from './invoices/invoice-item/invoice-item.component';
+import { InvoiceItemCopyComponent } from './invoices/invoice-item-copy/invoice-item-copy.component';
+import { CustomersListComponent } from './customers/customers-list/customers-list.component';
+import { CustomerItemComponent } from './customers/customer-item/customer-item.component';
 
 const routes: Routes = [
     {
@@ -19,6 +23,30 @@ const routes: Routes = [
             {
                 path: 'invoices',
                 component: InvoicesListComponent
+            },
+            {
+                path: 'invoices/form',
+                component: InvoiceItemComponent
+            },
+            {
+                path: 'invoices/form/:id',
+                component: InvoiceItemComponent
+            },
+            {
+                path: 'invoices/form/copy/:id',
+                component: InvoiceItemCopyComponent
+            },
+            {
+                path: 'customers',
+                component: CustomersListComponent
+            },
+            {
+                path: 'customers/form/:id',
+                component: CustomerItemComponent
+            },
+            {
+                path: 'customers/form',
+                component: CustomerItemComponent
             },
             {
                 path: '',
