@@ -1,11 +1,35 @@
-import { Component } from '@angular/core';
-import { navItems } from './_nav';
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+
+import { IconSetService } from '@coreui/icons-angular';
+import { iconSubset } from './icons/icon-subset';
+import { Title } from '@angular/platform-browser';
+import { UsersService } from '@invoice2-team/users';
 
 @Component({
     selector: 'app-root',
-    templateUrl: './app.component.html',
-    styles: []
+    template: '<router-outlet></router-outlet>'
 })
-export class AppComponent {
-    public navItems = navItems;
+export class AppComponent implements OnInit {
+    title = 'Invoices2 - Twoje nowoczesne fakturowanie.';
+
+    constructor(
+        private router: Router,
+        private titleService: Title,
+        private iconSetService: IconSetService,
+        private usersServices: UsersService
+    ) {
+        titleService.setTitle(this.title);
+        // iconSet singleton
+        iconSetService.icons = { ...iconSubset };
+    }
+
+    ngOnInit(): void {
+        this.usersServices.initAppSession();
+        this.router.events.subscribe((evt) => {
+            if (!(evt instanceof NavigationEnd)) {
+                return;
+            }
+        });
+    }
 }

@@ -1,4 +1,5 @@
-<p *ngIf="user" class="app-header__info wrapper">Twoje faktury online. Jesteś zalogowany jako: <span>{{ user.email }}
+<p *ngIf="user" class="app-header__info wrapper">Twoje faktury online. Jesteś zalogowany jako: <span>{{ user ?
+    user.email : 'Brak nazwy' }}
     Firma:
-    {{ user.name }}</span>
+    {{ user ? user.name : 'Brak nazwy' }}</span>
 </p>

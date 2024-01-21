@@ -52,7 +52,6 @@ import { ButtonAddNewClientComponent } from './invoices/invoice-item/button-add-
 import { SidebarTopComponent } from './shared/sidebar/sidebar-top/sidebar-top.component';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { LoggedUserInfoComponent } from '@invoice2-team/users';
-import { LoginComponent } from '@invoice2-team/users';
 
 const MAT_DIALOG_GLOBAL_CONFIG: MatDialogConfig = {
     width: '700px',
@@ -102,7 +101,6 @@ registerLocaleData(localePl);
         InvoicesListComponent,
         InvoiceItemComponent,
         DialogComponent,
-
         CustomersListComponent,
         CustomerItemComponent,
         UserItemComponent,
