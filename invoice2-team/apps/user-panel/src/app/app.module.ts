@@ -126,7 +126,18 @@ import { UserItemComponent } from './user/user-item/user-item.component';
 const APP_CONTAINERS = [MainFooterComponent, MainHeaderComponent, MainLayoutComponent, InvoicesListComponent];
 
 @NgModule({
-    declarations: [AppComponent, ...APP_CONTAINERS, DialogComponent, InvoiceItemComponent, ButtonAddNewClientComponent, InvoiceItemCopyComponent, CustomersListComponent, CustomerItemComponent, PrintComponent, UserItemComponent],
+    declarations: [
+        AppComponent,
+        ...APP_CONTAINERS,
+        DialogComponent,
+        InvoiceItemComponent,
+        ButtonAddNewClientComponent,
+        InvoiceItemCopyComponent,
+        CustomersListComponent,
+        CustomerItemComponent,
+        PrintComponent,
+        UserItemComponent
+    ],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
@@ -162,10 +173,6 @@ const APP_CONTAINERS = [MainFooterComponent, MainHeaderComponent, MainLayoutComp
         InvoicesModule
     ],
     providers: [
-        {
-            provide: LocationStrategy,
-            useClass: HashLocationStrategy
-        },
         IconSetService,
         Title,
         { provide: LOCALE_ID, useValue: 'pl-PL' },

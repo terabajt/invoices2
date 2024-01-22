@@ -26,10 +26,5 @@ export class AppComponent implements OnInit {
 
     ngOnInit(): void {
         this.usersServices.initAppSession();
-        this.router.events.subscribe((evt) => {
-            if (!(evt instanceof NavigationEnd)) {
-                return;
-            }
-        });
     }
 }

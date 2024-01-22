@@ -16,7 +16,6 @@ const routes: Routes = [
         path: '',
         canActivate: [AuthGuard],
         component: MainLayoutComponent,
-
         children: [
             {
                 path: 'dashboard',
@@ -57,15 +56,14 @@ const routes: Routes = [
             {
                 path: 'user/form',
                 component: UserItemComponent
-            },
-            {
-                path: '',
-                pathMatch: 'full',
-                redirectTo: 'dashboard'
             }
         ]
     },
-    { path: '**', pathMatch: 'full', component: LoginComponent }
+    {
+        path: 'login',
+        pathMatch: 'full',
+        component: LoginComponent
+    }
 ];
 
 @NgModule({

@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                     if (user.token) {
                         this.localstorageService.setToken(user.token);
                     }
-                    this.router.navigate(['/']);
+                    this.router.navigate(['/dashboard']);
                 },
                 (error: HttpErrorResponse) => {
                     this.authError = true;

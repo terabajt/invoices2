@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
+import { LoginComponent } from '@invoice2-team/users';
 
 const routes: Routes = [
     {
