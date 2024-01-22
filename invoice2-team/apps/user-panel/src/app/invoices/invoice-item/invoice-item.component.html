@@ -63,10 +63,14 @@
                   <mat-label>Klient</mat-label>
                   <mat-select formControlName="customer" name="customer"
                     (selectionChange)="getCurrentClient(form.value.customer)">
-                    <invoice2-team-button-add-new-client></invoice2-team-button-add-new-client>
+                    <invoice2-team-button-add-new-client
+                      [hidden]="customersName.length > 0"></invoice2-team-button-add-new-client>
                     <mat-option *ngFor="let customer of customersName" [value]="customer.id">{{ customer.name
                       }}</mat-option>
                   </mat-select>
+
+                  <invoice2-team-button-add-new-client
+                    [hidden]="customersName.length > 0"></invoice2-team-button-add-new-client>
                   <mat-error>Proszę wybrać klienta.</mat-error>
                 </mat-form-field>
                 <div *ngIf="currentCustomer">
@@ -193,5 +197,9 @@
     </div>
   </mat-card-content>
   <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="onSaveForm()" [disabled]="form.invalid">{{ editMode ? 'Zapisz' :
+      'Dodaj' }}</button>
+    <button mat-raised-button color="warn" (click)="showDialog()">Anuluj</button>
+    <button mat-raised-button color="accent" *ngIf="editMode" (click)="onPrint()">Drukuj</button>
   </mat-card-actions>
 </mat-card>

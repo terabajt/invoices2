@@ -86,13 +86,21 @@ export class CustomerItemComponent implements OnInit {
                         taxNumber: [customer.taxNumber, [Validators.required, this.validateNIP.bind(this)]],
                         address1: [
                             customer.address1,
-                            [Validators.required, Validators.pattern(/^[a-zA-Z\s-]+$/), Validators.minLength(3), Validators.maxLength(100)]
+                            [
+                                Validators.required,
+                                Validators.pattern(/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\d\s./-]+$/),
+                                Validators.minLength(3),
+                                Validators.maxLength(100)
+                            ]
                         ],
                         address2: [customer.address2],
                         zip: [customer.zip, [Validators.required, Validators.pattern(/^\d{2}-\d{3}$/)]],
                         email: [customer.email, [Validators.required, Validators.email]],
                         phone: [customer.phone, [Validators.required, Validators.pattern(/^\d{9}$/)]],
-                        city: [customer.city, [Validators.required, Validators.pattern(/^[a-zA-Z\s-]+$/), Validators.minLength(3), Validators.maxLength(100)]]
+                        city: [
+                            customer.city,
+                            [Validators.required, Validators.pattern(/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\s.-]+$/), Validators.minLength(3), Validators.maxLength(100)]
+                        ]
                     });
                 });
             } else {
@@ -100,12 +108,18 @@ export class CustomerItemComponent implements OnInit {
                 this.form = this.formBuilder.group({
                     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
                     taxNumber: ['', [Validators.required, this.validateNIP.bind(this)]],
-                    address1: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s-]+$/), Validators.minLength(3), Validators.maxLength(100)]],
+                    address1: [
+                        '',
+                        [Validators.required, Validators.pattern(/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\d\s./-]+$/), Validators.minLength(3), Validators.maxLength(100)]
+                    ],
                     address2: [''],
                     zip: ['', [Validators.required, Validators.pattern(/^\d{2}-\d{3}$/)]],
                     email: ['', [Validators.required, Validators.email]],
                     phone: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
-                    city: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s-]+$/), Validators.minLength(3), Validators.maxLength(100)]]
+                    city: [
+                        '',
+                        [Validators.required, Validators.pattern(/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\s.-]+$/), Validators.minLength(3), Validators.maxLength(100)]
+                    ]
                 });
             }
         });

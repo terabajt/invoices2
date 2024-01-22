@@ -17,11 +17,13 @@ export const navItems: INavData[] = [
         children: [
             {
                 name: 'Lista faktur',
-                url: '/invoices'
+                url: '/invoices',
+                iconComponent: { name: 'cil-notes' }
             },
             {
                 name: 'Dodaj fakturę',
-                url: '/invoices/form'
+                url: '/invoices/form',
+                iconComponent: { name: 'cilNoteAdd' }
             }
         ]
     },
@@ -32,11 +34,13 @@ export const navItems: INavData[] = [
         children: [
             {
                 name: 'Lista klientów',
-                url: '/customers'
+                url: '/customers',
+                iconComponent: { name: 'cil-list' }
             },
             {
                 name: 'Dodaj klienta',
-                url: '/customers/form'
+                url: '/customers/form',
+                iconComponent: { name: 'cil-user-plus' }
             }
         ]
     },
@@ -47,7 +51,8 @@ export const navItems: INavData[] = [
         children: [
             {
                 name: 'Ustawienia użytkownika',
-                url: '/user/form'
+                url: '/user/form',
+                iconComponent: { name: 'cilApplicationsSettings' }
             }
         ]
     },

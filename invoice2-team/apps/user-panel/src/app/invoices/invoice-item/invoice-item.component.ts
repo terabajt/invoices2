@@ -138,7 +138,7 @@ export class InvoiceItemComponent implements OnInit {
                 const newNumberOfInvoice = this.lastNumberOfInvoice + 1 || 0;
                 const invoiceNumber = `FV/${newNumberOfInvoice}/${this.currYear}`;
                 this.form = this.formBuilder.group({
-                    invoiceNumber: [invoiceNumber, [Validators.required, Validators.pattern(/^FV\/\d{2}\/\d{4}$/)]],
+                    invoiceNumber: [invoiceNumber, [Validators.required, Validators.pattern(/^FV\/\d{1,3}\/\d{4}$/)]],
                     invoiceDate: [new Date(), Validators.required],
                     dueDate: [new Date(), Validators.required],
                     customer: [this.customersName, Validators.required],
@@ -191,11 +191,11 @@ export class InvoiceItemComponent implements OnInit {
     addEntryItem() {
         const entryItems = this.form.get('entryItems') as FormArray;
         const newEntryItem = this.formBuilder.group({
-            nameEntry: ['', Validators.required],
-            quantityEntry: [0, Validators.required],
+            nameEntry: ['Nazwa', Validators.required],
+            quantityEntry: [1, Validators.required],
             taxEntry: ['23', Validators.required],
-            netAmountEntry: [0, Validators.required],
-            grossEntry: [0, Validators.required]
+            netAmountEntry: [1, Validators.required],
+            grossEntry: [1.23, Validators.required]
         });
         entryItems.push(newEntryItem);
 
