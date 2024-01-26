@@ -152,7 +152,7 @@ export class UserItemComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe((res) => {
             if (res) {
-                this.router.navigate(['/']);
+                this.router.navigate(['/dashboard']);
             }
         });
     }

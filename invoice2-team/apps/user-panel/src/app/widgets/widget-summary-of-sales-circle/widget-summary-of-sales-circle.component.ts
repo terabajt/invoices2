@@ -53,16 +53,6 @@ export class WidgetSummaryOfSalesCircleComponent implements OnInit {
 
         // Pastel Palette use
         const pastelPalette = [
-            '#FFEB3B',
-            '#FFC107',
-            '#FF9800',
-            '#FF5722',
-            '#FF5722',
-            '#FF5722',
-            '#FF5722',
-            '#FF5722',
-            '#FF5722',
-            '#FF5722',
             '#A2E6FD',
             '#FFDDC1',
             '#FFB48F',
@@ -73,7 +63,17 @@ export class WidgetSummaryOfSalesCircleComponent implements OnInit {
             '#B0E0FF',
             '#9FFFD2',
             '#A5FFD6',
-            '#A2E6FD'
+            '#A2E6FD',
+            '#FFEB3B',
+            '#FFC107',
+            '#FF9800',
+            '#FF5722',
+            '#FF5722',
+            '#FF5722',
+            '#FF5722',
+            '#FF5722',
+            '#FF5722',
+            '#FF5722'
         ];
         this.colorScheme = {
             domain: pastelPalette
