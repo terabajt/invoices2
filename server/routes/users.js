@@ -85,6 +85,10 @@ router.post('/', async (req, res) => {
 });
 router.put('/:id', async (req, res) => {
 	const userExist = await User.findById(req.params.id);
+	// Sprawdź, czy użytkownik istnieje
+	if (!userExist) {
+		return res.status(404).json({ success: false, message: 'User not found!' });
+	}
 	let newPassword;
 
 	if (req.body.password) {

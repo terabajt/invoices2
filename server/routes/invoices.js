@@ -215,4 +215,37 @@ router.get('/get/invoicesNumber', async (req, res) => {
 	});
 });
 
+//STATISTICS
+router.get('/statistics/:userID', async (req, res) => {
+	try {
+		console.log('Dotarło do endpointu /statistics');
+
+		// Pobierz identyfikator użytkownika z parametrów ścieżki
+		const userID = req.params.userID;
+
+		// Sprawdź, czy identyfikator użytkownika jest poprawny
+		if (!mongoose.Types.ObjectId.isValid(userID)) {
+			console.log('Nieprawidłowy identyfikator użytkownika');
+			return res.status(400).json({ error: 'Invalid ID format for user.' });
+		}
+
+		// Pobierz faktury tylko dla określonego użytkownika
+		const invoices = await Invoice.find({ user: userID });
+
+		// Grupuj faktury według roku i miesiąca, oblicz sumy brutto
+		const yearlyGrossSums = invoices.reduce((acc, invoice) => {
+			const year = invoice.invoiceDate.getFullYear();
+			const month = invoice.invoiceDate.getMonth();
+			const key = `${year}-${month}`;
+			acc[key] = (acc[key] || 0) + invoice.grossSum;
+			return acc;
+		}, {});
+
+		res.json(yearlyGrossSums);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: 'Wystąpił błąd serwera', details: error.message });
+	}
+});
+
 module.exports = router;

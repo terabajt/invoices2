@@ -35,7 +35,7 @@
           </mat-form-field>
           <mat-form-field class="col-12 col-md-3" [floatLabel]="getFloatLabelValue()">
             <mat-label>E-mail</mat-label>
-            <input formControlName="email" matInput placeholder="E-mail">
+            <input formControlName="email" matInput placeholder="E-mail" readonly>
             <mat-error>Podaj adres e-mail.</mat-error>
           </mat-form-field>
 
@@ -89,7 +89,7 @@
           </mat-form-field>
           <mat-form-field class="col-12 col-md-4" [floatLabel]="getFloatLabelValue()">
             <mat-label>Kraj</mat-label>
-            <mat-select formControlName="country" formControlName="customer" name="customer" filterBy="name"
+            <mat-select formControlName="country" formControlName="country" name="country" filterBy="name"
               placeholder="Wybierz kraj">
               <mat-option *ngFor="let country of countries" [value]="country.id">{{ country.name }}
               </mat-option>

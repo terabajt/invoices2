@@ -36,7 +36,8 @@ import {
     SharedModule,
     SidebarModule,
     TabsModule,
-    UtilitiesModule
+    UtilitiesModule,
+    WidgetModule
 } from '@coreui/angular';
 
 //Import Angular Material
@@ -70,8 +71,8 @@ const MAT_DIALOG_GLOBAL_CONFIG: MatDialogConfig = {
 
 const MAT_SNACK_BAR_GLOBAL_CONFIG: MatSnackBarConfig = {
     duration: 2500,
-    verticalPosition: 'top',
-    horizontalPosition: 'center'
+    verticalPosition: 'bottom',
+    horizontalPosition: 'right'
 };
 
 const MATERIAL_MODULE = [

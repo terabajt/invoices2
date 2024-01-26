@@ -17,7 +17,7 @@ export class UserItemComponent implements OnInit {
     isLoadingResults = false;
     form!: FormGroup;
     floatLabelControl = new FormControl('auto' as FloatLabelType);
-    currentUserId = '';
+
     countries!: { id: string; name: string }[];
 
     constructor(
@@ -72,48 +72,76 @@ export class UserItemComponent implements OnInit {
             .observeCurrentUser()
             .pipe(take(1))
             .subscribe((user) => {
-                if (user && user.id) this.currentUserId = user?.id;
-                this.form = this.formBuilder.group({
-                    name: [user?.name, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-                    password: [user?.password],
-                    email: [user?.email, [Validators.required, Validators.email]],
-                    phone: [user?.phone, [Validators.required, Validators.pattern(/^\d{9}$/)]],
-                    address1: [user?.address1, [Validators.required, Validators.pattern(/^[a-zA-Z\s-]+$/), Validators.minLength(3), Validators.maxLength(100)]],
-                    address2: [user?.address2],
-                    zip: [user?.zip, [Validators.required, Validators.pattern(/^\d{2}-\d{3}$/)]],
-                    city: [user?.city, [Validators.required, Validators.pattern(/^[a-zA-Z\s-]+$/), Validators.minLength(3), Validators.maxLength(100)]],
-                    country: [user?.country, Validators.required],
-                    taxNumber: [user?.taxNumber, [Validators.required, this.validateNIP.bind(this)]],
-                    accountNumber: [user?.accountNumber, [Validators.required, Validators.pattern(/\d{2} \d{4} \d{4} \d{4} \d{4} \d{4} \d{4}/)]]
-                });
+                if (user && user.id) {
+                    const currentUserId = user?.id;
+                    this.form = this.formBuilder.group({
+                        name: [user?.name, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+                        password: [user?.password],
+                        email: [user?.email, [Validators.required, Validators.email]],
+                        phone: [user?.phone, [Validators.required, Validators.pattern(/^\d{9}$/)]],
+                        address1: [
+                            user?.address1,
+                            [
+                                Validators.required,
+                                Validators.pattern(/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\d\s./-]+$/),
+                                Validators.minLength(3),
+                                Validators.maxLength(100)
+                            ]
+                        ],
+                        address2: [user?.address2],
+                        zip: [user?.zip, [Validators.required, Validators.pattern(/^\d{2}-\d{3}$/)]],
+                        city: [
+                            user?.city,
+                            [
+                                Validators.required,
+                                Validators.pattern(/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\d\s./-]+$/),
+                                Validators.minLength(3),
+                                Validators.maxLength(100)
+                            ]
+                        ],
+                        country: [user?.country || this.countries.find((c) => c.name === 'Polska')?.id, Validators.required],
+                        taxNumber: [user?.taxNumber, [Validators.required, this.validateNIP.bind(this)]],
+                        accountNumber: [user?.accountNumber, [Validators.required, Validators.pattern(/\d{2} \d{4} \d{4} \d{4} \d{4} \d{4} \d{4}/)]],
+                        id: [currentUserId]
+                    });
+                }
             });
         this.usersService.initAppSession();
     }
 
     onSaveForm() {
-        const formData = this.form.value;
-        const newUserData: User = {
-            name: formData.name,
-            password: formData.password,
-            email: formData.editMode,
-            phone: formData.phone,
-            address1: formData.address1,
-            address2: formData.address2,
-            zip: formData.zip,
-            city: formData.city,
-            country: formData.country,
-            taxNumber: formData.taxNumber,
-            accountNumber: formData.accountNumber,
-            id: this.currentUserId
-        };
-        this.usersService.updateUser(newUserData).subscribe(
-            () => {
-                this._toast.open(`Dane zostały zaktualizowane`);
-            },
-            (err) => {
-                this._toast.open('Wystąpił błąd podczas aktualizacji danych', err);
+        const dialogRef = this._dialog.open(DialogComponent, {
+            data: {
+                message: 'Dane zostaną zaktualizowane. Czy chcesz kontynuować?'
             }
-        );
+        });
+        dialogRef.afterClosed().subscribe((res) => {
+            if (res) {
+                const formData = this.form.value;
+                const newUserData: User = {
+                    name: formData.name,
+                    password: formData.password,
+                    email: formData.email,
+                    phone: formData.phone,
+                    address1: formData.address1,
+                    address2: formData.address2,
+                    zip: formData.zip,
+                    city: formData.city,
+                    country: formData.country,
+                    taxNumber: formData.taxNumber,
+                    accountNumber: formData.accountNumber,
+                    id: formData.id
+                };
+                this.usersService.updateUser(newUserData).subscribe(
+                    () => {
+                        this._toast.open(`Dane zostały zaktualizowane`);
+                    },
+                    (err) => {
+                        this._toast.open('Wystąpił błąd podczas aktualizacji danych', err);
+                    }
+                );
+            }
+        });
     }
 
     onCancel() {

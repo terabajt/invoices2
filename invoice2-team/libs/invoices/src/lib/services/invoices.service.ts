@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment.development';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { Invoice } from '../models/invoice';
 import { EntryItem } from '../models/entryItem';
+import { LocalstorageService } from 'libs/users/src/lib/services/localstorage.services';
+import { catchError } from 'rxjs/operators';
+
+import mongoose from 'mongoose';
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +16,10 @@ export class InvoicesService {
     apiURLInvoices = environment.apiURL + 'invoices';
     apiURLItems = 'entryitem';
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        private http: HttpClient,
+        private localstorageService: LocalstorageService
+    ) {}
     getInvoices(userId: string): Observable<Invoice[]> {
         return this.http.get<Invoice[]>(`${this.apiURLInvoices}/foruser/${userId}`);
     }
@@ -42,5 +49,49 @@ export class InvoicesService {
     }
     getNumberOfInvoices() {
         return this.http.get<{ invoicesCount: number }>(`${this.apiURLInvoices}/get/invoicesNumber`);
+    }
+    //Statistics
+    getMonthlyGrossSums(userID: string): Observable<Record<number, number>> {
+        // Sprawdź, czy przekazano prawidłowy identyfikator użytkownika
+        if (!mongoose.Types.ObjectId.isValid(userID)) {
+            // Możesz obsłużyć błąd tutaj lub w inny sposób
+            console.error('Nieprawidłowy identyfikator użytkownika');
+            return throwError('Invalid user ID format.');
+        }
+
+        // Wyślij żądanie z dodanym identyfikatorem użytkownika w ścieżce URL
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json'
+            // Tutaj możesz dodać inne nagłówki, jeśli są potrzebne
+        });
+
+        return this.http.get<Record<number, number>>(`${this.apiURLInvoices}/statistics/${userID}`, { headers }).pipe(
+            catchError((error: any) => {
+                console.error('Błąd w żądaniu getMonthlyGrossSums:', error);
+                return throwError('Wystąpił błąd w żądaniu getMonthlyGrossSums.');
+            })
+        );
+    }
+
+    getYearlyGrossSums(userID: string): Observable<Record<number, number>> {
+        // Sprawdź, czy przekazano prawidłowy identyfikator użytkownika
+        if (!mongoose.Types.ObjectId.isValid(userID)) {
+            // Możesz obsłużyć błąd tutaj lub w inny sposób
+            console.error('Nieprawidłowy identyfikator użytkownika');
+            return throwError('Invalid user ID format.');
+        }
+
+        // Wyślij żądanie z dodanym identyfikatorem użytkownika w ścieżce URL
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json'
+            // Tutaj możesz dodać inne nagłówki, jeśli są potrzebne
+        });
+
+        return this.http.get<Record<number, number>>(`${this.apiURLInvoices}/statistics/${userID}`, { headers }).pipe(
+            catchError((error: any) => {
+                console.error('Błąd w żądaniu getYearlyGrossSums:', error);
+                return throwError('Wystąpił błąd w żądaniu getYearlyGrossSums.');
+            })
+        );
     }
 }

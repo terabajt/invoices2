@@ -18,12 +18,15 @@ export class UsersService {
     apiURLUsers = environment.apiURL + 'users';
     apiURLActivation = environment.apiURL + 'activation';
 
-    constructor(private usersFacade: UsersFacade, private http: HttpClient) {
-        countriesLib.registerLocale(require('i18n-iso-countries/langs/en.json'));
+    constructor(
+        private usersFacade: UsersFacade,
+        private http: HttpClient
+    ) {
+        countriesLib.registerLocale(require('i18n-iso-countries/langs/pl.json'));
     }
 
     getCountries(): { id: string; name: string }[] {
-        return Object.entries(countriesLib.getNames('en', { select: 'official' })).map((entry) => {
+        return Object.entries(countriesLib.getNames('pl', { select: 'official' })).map((entry) => {
             return {
                 id: entry[0],
                 name: entry[1]

@@ -1,14 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { InvoicesService } from '@invoice2-team/invoices';
 import { UsersService } from '@invoice2-team/users';
-import { LegendPosition } from '@swimlane/ngx-charts';
+import { LegendPosition, ColorHelper } from '@swimlane/ngx-charts';
 
 @Component({
-    selector: 'app-widgets',
-    templateUrl: './widgets.component.html',
+    selector: 'app-widget-summary-of-sales-circle',
+    templateUrl: './widget-summary-of-sales-circle.component.html',
     styles: ``
 })
-export class WidgetsComponent implements OnInit, AfterViewInit {
+export class WidgetSummaryOfSalesCircleComponent implements OnInit {
     public single: any[] = [];
     public colorScheme: any;
     public below = LegendPosition.Below;
@@ -34,7 +34,7 @@ export class WidgetsComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
         //Adjust chart width to parent width
         if (this.ContainerRef && this.ContainerRef.nativeElement) {
-            this.columnWidth = (this.ContainerRef.nativeElement as HTMLElement).clientWidth * 0.95;
+            this.columnWidth = (this.ContainerRef.nativeElement as HTMLElement).clientWidth * 0.2;
             this.cdr.detectChanges();
         }
     }
@@ -51,30 +51,32 @@ export class WidgetsComponent implements OnInit, AfterViewInit {
             }
         });
 
+        // Pastel Palette use
+        const pastelPalette = [
+            '#FFEB3B',
+            '#FFC107',
+            '#FF9800',
+            '#FF5722',
+            '#FF5722',
+            '#FF5722',
+            '#FF5722',
+            '#FF5722',
+            '#FF5722',
+            '#FF5722',
+            '#A2E6FD',
+            '#FFDDC1',
+            '#FFB48F',
+            '#FF9F80',
+            '#FFA08E',
+            '#FFB8C6',
+            '#D5B8FF',
+            '#B0E0FF',
+            '#9FFFD2',
+            '#A5FFD6',
+            '#A2E6FD'
+        ];
         this.colorScheme = {
-            domain: [
-                '#FFEB3B',
-                '#FFC107',
-                '#FF9800',
-                '#FF5722',
-                '#FF5722',
-                '#FF5722',
-                '#FF5722',
-                '#FF5722',
-                '#FF5722',
-                '#FF5722',
-                '#A2E6FD',
-                '#FFDDC1',
-                '#FFB48F',
-                '#FF9F80',
-                '#FFA08E',
-                '#FFB8C6',
-                '#D5B8FF',
-                '#B0E0FF',
-                '#9FFFD2',
-                '#A5FFD6',
-                '#A2E6FD'
-            ]
+            domain: pastelPalette
         };
     }
 

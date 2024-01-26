@@ -114,4 +114,10 @@ export class LoginComponent implements OnInit, OnDestroy {
             }
         );
     }
+    demo() {
+        this.loginFormGroup = this.formBuilder.group({
+            email: ['demo@demo.pl', [Validators.required, Validators.email]],
+            password: ['123456', Validators.required]
+        });
+    }
 }

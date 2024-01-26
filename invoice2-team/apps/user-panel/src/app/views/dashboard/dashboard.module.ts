@@ -19,9 +19,12 @@ import {
 import { IconModule } from '@coreui/icons-angular';
 import { ChartjsModule } from '@coreui/angular-chartjs';
 import { ReactiveFormsModule } from '@angular/forms';
+import { WidgetsComponent } from '../../widgets/widgets/widgets/widgets.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { WidgetSummaryOfSalesCircleComponent } from '../../widgets/widget-summary-of-sales-circle/widget-summary-of-sales-circle.component';
 
 @NgModule({
-    declarations: [DashboardComponent],
+    declarations: [DashboardComponent, WidgetsComponent, WidgetSummaryOfSalesCircleComponent],
     imports: [
         CommonModule,
         DashboardRoutingModule,
@@ -39,7 +42,8 @@ import { ReactiveFormsModule } from '@angular/forms';
         ButtonGroupModule,
         ChartjsModule,
         AvatarModule,
-        TableModule
+        TableModule,
+        NgxChartsModule
     ]
 })
 export class DashboardModule {}
