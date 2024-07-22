@@ -1,8 +1,37 @@
 # invoices2
 A better version full stack app MEAN of the invoicing application.
 
+# Live Demo
+You can try out the application at the following URL:
+[https://invoices2.ewebpartner.pl/](https://invoices2.ewebpartner.pl/)
+
 # Assumptions
 The application is used to issue invoices online. 
+
+## Installation
+1. Clone the repository:
+```bash
+  git clone https://github.com/terabajt/invoices2.git
+```
+2. Navigate to the project directory:
+```bash
+   cd invoices2
+```
+3. Install the dependencies:
+```bash
+   npm install
+```
+## Running the Project Locally
+
+1. Build the project
+```bash
+  npx nx run apps/invoice2:build
+```
+2. Serve the project:
+```bash
+   npx nx run apps/invoice2:serve
+```
+3. Open your browser and navigate to http://localhost:4200
 
 # Server run:
 
