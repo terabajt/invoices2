@@ -3,12 +3,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AbstractControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Dodano import
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CustomerService } from '@invoice2-team/invoices';
 import { UsersService } from '@invoice2-team/users';
 import { of } from 'rxjs';
 import { CustomerItemComponent } from './customer-item.component';
+
+const activatedRouteMock = {
+    params: of({ id: '123' })
+};
+
+const routes: Routes = [{ path: 'customers', component: CustomerItemComponent }];
 
 describe('CustomerItemComponent', () => {
     let component: CustomerItemComponent;
@@ -29,16 +36,11 @@ describe('CustomerItemComponent', () => {
 
         await TestBed.configureTestingModule({
             declarations: [CustomerItemComponent],
-            imports: [
-                ReactiveFormsModule,
-                MatSnackBarModule,
-                MatDialogModule,
-                RouterTestingModule,
-                BrowserAnimationsModule // Dodano import
-            ],
+            imports: [ReactiveFormsModule, MatSnackBarModule, MatDialogModule, RouterTestingModule.withRoutes(routes), BrowserAnimationsModule],
             providers: [
                 { provide: CustomerService, useValue: customerServiceMock },
-                { provide: UsersService, useValue: usersServiceMock }
+                { provide: UsersService, useValue: usersServiceMock },
+                { provide: ActivatedRoute, useValue: activatedRouteMock }
             ],
             schemas: [NO_ERRORS_SCHEMA]
         }).compileComponents();
@@ -60,14 +62,15 @@ describe('CustomerItemComponent', () => {
         expect(component.currentUserId).toBe('user123');
     });
 
-    it('should initialize customer form in edit mode', () => {
+    it('should initialize customer form in edit mode', async () => {
         component.editMode = true;
-        component.ngOnInit(); // Upewnij się, że ngOnInit jest wywoływany, aby zainicjować formularz
+        component.ngOnInit();
         fixture.detectChanges();
 
-        expect(customerServiceMock.getCustomer).toHaveBeenCalled();
-        expect(component.form).toBeDefined();
-        expect(component.form.get('name')?.value).toBe('Test Customer');
+        await fixture.whenStable();
+        fixture.detectChanges();
+        const nameControl = component.form.get('name');
+        expect(nameControl?.value).toBe('Test Customer');
     });
 
     it('should validate NIP correctly', () => {
