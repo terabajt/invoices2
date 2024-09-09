@@ -5,8 +5,8 @@ import { FloatLabelType } from '@angular/material/form-field';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Customer, CustomerService } from '@invoice2-team/invoices';
-import { DialogComponent } from '../../shared/dialog/dialog.component';
 import { UsersService } from '@invoice2-team/users';
+import { DialogComponent } from '../../shared/dialog/dialog.component';
 
 @Component({
     selector: 'app-customer-item',

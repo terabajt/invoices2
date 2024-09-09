@@ -32,8 +32,8 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
 
     ngOnInit(): void {
         this.paginator._intl.itemsPerPageLabel = 'Ilość klientów na stronie';
-        this._initUser(); // Dodane wywołanie _initUser przy inicjalizacji
-        this._initCustomers(); // Dodane wywołanie _initCustomers przy inicjalizacji
+        this._initUser();
+        this._initCustomers();
     }
 
     private _initUser() {

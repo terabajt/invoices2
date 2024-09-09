@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Customer, CustomerName, CustomerService, EntryItem, Invoice, InvoicesService } from '@invoice2-team/invoices';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogComponent } from '../../shared/dialog/dialog.component';
 import { UsersService } from '@invoice2-team/users';
+import { DialogComponent } from '../../shared/dialog/dialog.component';
 
 @Component({
     selector: 'app-invoice-item',
@@ -66,16 +66,17 @@ export class InvoiceItemComponent implements OnInit {
         this.route.params.pipe().subscribe((params) => {
             if (params['id']) {
                 this.invoiceService.getInvoice(params['id']).subscribe((invoice) => {
-                    if (invoice.invoiceNumber) this.invoiceNumber = invoice.invoiceNumber;
-                    this.invoiceId = params['id'];
-                    if (invoice.entryItem) {
+                    if (invoice) {
+                        this.invoiceNumber = invoice.invoiceNumber || '';
+                        this.invoiceId = params['id'];
+
                         const entryItemsArray = this.formBuilder.array(
-                            invoice.entryItem.map((item: EntryItem) => {
+                            (invoice.entryItem || []).map((item: EntryItem) => {
                                 const formItems = this.formBuilder.group({
                                     id_item: [item._id],
-                                    nameEntry: [item.nameEntry, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+                                    nameEntry: [item.nameEntry || '', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
                                     quantityEntry: [item.quantityEntry || 1, [Validators.required, Validators.maxLength(50), Validators.min(1)]],
-                                    taxEntry: [item.taxEntry?.toString(), Validators.required],
+                                    taxEntry: [item.taxEntry?.toString() || '0', Validators.required],
                                     netAmountEntry: [item.netAmountEntry || 1, [Validators.required, Validators.maxLength(50), Validators.min(1)]],
                                     grossEntry: [
                                         (item.quantityEntry || 0) * (item.taxEntry || 0) * (item.netAmountEntry || 0) || 1,
@@ -83,7 +84,6 @@ export class InvoiceItemComponent implements OnInit {
                                     ]
                                 });
 
-                                // Subscribe changes in form controls for recalculate gross entry
                                 formItems.get('quantityEntry')?.valueChanges.subscribe(() => {
                                     this.updateGrossEntry(formItems);
                                 });
@@ -97,30 +97,14 @@ export class InvoiceItemComponent implements OnInit {
                                 });
 
                                 return formItems;
-                            }) || []
+                            })
                         );
-                        entryItemsArray.controls.forEach((control) => {
-                            const formItems = control as FormGroup;
-
-                            // Subscribe changes in form controls for recalculate gross entry for new added items
-                            formItems.get('quantityEntry')?.valueChanges.subscribe(() => {
-                                this.updateGrossEntry(formItems);
-                            });
-
-                            formItems.get('taxEntry')?.valueChanges.subscribe(() => {
-                                this.updateGrossEntry(formItems);
-                            });
-
-                            formItems.get('netAmountEntry')?.valueChanges.subscribe(() => {
-                                this.updateGrossEntry(formItems);
-                            });
-                        });
 
                         this.form = this.formBuilder.group({
-                            invoiceNumber: [invoice.invoiceNumber, Validators.required],
-                            invoiceDate: [invoice.invoiceDate ? new Date(invoice.invoiceDate) : null, Validators.required],
-                            dueDate: [invoice.dueDate ? new Date(invoice.dueDate) : null, Validators.required],
-                            customer: [invoice.customer, Validators.required],
+                            invoiceNumber: [invoice.invoiceNumber || '', Validators.required],
+                            invoiceDate: [invoice.invoiceDate ? new Date(invoice.invoiceDate) : new Date(), Validators.required],
+                            dueDate: [invoice.dueDate ? new Date(invoice.dueDate) : new Date(), Validators.required],
+                            customer: [invoice.customer || '', Validators.required],
                             entryItems: entryItemsArray,
                             netAmountSum: [this.netAmountSum, Validators.required],
                             grossSum: [this.grossSum, Validators.required]

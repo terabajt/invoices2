@@ -32,15 +32,14 @@ export class UserItemComponent implements OnInit {
         this.countries = this.usersService.getCountries();
     }
 
-    //CHECK MY NIP
     validateNIP(control: AbstractControl) {
         const inputValue = control.value;
 
-        if (inputValue === null || inputValue === undefined) {
+        if (!inputValue) {
             return null;
         }
 
-        const nip = inputValue.replace(/[- ]/g, ''); // Usuwanie myślników i spacji
+        const nip = inputValue.replace(/[- ]/g, ''); // Remove dashes and spaces
 
         if (nip.length !== 10) {
             return { invalidNIP: true, message: 'NIP musi mieć 10 cyfr.' };
@@ -60,7 +59,7 @@ export class UserItemComponent implements OnInit {
             return { invalidNIP: true, message: 'Nieprawidłowa suma kontrolna.' };
         }
 
-        return null; // NIP jest poprawny
+        return null; // NIP is valid
     }
 
     ngOnInit(): void {
