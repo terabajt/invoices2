@@ -1,14 +1,14 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Customer, CustomerService } from '@invoice2-team/invoices';
-import { DialogComponent } from '../../shared/dialog/dialog.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { UsersService } from '@invoice2-team/users';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { DialogComponent } from '../../shared/dialog/dialog.component';
 
 @Component({
     selector: 'invoice2-team-customers-list',
@@ -23,7 +23,12 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
     currentUserId = '';
     dataSource: MatTableDataSource<Customer> = new MatTableDataSource<Customer>([]);
 
-    constructor(private customerService: CustomerService, private _dialog: MatDialog, private _toast: MatSnackBar, private usersService: UsersService) {}
+    constructor(
+        private customerService: CustomerService,
+        private _dialog: MatDialog,
+        private _toast: MatSnackBar,
+        private usersService: UsersService
+    ) {}
 
     ngOnInit(): void {
         this.paginator._intl.itemsPerPageLabel = 'Ilość klientów na stronie';
@@ -52,7 +57,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
 
     displayedColumns: string[] = ['name', 'taxNumber', 'email', 'phone', 'options'];
 
-    private _initCustomers(): Observable<any> {
+    private _initCustomers(): Observable<unknown> {
         return this.customerService.getCustomers(this.currentUserId).pipe(
             map((data) => {
                 this.dataSource = new MatTableDataSource<Customer>(data);
