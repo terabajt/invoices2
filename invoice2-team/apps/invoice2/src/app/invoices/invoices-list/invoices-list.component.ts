@@ -1,12 +1,13 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSelectChange } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Invoice, InvoicesService, MonthToSorted } from '@invoice2-team/invoices';
-import { DialogComponent } from '../../shared/dialog/dialog.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { UsersService } from '@invoice2-team/users';
+import { DialogComponent } from '../../shared/dialog/dialog.component';
 
 @Component({
     selector: 'invoice2-team-invoices-list',
@@ -37,7 +38,12 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
         { month: 'grudzień', monthNumber: '-12-' }
     ];
 
-    constructor(private invoiceService: InvoicesService, private usersService: UsersService, private _dialog: MatDialog, private _toast: MatSnackBar) {}
+    constructor(
+        private invoiceService: InvoicesService,
+        private usersService: UsersService,
+        private _dialog: MatDialog,
+        private _toast: MatSnackBar
+    ) {}
 
     ngOnInit() {
         this.usersService.initAppSession();
@@ -99,13 +105,13 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
             this.dataSource.filter = '';
             return;
         }
-        this.dataSource.filterPredicate = (data: any, filter: string) => {
-            const formattedDate = (data.invoiceDate || '').toLowerCase();
+        this.dataSource.filterPredicate = (data: Invoice, filter: string) => {
+            const formattedDate = (data.invoiceDate ? data.invoiceDate.toString() : '').toLowerCase();
             return formattedDate.includes(filter);
         };
         this.dataSource.filter = filterValue;
     }
-    onMonthSelectedFilter(event: any): void {
+    onMonthSelectedFilter(event: MatSelectChange): void {
         if (event && event.value) {
             const filterValue = event.value;
 
@@ -117,8 +123,8 @@ export class InvoicesListComponent implements OnInit, AfterViewInit {
                 this.dataSource.filter = '';
                 return;
             }
-            this.dataSource.filterPredicate = (data: any, filter: string) => {
-                const formattedDate = (data.invoiceDate || '').toLowerCase();
+            this.dataSource.filterPredicate = (data: Invoice, filter: string) => {
+                const formattedDate = (data.invoiceDate ? data.invoiceDate.toString() : '').toLowerCase();
                 return formattedDate.includes(filter);
             };
             this.dataSource.filter = filterValue;
