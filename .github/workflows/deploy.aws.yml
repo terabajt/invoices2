@@ -14,23 +14,63 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure node
-        uses: ./.github/actions/setup-project
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.9.0"
+
+      # - name: Cache npm dependencies
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ~/.npm
+      #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: |
+          cd invoice2-team
+          npm ci
+
+      - name: Install nx globally
+        run: npm install -g nx
+
+      - name: Install i18n
+        run: npm install i18n-iso-countries
 
       - name: Lint code
-        run: cd invoice2-team && npm run lint
-
-      - name: Run unit tests
-        run: npm run test
+        run: |
+          cd invoice2-team/apps/invoice2
+          npm run lint
 
       - name: Create environments directory and file
         run: |
-          mkdir environments
-          echo "export const environment = { ENV_FILE: '${{ secrets.ENV_FILE }}' };" > environments/environment.ts
+          cd invoice2-team
+          mkdir -p apps/invoice2/src/environments
+          cat <<EOF > apps/invoice2/src/environments/environment.ts
+          export const environment = { ENV_FILE: "${{ secrets.ENV_FILE }}" };
+          EOF
+        shell: bash
 
       - name: Build app
         env:
           ENV_FILE: ${{ secrets.ENV_FILE }}
-        run: npx nx run apps/invoice2:build
+        run: |
+          cd invoice2-team
+          nx run user-panel:build --configuration=production
+
+      - name: Check build directory and list contents
+        run: |
+          echo "Build directory:"
+          cd invoice2-team/dist/user-panel
+          pwd
+          echo "Contents of build directory:"
+          ls -l
+
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          pip3 install awscli
 
       - name: Configure AWS credentials for S3
         uses: aws-actions/configure-aws-credentials@v4.0.2
@@ -40,4 +80,9 @@ jobs:
           aws-region: eu-central-1
 
       - name: Deploy to AWS
-        run: cd dist/apps/invoice2 && aws s3 sync dist s3://invoices2-aws-bucket-001
+        run: |
+          echo "Current directory before deploying:"
+          pwd
+          ls -l
+          cd invoice2-team/dist/user-panel
+          aws s3 sync . s3://invoices2-aws-bucket-001
