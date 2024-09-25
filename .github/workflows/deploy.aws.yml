@@ -18,14 +18,6 @@ jobs:
         with:
           node-version: "20.9.0"
 
-      # - name: Cache npm dependencies
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: ~/.npm
-      #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-node-
-
       - name: Install dependencies
         run: |
           cd invoice2-team
@@ -42,13 +34,18 @@ jobs:
           cd invoice2-team/apps/invoice2
           npm run lint
 
+      - name: Debug ENV_FILE
+        run: echo "${{ secrets.ENV_FILE }}"
+        shell: bash
+
       - name: Create environments directory and file
         run: |
-          cd invoice2-team
-          mkdir -p apps/invoice2/src/environments
-          cat <<EOF > apps/invoice2/src/environments/environment.ts
-          export const environment = { ENV_FILE: "${{ secrets.ENV_FILE }}" };
-          EOF
+          mkdir -p invoice2-team/environments
+          cd invoice2-team/environments
+          echo "my env value is: ${{ secrets.ENV_FILE }}"
+          echo "${{ secrets.ENV_FILE }}" > environment.development.ts
+          echo "Env file is:"
+          cat environment.development.ts
         shell: bash
 
       - name: Build app
@@ -57,14 +54,6 @@ jobs:
         run: |
           cd invoice2-team
           nx run user-panel:build --configuration=production
-
-      - name: Check build directory and list contents
-        run: |
-          echo "Build directory:"
-          cd invoice2-team/dist/user-panel
-          pwd
-          echo "Contents of build directory:"
-          ls -l
 
       - name: Install AWS CLI
         run: |
@@ -81,8 +70,5 @@ jobs:
 
       - name: Deploy to AWS
         run: |
-          echo "Current directory before deploying:"
-          pwd
-          ls -l
           cd invoice2-team/dist/user-panel
           aws s3 sync . s3://invoices2-aws-bucket-001
