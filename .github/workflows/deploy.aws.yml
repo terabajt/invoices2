@@ -13,6 +13,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Configure node
         uses: actions/setup-node@v4
         with:
@@ -35,17 +43,19 @@ jobs:
           npm run lint
 
       - name: Debug ENV_FILE
-        run: echo "${{ secrets.ENV_FILE }}"
+        run: echo "env is ${{ secrets.ENV_FILE }}"
         shell: bash
 
       - name: Create environments directory and file
         run: |
           mkdir -p invoice2-team/environments
           cd invoice2-team/environments
-          echo "my env value is: ${{ secrets.ENV_FILE }}"
-          echo "${{ secrets.ENV_FILE }}" > environment.development.ts
-          echo "Env file is:"
-          cat environment.development.ts
+          if [ -z "${{ secrets.ENV_FILE }}" ]; then
+            echo "ENV_FILE secret is not set or is empty"
+          else
+            rm -f environment.development.ts
+            echo "${{ secrets.ENV_FILE }}" > environment.development.ts
+          fi
         shell: bash
 
       - name: Build app
@@ -53,7 +63,7 @@ jobs:
           ENV_FILE: ${{ secrets.ENV_FILE }}
         run: |
           cd invoice2-team
-          nx run user-panel:build --configuration=production
+          nx run user-panel:build --configuration=production --skip-nx-cache=true
 
       - name: Install AWS CLI
         run: |
