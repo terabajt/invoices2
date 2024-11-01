@@ -1,6 +1,6 @@
 server/.env
 .env
 .secrets
-server/node_modules
+node_modules
 .terraform
 invoice2-team/environments/
